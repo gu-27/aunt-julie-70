@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aunt Julie's 70th — Memory Concept Ideas</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --gold:   #c9982a;
+  --gold-l: #fdf6e3;
+  --pink:   #e05c7a;
+  --pink-l: #fce8ef;
+  --teal:   #3a8c87;
+  --teal-l: #e3f5f4;
+  --plum:   #7b4ea0;
+  --plum-l: #f3ecf9;
+  --navy:   #2c3e6b;
+  --navy-l: #e8ecf5;
+  --cream:  #fdf8f1;
+  --dark:   #2d2417;
+  --mid:    #6b6560;
+  --border: #e5e0d8;
+  --r: 14px;
+}
+body { font-family: 'Georgia', serif; background: var(--cream); color: var(--dark); }
+
+/* ── Header ── */
+.site-header {
+  background: linear-gradient(135deg, #2d2417 0%, #5a3a1a 50%, #2d2417 100%);
+  color: #fff; text-align: center; padding: 4rem 1rem 3rem;
+  position: relative; overflow: hidden;
+}
+.site-header::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(201,152,42,.35) 0%, transparent 70%);
+}
+.site-header .label {
+  font-family: 'Arial', sans-serif; font-size: .75rem; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: .75rem; position: relative;
+}
+.site-header h1 { font-size: 2.8rem; font-weight: normal; position: relative; margin-bottom: .5rem; }
+.site-header h1 span { color: var(--gold); }
+.site-header p { font-size: 1.05rem; opacity: .8; position: relative; max-width: 560px; margin: 0 auto; line-height: 1.6; }
+
+/* ── Jump Nav ── */
+.jump-nav {
+  background: #fff; border-bottom: 2px solid var(--border);
+  display: flex; justify-content: center; gap: .5rem;
+  padding: .85rem 1rem; flex-wrap: wrap; position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+.jump-nav a {
+  font-family: Arial, sans-serif; font-size: .8rem; font-weight: 600;
+  text-decoration: none; padding: .4rem .9rem; border-radius: 99px;
+  border: 2px solid var(--border); color: var(--mid);
+  transition: all .2s;
+}
+.jump-nav a:hover { border-color: var(--gold); color: var(--dark); }
+.jump-nav a.c1 { --a: var(--gold);  } .jump-nav a.c1:hover { border-color: var(--gold);  color: var(--gold); }
+.jump-nav a.c2 { } .jump-nav a.c2:hover { border-color: var(--pink);  color: var(--pink); }
+.jump-nav a.c3 { } .jump-nav a.c3:hover { border-color: var(--teal);  color: var(--teal); }
+.jump-nav a.c4 { } .jump-nav a.c4:hover { border-color: var(--plum);  color: var(--plum); }
+.jump-nav a.c5 { } .jump-nav a.c5:hover { border-color: var(--navy);  color: var(--navy); }
+
+/* ── Concept Sections ── */
+.concept {
+  padding: 4rem 1.5rem;
+  border-bottom: 3px solid var(--border);
+}
+.concept:nth-child(odd) { background: var(--cream); }
+.concept:nth-child(even) { background: #fff; }
+
+.concept-meta { max-width: 860px; margin: 0 auto 2.5rem; }
+.concept-badge {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-family: Arial, sans-serif; font-size: .72rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: .3rem .8rem; border-radius: 99px; margin-bottom: .8rem;
+}
+.c1 .concept-badge { background: var(--gold-l); color: var(--gold); }
+.c2 .concept-badge { background: var(--pink-l); color: var(--pink); }
+.c3 .concept-badge { background: var(--teal-l); color: var(--teal); }
+.c4 .concept-badge { background: var(--plum-l); color: var(--plum); }
+.c5 .concept-badge { background: var(--navy-l); color: var(--navy); }
+
+.concept h2 { font-size: 2rem; font-weight: normal; margin-bottom: .4rem; }
+.concept .tagline { font-size: 1.05rem; color: var(--mid); margin-bottom: 1rem; font-style: italic; }
+.concept-desc { font-size: .95rem; line-height: 1.7; color: var(--mid); max-width: 680px; }
+.concept-tags {
+  display: flex; gap: .5rem; margin-top: .9rem; flex-wrap: wrap;
+}
+.concept-tags span {
+  font-family: Arial, sans-serif; font-size: .72rem;
+  padding: .25rem .65rem; border-radius: 4px;
+  background: var(--border); color: var(--mid);
+}
+
+/* ── Demo container ── */
+.demo {
+  max-width: 960px; margin: 0 auto;
+  border-radius: var(--r); overflow: hidden;
+  border: 2px solid var(--border);
+}
+.demo-header {
+  font-family: Arial, sans-serif; font-size: .7rem; letter-spacing: .12em;
+  text-transform: uppercase; padding: .5rem 1rem;
+  background: var(--border); color: var(--mid);
+  display: flex; align-items: center; gap: .5rem;
+}
+.demo-header::before {
+  content: ''; display: inline-block;
+  width: 8px; height: 8px; border-radius: 50%; background: #ccc;
+  box-shadow: 14px 0 0 #ccc, 28px 0 0 #ccc;
+}
+
+/* ══════════════════════════════════════════
+   CONCEPT 1 — MEMORY MOSAIC
+══════════════════════════════════════════ */
+.mosaic-wrap { padding: 1.5rem; background: #1a1a1a; }
+.mosaic-grid {
+  display: grid; grid-template-columns: repeat(10, 1fr);
+  gap: 4px;
+}
+@media (max-width: 600px) { .mosaic-grid { grid-template-columns: repeat(7, 1fr); } }
+
+.mosaic-tile {
+  aspect-ratio: 1; border-radius: 4px; cursor: pointer;
+  position: relative; display: flex; align-items: center; justify-content: center;
+  font-family: Arial, sans-serif; font-size: clamp(.5rem, 1.2vw, .7rem);
+  font-weight: 700; color: rgba(255,255,255,.7);
+  transition: transform .15s, opacity .15s;
+  perspective: 600px;
+}
+.mosaic-tile:hover { transform: scale(1.12); z-index: 2; }
+.mosaic-tile .num { pointer-events: none; }
+
+/* Mosaic modal */
+.mosaic-modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,.8);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 500; padding: 1rem;
+}
+.mosaic-modal.hidden { display: none; }
+.mosaic-card {
+  background: #fff; border-radius: var(--r); padding: 2.5rem;
+  max-width: 480px; width: 100%; position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,.3);
+}
+.mosaic-num { font-family: Arial, sans-serif; font-size: 3rem; font-weight: 900; opacity: .12; line-height: 1; }
+.mosaic-name { font-family: Arial, sans-serif; font-size: .8rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); margin-bottom: .5rem; }
+.mosaic-msg { font-size: 1.05rem; line-height: 1.7; color: var(--dark); }
+.mosaic-close {
+  position: absolute; top: 1rem; right: 1rem;
+  background: none; border: 1px solid var(--border); border-radius: 50%;
+  width: 30px; height: 30px; cursor: pointer; font-size: 1rem;
+  display: flex; align-items: center; justify-content: center; color: var(--mid);
+}
+
+/* ══════════════════════════════════════════
+   CONCEPT 2 — MEMORY JAR
+══════════════════════════════════════════ */
+.jar-wrap { background: #f0e8d8; padding: 2rem; text-align: center; }
+.jar-outer { display: inline-block; position: relative; }
+
+.jar-svg-wrap { position: relative; display: inline-block; }
+.jar-svg-wrap svg { display: block; }
+
+.slips-container {
+  position: absolute;
+  left: 50%; transform: translateX(-50%);
+  bottom: 15%; width: 70%;
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end;
+  gap: 4px;
+}
+.slip {
+  width: 28px; height: 38px; border-radius: 2px;
+  cursor: pointer; transform-origin: bottom center;
+  transition: transform .2s;
+  display: flex; align-items: flex-start; justify-content: center;
+  font-family: Arial, sans-serif; font-size: 6px; color: rgba(0,0,0,.4);
+  padding-top: 3px;
+}
+.slip:hover { transform: translateY(-6px) rotate(var(--r, 0deg)); }
+
+.jar-counter {
+  font-family: Arial, sans-serif; font-size: .85rem; color: var(--mid);
+  margin-top: .75rem;
+}
+.jar-prompt {
+  font-style: italic; color: var(--mid); font-size: .9rem; margin-bottom: 1rem;
+}
+
+/* Jar modal */
+.jar-modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,.75);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 500; padding: 1rem;
+}
+.jar-modal.hidden { display: none; }
+.slip-card {
+  background: #fffdf5; border-radius: 4px; padding: 2.5rem 2rem;
+  max-width: 420px; width: 100%;
+  box-shadow: 0 4px 30px rgba(0,0,0,.3);
+  position: relative;
+  border-top: 3px solid var(--gold);
+  transform: rotate(-1deg);
+}
+.slip-from { font-family: Arial, sans-serif; font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); margin-bottom: .6rem; }
+.slip-msg { font-size: 1rem; line-height: 1.7; color: var(--dark); font-style: italic; }
+.slip-close {
+  position: absolute; top: .75rem; right: .75rem;
+  background: none; border: none; font-size: 1.1rem; cursor: pointer; color: var(--mid);
+}
+.jar-nav { margin-top: 1.5rem; display: flex; justify-content: center; gap: .5rem; }
+.jar-nav button {
+  padding: .5rem 1.25rem; border-radius: 99px; border: 2px solid var(--border);
+  background: none; cursor: pointer; font-family: Arial, sans-serif; font-size: .85rem;
+  color: var(--mid); transition: all .2s;
+}
+.jar-nav button:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ══════════════════════════════════════════
+   CONCEPT 3 — 70 REASONS
+══════════════════════════════════════════ */
+.reasons-wrap { background: #fff; }
+.reasons-header-strip {
+  background: var(--teal); color: #fff; text-align: center;
+  padding: 2.5rem 1rem 2rem;
+}
+.reasons-header-strip h3 { font-size: 1.8rem; font-weight: normal; }
+.reasons-header-strip p { font-size: .9rem; opacity: .8; margin-top: .25rem; }
+.reasons-list { padding: 0; }
+.reason-item {
+  display: flex; align-items: flex-start; gap: 1.25rem;
+  padding: 1.1rem 2rem; border-bottom: 1px solid var(--border);
+  transition: background .15s;
+}
+.reason-item:hover { background: var(--teal-l); }
+.reason-n {
+  font-family: Arial, sans-serif; font-size: 1.5rem; font-weight: 900;
+  color: var(--teal); opacity: .35; min-width: 2.5rem; line-height: 1.3;
+  flex-shrink: 0;
+}
+.reason-body {}
+.reason-name { font-family: Arial, sans-serif; font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--teal); margin-bottom: .2rem; }
+.reason-msg { font-size: .93rem; line-height: 1.6; color: var(--dark); }
+
+.reasons-show-btn {
+  display: block; width: 100%; padding: 1rem; text-align: center;
+  background: var(--teal-l); border: none; border-top: 2px solid var(--border);
+  font-family: Arial, sans-serif; font-size: .9rem; color: var(--teal);
+  cursor: pointer; transition: background .2s;
+}
+.reasons-show-btn:hover { background: var(--teal); color: #fff; }
+
+/* ══════════════════════════════════════════
+   CONCEPT 4 — DECADE TIMELINE
+══════════════════════════════════════════ */
+.timeline-wrap { padding: 2rem; background: #fff; }
+.decade-item { position: relative; padding-left: 3rem; margin-bottom: 2rem; }
+.decade-item::before {
+  content: ''; position: absolute; left: .85rem; top: 0; bottom: 0;
+  width: 2px; background: var(--border);
+}
+.decade-dot {
+  position: absolute; left: 0; top: .15rem;
+  width: 1.75rem; height: 1.75rem; border-radius: 50%;
+  background: var(--plum); display: flex; align-items: center; justify-content: center;
+  font-family: Arial, sans-serif; font-size: .55rem; font-weight: 900;
+  color: #fff; flex-shrink: 0; z-index: 1;
+}
+.decade-label {
+  font-family: Arial, sans-serif; font-size: .7rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--plum);
+  margin-bottom: .2rem;
+}
+.decade-title {
+  font-size: 1.2rem; margin-bottom: .6rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .5rem .75rem; border-radius: 8px; background: var(--plum-l);
+  transition: background .2s;
+}
+.decade-title:hover { background: #e9d9f5; }
+.decade-title .chevron { font-size: .8rem; color: var(--plum); transition: transform .2s; }
+.decade-title.open .chevron { transform: rotate(180deg); }
+.decade-memories { display: none; padding-top: .75rem; }
+.decade-memories.open { display: block; }
+.tl-card {
+  padding: .75rem 1rem; border-radius: 8px; margin-bottom: .5rem;
+  background: var(--plum-l); border-left: 3px solid var(--plum);
+}
+.tl-name { font-family: Arial, sans-serif; font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--plum); margin-bottom: .2rem; }
+.tl-msg { font-size: .88rem; line-height: 1.55; color: var(--dark); }
+
+/* ══════════════════════════════════════════
+   CONCEPT 5 — POLAROID WALL
+══════════════════════════════════════════ */
+.polaroid-wrap { background: #2a1f15; padding: 2rem; }
+.polaroid-grid { columns: 3; column-gap: 1.25rem; }
+@media (max-width: 600px) { .polaroid-grid { columns: 2; } }
+.polaroid {
+  break-inside: avoid;
+  background: #fff;
+  padding: .8rem .8rem .1rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,.35);
+  transform: rotate(var(--rot, 0deg));
+  transition: transform .2s, box-shadow .2s;
+  cursor: default;
+}
+.polaroid:hover {
+  transform: rotate(0deg) scale(1.03);
+  box-shadow: 0 10px 30px rgba(0,0,0,.5);
+  z-index: 2; position: relative;
+}
+.polaroid-img {
+  width: 100%; aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem; margin-bottom: .6rem;
+}
+.polaroid-name {
+  font-family: 'Arial', sans-serif; font-size: .62rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--gold);
+  margin-bottom: .25rem;
+}
+.polaroid-msg {
+  font-family: 'Georgia', serif; font-size: .78rem;
+  line-height: 1.5; color: #333; padding-bottom: .6rem;
+}
+
+/* ── Footer ── */
+.site-footer {
+  background: var(--dark); color: rgba(255,255,255,.5);
+  text-align: center; padding: 2rem;
+  font-family: Arial, sans-serif; font-size: .8rem;
+}
+
+/* ── Modal shared overlay ── */
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="label">Ideation Preview — Aunt Julie's 70th Birthday</div>
+  <h1>70 Memories. <span>5 Ways to Share Them.</span></h1>
+  <p>Explore five different concepts for presenting the memories we collect. Sample entries below — the real ones will replace them. Share this page with the group and vote for your favorite!</p>
+</header>
+
+<!-- Jump Nav -->
+<nav class="jump-nav">
+  <a href="#c1" class="c1">1 · Memory Mosaic</a>
+  <a href="#c2" class="c2">2 · Memory Jar</a>
+  <a href="#c3" class="c3">3 · 70 Reasons</a>
+  <a href="#c4" class="c4">4 · Decade Timeline</a>
+  <a href="#c5" class="c5">5 · Polaroid Wall</a>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     CONCEPT 1 — MEMORY MOSAIC
+═══════════════════════════════════════ -->
+<section class="concept c1" id="c1">
+  <div class="concept-meta">
+    <div class="concept-badge">Concept 1</div>
+    <h2>Memory Mosaic</h2>
+    <div class="tagline">"Every tile is someone who loves you."</div>
+    <p class="concept-desc">Seventy numbered gold tiles arranged in a grid — one for each memory. Tap any tile to reveal the name and message behind it. The full grid is a striking visual on screen, and could be printed as a keepsake poster for her wall. Simple. Bold. 70 at a glance.</p>
+    <div class="concept-tags">
+      <span>Interactive</span><span>Printable Poster</span><span>High Impact</span>
+    </div>
+  </div>
+  <div class="demo">
+    <div class="demo-header">Live Preview — click any tile</div>
+    <div class="mosaic-wrap">
+      <div class="mosaic-grid" id="mosaic-grid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Mosaic Modal -->
+<div class="mosaic-modal hidden" id="mosaic-modal" onclick="closeMosaic(event)">
+  <div class="mosaic-card">
+    <div class="mosaic-num" id="m-num"></div>
+    <div class="mosaic-name" id="m-name"></div>
+    <div class="mosaic-msg" id="m-msg"></div>
+    <button class="mosaic-close" onclick="closeMosaicBtn()">✕</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     CONCEPT 2 — MEMORY JAR
+═══════════════════════════════════════ -->
+<section class="concept c2" id="c2">
+  <div class="concept-meta">
+    <div class="concept-badge">Concept 2</div>
+    <h2>The Memory Jar</h2>
+    <div class="tagline">"Reach in and pull out a memory."</div>
+    <p class="concept-desc">A digital mason jar overflowing with 70 colorful paper slips — one for each memory. Click any slip to unfurl it and read. Navigate forward and back to keep reading. Whimsical, warm, and completely replayable. Could also be made as a real jar with printed slips for a physical gift.</p>
+    <div class="concept-tags">
+      <span>Interactive</span><span>Physical Version Possible</span><span>Warm & Playful</span>
+    </div>
+  </div>
+  <div class="demo">
+    <div class="demo-header">Live Preview — click a paper slip</div>
+    <div class="jar-wrap">
+      <p class="jar-prompt">70 memories folded up and waiting for you, Julie.</p>
+      <div class="jar-svg-wrap">
+        <svg width="280" height="340" viewBox="0 0 280 340">
+          <!-- Jar lid -->
+          <rect x="75" y="20" width="130" height="28" rx="6" fill="#b8a070" />
+          <rect x="90" y="16" width="100" height="12" rx="4" fill="#c9b080" />
+          <!-- Jar body -->
+          <path d="M70 48 Q60 70 58 140 L58 290 Q58 315 140 315 Q222 315 222 290 L222 140 Q220 70 210 48 Z" fill="rgba(255,255,255,0.85)" stroke="#c9b080" stroke-width="3"/>
+          <!-- Jar shine -->
+          <path d="M80 70 Q75 110 74 180" stroke="rgba(255,255,255,0.8)" stroke-width="6" fill="none" stroke-linecap="round"/>
+        </svg>
+        <div class="slips-container" id="slips-container"></div>
+      </div>
+      <div class="jar-counter" id="jar-counter">70 memories inside</div>
+    </div>
+  </div>
+</section>
+
+<!-- Jar Modal -->
+<div class="jar-modal hidden" id="jar-modal">
+  <div class="slip-card">
+    <button class="slip-close" onclick="closeJar()">✕</button>
+    <div class="slip-from" id="j-from"></div>
+    <div class="slip-msg" id="j-msg"></div>
+    <div class="jar-nav">
+      <button onclick="jarNav(-1)">← Previous</button>
+      <button onclick="jarNav(1)">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     CONCEPT 3 — 70 REASONS
+═══════════════════════════════════════ -->
+<section class="concept c3" id="c3">
+  <div class="concept-meta">
+    <div class="concept-badge">Concept 3</div>
+    <h2>70 Reasons We Love You</h2>
+    <div class="tagline">"A numbered list she can read again and again."</div>
+    <p class="concept-desc">Clean, typographic, and elegant. Every memory is a numbered entry — name first, then the message. Scrolling through all 70 feels like turning pages in a book written just for her. Works beautifully as a digital page she can bookmark, or printed as a bound booklet.</p>
+    <div class="concept-tags">
+      <span>Scroll Experience</span><span>Printable Booklet</span><span>Elegant</span>
+    </div>
+  </div>
+  <div class="demo" style="max-height: 600px; overflow-y: auto;">
+    <div class="demo-header">Live Preview — scroll through all 70</div>
+    <div class="reasons-wrap">
+      <div class="reasons-header-strip">
+        <h3>70 Reasons We Love Julie</h3>
+        <p>From the people whose lives she has touched</p>
+      </div>
+      <div class="reasons-list" id="reasons-list"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     CONCEPT 4 — DECADE TIMELINE
+═══════════════════════════════════════ -->
+<section class="concept c4" id="c4">
+  <div class="concept-meta">
+    <div class="concept-badge">Concept 4</div>
+    <h2>A Life in Chapters</h2>
+    <div class="tagline">"Seven decades. Seventy memories. One remarkable life."</div>
+    <p class="concept-desc">Memories organized by the chapters of Julie's life — from early years through today. Each decade expands to reveal the memories that belong to it. Narrative and meaningful; helps her see her life as a whole story rather than a list of moments. Beautiful as an interactive page or a printed timeline display.</p>
+    <div class="concept-tags">
+      <span>Narrative</span><span>Interactive Accordion</span><span>Deeply Personal</span>
+    </div>
+  </div>
+  <div class="demo">
+    <div class="demo-header">Live Preview — click any decade to expand</div>
+    <div class="timeline-wrap" id="timeline-wrap"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     CONCEPT 5 — POLAROID WALL
+═══════════════════════════════════════ -->
+<section class="concept c5" id="c5">
+  <div class="concept-meta">
+    <div class="concept-badge">Concept 5</div>
+    <h2>Polaroid Wall</h2>
+    <div class="tagline">"A wall of memories, each one hand-delivered."</div>
+    <p class="concept-desc">Every memory is a polaroid card pinned to a warm cork wall — slightly tilted, full of personality. Hover to straighten and read. Works digitally as a keepsake page, or each card can be printed on cardstock and displayed on a real corkboard or strung with lights. Very tactile, very her.</p>
+    <div class="concept-tags">
+      <span>Visual</span><span>Printable Cards</span><span>Physical Display Option</span>
+    </div>
+  </div>
+  <div class="demo">
+    <div class="demo-header">Live Preview — hover to read</div>
+    <div class="polaroid-wrap">
+      <div class="polaroid-grid" id="polaroid-grid"></div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  A love project for Aunt Julie's 70th Birthday — these are sample memories. The real ones come from you.
+</footer>
+
+<script>
+// ══════════════════════════════════════════
+// Sample Data — 70 Entries
+// ══════════════════════════════════════════
+const MEMORIES = [
+  { id:1,  name:"Bill (husband)",         decade:"always",  emoji:"💛", msg:"Seventy years of you. And I'd choose every single one again." },
+  { id:2,  name:"Bill (husband)",         decade:"always",  emoji:"💛", msg:"The first time I saw you across the room I thought: that's the person. I was 22. I was right." },
+  { id:3,  name:"Bill (husband)",         decade:"always",  emoji:"💛", msg:"You have never once gone to sleep without saying goodnight. Not once in 47 years." },
+  { id:4,  name:"Bill (husband)",         decade:"always",  emoji:"💛", msg:"You still write me a card for our anniversary. Every year. Handwritten. I've kept every one." },
+  { id:5,  name:"Sarah (daughter)",       decade:"family",  emoji:"🌸", msg:"You taught me that homemade always beats store-bought. I've spent 30 years trying to prove you wrong. I still can't." },
+  { id:6,  name:"Sarah (daughter)",       decade:"family",  emoji:"🌸", msg:"You used to pack little notes in my lunchbox. I'm 42 and I still find myself wishing there was a note sometimes." },
+  { id:7,  name:"Sarah (daughter)",       decade:"family",  emoji:"🌸", msg:"You have never — not once — said 'I told you so.' And you have had plenty of opportunities." },
+  { id:8,  name:"Sarah (daughter)",       decade:"family",  emoji:"🌸", msg:"When I called you crying, you didn't say anything for five minutes. You just breathed with me. It was exactly what I needed." },
+  { id:9,  name:"Sarah (daughter)",       decade:"family",  emoji:"🌸", msg:"You taught me to make your tomato sauce when I was 12. My kids call it 'the sauce.' I hope they make it someday and call it the same thing." },
+  { id:10, name:"Michael (son)",          decade:"family",  emoji:"⚾", msg:"You drove to every single one of my baseball games. Home and away. For nine years. You learned the actual rules somewhere around year four." },
+  { id:11, name:"Michael (son)",          decade:"family",  emoji:"⚾", msg:"You stayed up all night sewing my Halloween costume because I changed my mind at 9pm. A velociraptor. You made a velociraptor." },
+  { id:12, name:"Michael (son)",          decade:"family",  emoji:"⚾", msg:"You sent a care package every month my entire freshman year of college. It always had Oreos, a crossword, and a note. I'd give anything to get one now." },
+  { id:13, name:"Michael (son)",          decade:"family",  emoji:"⚾", msg:"You came to zero of my high school dances but tracked down every teacher who'd been unkind to me and had a quiet word. I found out 20 years later." },
+  { id:14, name:"Michael (son)",          decade:"family",  emoji:"⚾", msg:"You drove six hours to help us move into our first house. You reorganized the kitchen while we unpacked. It's still organized your way. We never changed it." },
+  { id:15, name:"Emma (granddaughter)",   decade:"recent",  emoji:"✨", msg:"Grandma taught me to play poker. I am now undefeated in my friend group. She told me not to tell anyone where I learned." },
+  { id:16, name:"Emma (granddaughter)",   decade:"recent",  emoji:"✨", msg:"She told me once that the most important thing in life is to be someone people are glad walked into the room. I think about that all the time." },
+  { id:17, name:"Emma (granddaughter)",   decade:"recent",  emoji:"✨", msg:"She's the only adult who asks me what I think and then actually listens to the answer." },
+  { id:18, name:"Emma (granddaughter)",   decade:"recent",  emoji:"✨", msg:"She showed me her high school yearbook once. She was objectively the coolest person in it. She acted surprised when I said so." },
+  { id:19, name:"Tommy (grandson)",       decade:"recent",  emoji:"🐦", msg:"She lets me eat cereal for dinner when I sleep over. Don't tell my mom." },
+  { id:20, name:"Tommy (grandson)",       decade:"recent",  emoji:"🐦", msg:"She taught me to whistle. It took the whole summer. She never gave up." },
+  { id:21, name:"Tommy (grandson)",       decade:"recent",  emoji:"🐦", msg:"Grandma knows every bird that comes to her feeder by name. I'm not sure if she named them or just knows them. Either way it's impressive." },
+  { id:22, name:"Tommy (grandson)",       decade:"recent",  emoji:"🐦", msg:"She wins at Rummy every single time. I think she might be cheating but I can't catch her doing it." },
+  { id:23, name:"Olivia (granddaughter)", decade:"recent",  emoji:"💜", msg:"Grandma's hugs smell like flowers and cookies and I want to live there forever." },
+  { id:24, name:"Olivia (granddaughter)", decade:"recent",  emoji:"💜", msg:"She lets me paint her nails. She always picks purple." },
+  { id:25, name:"Olivia (granddaughter)", decade:"recent",  emoji:"💜", msg:"She always has a butterscotch candy in her purse. Every single time. It's like magic." },
+  { id:26, name:"Olivia (granddaughter)", decade:"recent",  emoji:"💜", msg:"Grandma Julie says 'I love you' like it's the easiest thing in the world. I want to be like that." },
+  { id:27, name:"Carol (best friend)",    decade:"friends", emoji:"☕", msg:"50 years of friendship and you have never once let me pay for coffee. I'm counting. The tab is enormous." },
+  { id:28, name:"Carol (best friend)",    decade:"friends", emoji:"☕", msg:"Our standing Tuesday coffee date has run for 22 years. Two moves, three jobs, one pandemic, and we have never missed a Tuesday." },
+  { id:29, name:"Carol (best friend)",    decade:"friends", emoji:"☕", msg:"You have the best laugh in any room you've ever been in. It starts in your shoulders." },
+  { id:30, name:"Carol (best friend)",    decade:"friends", emoji:"☕", msg:"You have the most genuinely warm smile I have ever seen on a person. It reaches your eyes. Every time." },
+  { id:31, name:"Carol (best friend)",    decade:"friends", emoji:"☕", msg:"You dance at every wedding like you're 25 and you have never once cared who's watching." },
+  { id:32, name:"Diane (college friend)", decade:"friends", emoji:"📚", msg:"Junior year, 2am, library, both crying over finals — you made us sing 'Don't Stop Believin' loud enough to get shushed. Best night of college." },
+  { id:33, name:"Diane (college friend)", decade:"friends", emoji:"📚", msg:"You once talked a parking attendant out of a ticket using only your smile and a story about a dentist appointment. I watched it happen. I still don't understand it." },
+  { id:34, name:"Diane (college friend)", decade:"friends", emoji:"📚", msg:"You flew out for my mother's funeral without being asked. Showed up at the door with soup. I didn't know you were coming. I've never been so relieved to see a person." },
+  { id:35, name:"Diane (college friend)", decade:"friends", emoji:"📚", msg:"You are 70 years old and you still send handwritten letters. I keep every single one." },
+  { id:36, name:"Diane (college friend)", decade:"friends", emoji:"📚", msg:"You are the funniest person I know and you don't try to be. That's the best kind." },
+  { id:37, name:"Nancy (neighbor)",       decade:"friends", emoji:"🌻", msg:"Every September she leaves a jar of her tomato sauce on my porch. It's the best part of summer ending." },
+  { id:38, name:"Nancy (neighbor)",       decade:"friends", emoji:"🌻", msg:"She dropped everything to drive me to the ER when my husband was traveling. Sat with me for 5 hours and brought a crossword so I wouldn't be bored." },
+  { id:39, name:"Nancy (neighbor)",       decade:"friends", emoji:"🌻", msg:"Her garden is the most beautiful thing on our street. I once asked how she does it. She said 'I just talk to them.'" },
+  { id:40, name:"Nancy (neighbor)",       decade:"friends", emoji:"🌻", msg:"She brought my kids trick-or-treating every year until they were too old. Then she helped me give out candy. She's given out more candy in this neighborhood than anyone alive." },
+  { id:41, name:"Uncle Bob",              decade:"family",  emoji:"🃏", msg:"Jules drove 4 hours in a snowstorm to be at Dad's bedside. Didn't tell anyone. Just showed up. That's Julie in a nutshell." },
+  { id:42, name:"Uncle Bob",              decade:"family",  emoji:"🃏", msg:"She gave the toast at my daughter's wedding and made everyone laugh and cry at the same time. Six sentences. How." },
+  { id:43, name:"Uncle Bob",              decade:"family",  emoji:"🃏", msg:"She taught every single cousin in our family how to shuffle cards. We thought it was a card trick. It was blackjack strategy." },
+  { id:44, name:"Cousin Pete",            decade:"family",  emoji:"🕺", msg:"At every family reunion she's the last one on the dance floor. Every time. Without exception." },
+  { id:45, name:"Cousin Pete",            decade:"family",  emoji:"🕺", msg:"The story of how she talked her way backstage at a Neil Diamond concert in 1987 is the best story in our family. I have asked for it at every reunion since I was old enough to understand it." },
+  { id:46, name:"Aunt Mary",              decade:"family",  emoji:"🎄", msg:"The way she decorates for Christmas should be illegal. I have been trying to replicate her centerpiece for a decade." },
+  { id:47, name:"Aunt Mary",              decade:"family",  emoji:"🎄", msg:"Her pie crust recipe is a state secret. I have begged. I have bribed. The recipe has not moved." },
+  { id:48, name:"Karen (Bill's sister)",  decade:"family",  emoji:"👯", msg:"She became my real sister the day she married Bill. Some things are just meant to be." },
+  { id:49, name:"Mark (son-in-law)",      decade:"family",  emoji:"🏡", msg:"When I was nervous to propose to Sarah, Julie pulled me aside and whispered 'We've been waiting for you, honey.' Best thing anyone's ever said to me." },
+  { id:50, name:"Mark (son-in-law)",      decade:"family",  emoji:"🏡", msg:"Every Thanksgiving she sneaks a little extra stuffing onto my plate when Sarah's not looking. We don't discuss it but we both know." },
+  { id:51, name:"Mark (son-in-law)",      decade:"family",  emoji:"🏡", msg:"She treats me like her own son. Not a son-in-law. There's a difference and she knows it and she chose the better one." },
+  { id:52, name:"Janet (coworker)",       decade:"work",    emoji:"🧁", msg:"She brought homemade muffins every Monday for 11 years. When she retired, we held a moment of silence. For the muffins." },
+  { id:53, name:"Janet (coworker)",       decade:"work",    emoji:"🧁", msg:"She remembered every person's birthday in our office. Every one. For eleven years. Without a computer. I still don't know how." },
+  { id:54, name:"Janet (coworker)",       decade:"work",    emoji:"🧁", msg:"When I had my baby, she was the first non-family person to visit. She brought a casserole, stayed two hours, did a load of laundry, and left without making a big deal of it." },
+  { id:55, name:"Janet (coworker)",       decade:"work",    emoji:"🧁", msg:"She once stood up in a staff meeting and told a VP that his policy was unfair to our team. Calmly. With receipts. He changed the policy." },
+  { id:56, name:"Linda (book club)",      decade:"friends", emoji:"📖", msg:"She is the only person in book club who actually reads the book AND writes notes in the margins AND brings wine that matches the theme." },
+  { id:57, name:"Linda (book club)",      decade:"friends", emoji:"📖", msg:"She convinced us to actually read Middlemarch. And then made it fun. That is a superpower." },
+  { id:58, name:"Linda (book club)",      decade:"friends", emoji:"📖", msg:"When my husband was sick, she organized a meal train without telling me. For six weeks, dinner showed up at my door. She ran the whole thing quietly in the background." },
+  { id:59, name:"Linda (book club)",      decade:"friends", emoji:"📖", msg:"She recommended a book to me at exactly the right moment in my life. I don't think she knew. I've never told her. But it changed things." },
+  { id:60, name:"Pastor Dave",            decade:"community",emoji:"🕊", msg:"In 30 years of knowing Julie, I've never seen her leave a church potluck without making sure the kitchen was clean and every volunteer had been thanked personally." },
+  { id:61, name:"Pastor Dave",            decade:"community",emoji:"🕊", msg:"She volunteers for the food pantry every third Saturday. Has for 15 years. Always brings extra bags." },
+  { id:62, name:"Pastor Dave",            decade:"community",emoji:"🕊", msg:"She prays for people by name. I've watched her keep a little list. It's long." },
+  { id:63, name:"Old neighbor (Maple St)",decade:"community",emoji:"🏘", msg:"She organized the whole block party for 15 years straight. Never asked for credit. Never got enough of it." },
+  { id:64, name:"Zoe (Emma's friend)",    decade:"recent",  emoji:"🌟", msg:"Emma's grandma let our whole friend group crash her house after prom. She made pancakes at midnight and asked us about our dreams. Honestly one of the best nights ever." },
+  { id:65, name:"Zoe (Emma's friend)",    decade:"recent",  emoji:"🌟", msg:"She corrected my college essay in a completely non-condescending way and I got into my first choice school. I credit her every time I tell that story." },
+  { id:66, name:"Zoe (Emma's friend)",    decade:"recent",  emoji:"🌟", msg:"I didn't grow up with a lot of family around. Being at Emma's house with Mrs. Julie felt like what I imagine family is supposed to feel like." },
+  { id:67, name:"Sarah (daughter)",       decade:"family",  emoji:"🌸", msg:"The Christmas of '98 when you made lasagna for 32 people and it was somehow still perfect. I still don't know how you did it." },
+  { id:68, name:"Bill (husband)",         decade:"always",  emoji:"💛", msg:"47 years and you still make me laugh every single day. That's the real miracle." },
+  { id:69, name:"Uncle Bob",              decade:"family",  emoji:"🃏", msg:"She is the one in this family who remembers. The birthdays, the anniversaries, the small promises. She is the memory of this family." },
+  { id:70, name:"Michael (son)",          decade:"family",  emoji:"⚾", msg:"Mom, I don't say this enough: you are the reason I know how to love people well. Everything good in me, I learned from watching you." },
+];
+
+// Decade config for timeline
+const DECADES = [
+  { key:"always",    label:"A Constant",       title:"The constants across all 70 years",  icon:"💛" },
+  { key:"family",    label:"Family",           title:"From the people she raised and loves",icon:"🌸" },
+  { key:"recent",    label:"The Grandkids",    title:"A whole new generation to love",      icon:"✨" },
+  { key:"friends",   label:"Lifelong Friends", title:"Friendships that have stood the test", icon:"☕" },
+  { key:"work",      label:"Colleagues",       title:"The people she showed up for at work", icon:"🧁" },
+  { key:"community", label:"Community",        title:"The neighbors, the church, the village",icon:"🕊" },
+];
+
+// Mosaic color palette
+const COLORS = [
+  '#c9982a','#b8862a','#d4a83a','#e0b84a',
+  '#a07820','#c49030','#dcaa3c','#b88a24',
+  '#c8a040','#d0982c',
+];
+
+// ══════════════════════════════════════════
+// CONCEPT 1 — MOSAIC
+// ══════════════════════════════════════════
+(function buildMosaic() {
+  const grid = document.getElementById('mosaic-grid');
+  MEMORIES.forEach(m => {
+    const tile = document.createElement('div');
+    tile.className = 'mosaic-tile';
+    tile.style.background = COLORS[(m.id - 1) % COLORS.length];
+    tile.innerHTML = `<span class="num">${m.id}</span>`;
+    tile.onclick = () => openMosaic(m);
+    grid.appendChild(tile);
+  });
+})();
+
+function openMosaic(m) {
+  document.getElementById('m-num').textContent = m.id;
+  document.getElementById('m-name').textContent = m.name;
+  document.getElementById('m-msg').textContent  = m.msg;
+  document.getElementById('mosaic-modal').classList.remove('hidden');
+}
+function closeMosaic(e) {
+  if (e.target === document.getElementById('mosaic-modal')) {
+    document.getElementById('mosaic-modal').classList.add('hidden');
+  }
+}
+function closeMosaicBtn() {
+  document.getElementById('mosaic-modal').classList.add('hidden');
+}
+
+// ══════════════════════════════════════════
+// CONCEPT 2 — MEMORY JAR
+// ══════════════════════════════════════════
+const slipColors = ['#e8d4a0','#d4c88a','#f0e0b0','#e0cca0','#c8b880','#f4e8c0','#dcd090','#e4d4a8'];
+let jarIndex = 0;
+
+(function buildJar() {
+  const container = document.getElementById('slips-container');
+  MEMORIES.forEach((m, i) => {
+    const slip = document.createElement('div');
+    slip.className = 'slip';
+    slip.style.background = slipColors[i % slipColors.length];
+    slip.style.setProperty('--r', `${(Math.random() * 20 - 10).toFixed(1)}deg`);
+    slip.textContent = m.id;
+    slip.onclick = () => { jarIndex = i; openJar(); };
+    container.appendChild(slip);
+  });
+})();
+
+function openJar() {
+  const m = MEMORIES[jarIndex];
+  document.getElementById('j-from').textContent = m.name;
+  document.getElementById('j-msg').textContent  = m.msg;
+  document.getElementById('jar-modal').classList.remove('hidden');
+}
+function closeJar() {
+  document.getElementById('jar-modal').classList.add('hidden');
+}
+function jarNav(dir) {
+  jarIndex = (jarIndex + dir + MEMORIES.length) % MEMORIES.length;
+  openJar();
+}
+
+// ══════════════════════════════════════════
+// CONCEPT 3 — 70 REASONS
+// ══════════════════════════════════════════
+(function buildReasons() {
+  const list = document.getElementById('reasons-list');
+  MEMORIES.forEach(m => {
+    const item = document.createElement('div');
+    item.className = 'reason-item';
+    item.innerHTML = `
+      <div class="reason-n">${m.id}</div>
+      <div class="reason-body">
+        <div class="reason-name">${esc(m.name)}</div>
+        <div class="reason-msg">${esc(m.msg)}</div>
+      </div>
+    `;
+    list.appendChild(item);
+  });
+})();
+
+// ══════════════════════════════════════════
+// CONCEPT 4 — DECADE TIMELINE
+// ══════════════════════════════════════════
+(function buildTimeline() {
+  const wrap = document.getElementById('timeline-wrap');
+  DECADES.forEach((dec, di) => {
+    const mems = MEMORIES.filter(m => m.decade === dec.key);
+    if (!mems.length) return;
+    const item = document.createElement('div');
+    item.className = 'decade-item';
+    const titleEl = document.createElement('div');
+    titleEl.className = 'decade-title' + (di === 0 ? ' open' : '');
+    titleEl.innerHTML = `
+      <div>
+        <div class="decade-label">${dec.icon} ${dec.label} · ${mems.length} memories</div>
+        <div style="font-size:1rem;color:var(--dark)">${dec.title}</div>
+      </div>
+      <span class="chevron">▾</span>
+    `;
+    const dot = document.createElement('div');
+    dot.className = 'decade-dot';
+    dot.textContent = dec.icon;
+    item.appendChild(dot);
+
+    const memsDiv = document.createElement('div');
+    memsDiv.className = 'decade-memories' + (di === 0 ? ' open' : '');
+    mems.forEach(m => {
+      const card = document.createElement('div');
+      card.className = 'tl-card';
+      card.innerHTML = `<div class="tl-name">${esc(m.name)}</div><div class="tl-msg">${esc(m.msg)}</div>`;
+      memsDiv.appendChild(card);
+    });
+
+    titleEl.onclick = () => {
+      titleEl.classList.toggle('open');
+      memsDiv.classList.toggle('open');
+    };
+
+    item.appendChild(titleEl);
+    item.appendChild(memsDiv);
+    wrap.appendChild(item);
+  });
+})();
+
+// ══════════════════════════════════════════
+// CONCEPT 5 — POLAROID WALL
+// ══════════════════════════════════════════
+const BG_COLORS = [
+  '#f5e8d0','#e8f0f5','#f5e8f0','#eaf5e8','#f0ece8','#e8eef5',
+  '#f5f0e0','#f0e8f5','#e8f5f0','#f5eae8',
+];
+
+(function buildPolaroids() {
+  const grid = document.getElementById('polaroid-grid');
+  MEMORIES.forEach((m, i) => {
+    const rot = (((i * 7 + 3) % 11) - 5).toFixed(1);
+    const pol = document.createElement('div');
+    pol.className = 'polaroid';
+    pol.style.setProperty('--rot', `${rot}deg`);
+    pol.innerHTML = `
+      <div class="polaroid-img" style="background:${BG_COLORS[i % BG_COLORS.length]}">${m.emoji}</div>
+      <div class="polaroid-name">${esc(m.name)}</div>
+      <div class="polaroid-msg">${esc(m.msg)}</div>
+    `;
+    grid.appendChild(pol);
+  });
+})();
+
+// ── Utility
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+</script>
+</body>
+</html>
