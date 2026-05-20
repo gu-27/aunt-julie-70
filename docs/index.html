@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy 70th, Aunt Julie! 🎉</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --pink: #e8517a;
+    --pink-light: #fce8ef;
+    --gold: #c9982a;
+    --gold-light: #fdf6e3;
+    --dark: #2d2d2d;
+    --mid: #555;
+    --border: #e0e0e0;
+    --radius: 12px;
+  }
+
+  body {
+    font-family: 'Georgia', serif;
+    background: #fafafa;
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  /* ── Password Gate ── */
+  #gate {
+    position: fixed; inset: 0;
+    background: linear-gradient(135deg, #ffe0ec 0%, #fdf6e3 100%);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+  }
+  #gate.hidden { display: none; }
+  .gate-box {
+    background: #fff;
+    border-radius: 20px;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    box-shadow: 0 8px 40px rgba(0,0,0,.12);
+    max-width: 380px; width: 90%;
+  }
+  .gate-box .cake { font-size: 4rem; margin-bottom: .75rem; }
+  .gate-box h1 { font-size: 1.6rem; color: var(--pink); margin-bottom: .25rem; }
+  .gate-box p { color: var(--mid); margin-bottom: 1.5rem; font-size: .95rem; }
+  .gate-box input {
+    width: 100%; padding: .75rem 1rem;
+    border: 2px solid var(--border); border-radius: 8px;
+    font-size: 1.1rem; text-align: center; letter-spacing: .15em;
+    margin-bottom: .75rem; outline: none;
+    transition: border-color .2s;
+  }
+  .gate-box input:focus { border-color: var(--pink); }
+  .gate-box button {
+    width: 100%; padding: .8rem;
+    background: var(--pink); color: #fff;
+    border: none; border-radius: 8px;
+    font-size: 1rem; cursor: pointer;
+    transition: background .2s;
+  }
+  .gate-box button:hover { background: #d03f67; }
+  .gate-error { color: #c0392b; font-size: .85rem; margin-top: .5rem; }
+
+  /* ── Header ── */
+  header {
+    background: linear-gradient(135deg, var(--pink) 0%, #f0a0bb 100%);
+    color: #fff; text-align: center;
+    padding: 3rem 1rem 2.5rem;
+  }
+  header .emoji { font-size: 3rem; display: block; margin-bottom: .5rem; }
+  header h1 { font-size: 2.4rem; font-weight: normal; margin-bottom: .25rem; }
+  header p { font-size: 1.05rem; opacity: .9; }
+
+  /* ── Counter ── */
+  .counter-wrap {
+    background: var(--gold-light);
+    border-bottom: 2px solid #f0d990;
+    padding: 1.25rem 1rem;
+    text-align: center;
+  }
+  .counter-label { font-size: .85rem; color: var(--mid); text-transform: uppercase; letter-spacing: .08em; }
+  .counter-num { font-size: 2.8rem; color: var(--gold); font-weight: bold; line-height: 1.1; }
+  .counter-goal { font-size: 1rem; color: var(--mid); }
+  .progress-bar {
+    max-width: 400px; margin: .75rem auto 0;
+    height: 10px; background: #e8d88a;
+    border-radius: 99px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: var(--gold);
+    border-radius: 99px; transition: width .5s ease;
+  }
+
+  /* ── Main Layout ── */
+  main { max-width: 860px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+
+  /* ── Form Card ── */
+  .form-card {
+    background: #fff;
+    border: 2px solid var(--pink-light);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 2px 16px rgba(232,81,122,.08);
+  }
+  .form-card h2 { font-size: 1.3rem; color: var(--pink); margin-bottom: 1.25rem; }
+  .form-row { margin-bottom: 1.1rem; }
+  .form-row label { display: block; font-size: .85rem; color: var(--mid); margin-bottom: .35rem; text-transform: uppercase; letter-spacing: .06em; }
+  .form-row input[type="text"],
+  .form-row textarea {
+    width: 100%; padding: .7rem .9rem;
+    border: 2px solid var(--border); border-radius: 8px;
+    font-size: 1rem; font-family: inherit; outline: none;
+    transition: border-color .2s; resize: vertical;
+  }
+  .form-row input[type="text"]:focus,
+  .form-row textarea:focus { border-color: var(--pink); }
+  .form-row textarea { min-height: 110px; }
+
+  .upload-area {
+    border: 2px dashed var(--border); border-radius: 8px;
+    padding: 1.25rem; text-align: center; cursor: pointer;
+    transition: border-color .2s, background .2s;
+  }
+  .upload-area:hover { border-color: var(--pink); background: var(--pink-light); }
+  .upload-area input { display: none; }
+  .upload-area .upload-icon { font-size: 1.8rem; }
+  .upload-area p { font-size: .9rem; color: var(--mid); margin-top: .3rem; }
+
+  .preview-strip {
+    display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem;
+  }
+  .preview-thumb {
+    position: relative; width: 80px; height: 80px;
+  }
+  .preview-thumb img {
+    width: 100%; height: 100%; object-fit: cover; border-radius: 6px;
+    border: 2px solid var(--border);
+  }
+  .preview-thumb .del-btn {
+    position: absolute; top: -6px; right: -6px;
+    width: 20px; height: 20px;
+    background: #e74c3c; color: #fff;
+    border: none; border-radius: 50%; font-size: 12px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    line-height: 1;
+  }
+
+  .submit-btn {
+    width: 100%; padding: .9rem;
+    background: var(--pink); color: #fff;
+    border: none; border-radius: 8px;
+    font-size: 1.05rem; cursor: pointer;
+    transition: background .2s; margin-top: .5rem;
+  }
+  .submit-btn:hover { background: #d03f67; }
+  .submit-btn:disabled { background: #ccc; cursor: default; }
+
+  /* ── Token Setup ── */
+  .token-note {
+    font-size: .82rem; color: var(--mid); margin-top: .75rem; text-align: center;
+  }
+  .token-note a { color: var(--pink); cursor: pointer; }
+
+  /* ── Entries Section ── */
+  .section-title {
+    font-size: 1.2rem; color: var(--mid);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: .5rem; margin-bottom: 1.5rem;
+  }
+
+  .entries-grid {
+    columns: 2; column-gap: 1.25rem;
+  }
+  @media (max-width: 560px) { .entries-grid { columns: 1; } }
+
+  .entry-card {
+    break-inside: avoid;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 1px 6px rgba(0,0,0,.05);
+    transition: box-shadow .2s;
+  }
+  .entry-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,.1); }
+
+  .entry-name { font-size: 1.05rem; font-weight: bold; color: var(--pink); margin-bottom: .4rem; }
+  .entry-date { font-size: .75rem; color: #aaa; margin-bottom: .6rem; }
+  .entry-message { font-size: .95rem; line-height: 1.6; color: var(--dark); white-space: pre-wrap; }
+
+  .entry-photos {
+    display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .75rem;
+  }
+  .entry-photos img {
+    width: 80px; height: 80px; object-fit: cover;
+    border-radius: 6px; cursor: zoom-in;
+    transition: opacity .2s;
+  }
+  .entry-photos img:hover { opacity: .85; }
+
+  .entry-actions { margin-top: .75rem; text-align: right; }
+  .edit-btn {
+    font-size: .8rem; color: var(--mid);
+    background: none; border: 1px solid var(--border);
+    border-radius: 6px; padding: .3rem .75rem;
+    cursor: pointer; transition: border-color .2s, color .2s;
+  }
+  .edit-btn:hover { border-color: var(--pink); color: var(--pink); }
+
+  /* ── Edit Modal ── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.55);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000; padding: 1rem;
+  }
+  .modal-overlay.hidden { display: none; }
+  .modal {
+    background: #fff; border-radius: var(--radius);
+    padding: 2rem; width: 100%; max-width: 560px;
+    max-height: 90vh; overflow-y: auto;
+    box-shadow: 0 8px 40px rgba(0,0,0,.2);
+  }
+  .modal h2 { font-size: 1.2rem; color: var(--pink); margin-bottom: 1.25rem; }
+  .modal-actions { display: flex; gap: .75rem; margin-top: 1rem; justify-content: flex-end; }
+  .btn-save {
+    padding: .65rem 1.5rem; background: var(--pink); color: #fff;
+    border: none; border-radius: 8px; cursor: pointer; font-size: .95rem;
+  }
+  .btn-save:hover { background: #d03f67; }
+  .btn-cancel {
+    padding: .65rem 1.25rem; background: none; color: var(--mid);
+    border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: .95rem;
+  }
+  .btn-cancel:hover { border-color: #aaa; }
+  .btn-delete {
+    padding: .65rem 1.25rem; background: none; color: #e74c3c;
+    border: 1px solid #e74c3c; border-radius: 8px; cursor: pointer; font-size: .95rem;
+    margin-right: auto;
+  }
+  .btn-delete:hover { background: #e74c3c; color: #fff; }
+
+  /* ── Lightbox ── */
+  .lightbox {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.92);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 2000; cursor: zoom-out;
+  }
+  .lightbox.hidden { display: none; }
+  .lightbox img { max-width: 92vw; max-height: 92vh; border-radius: 6px; }
+
+  /* ── Toast ── */
+  .toast {
+    position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+    background: #2d2d2d; color: #fff; padding: .7rem 1.5rem;
+    border-radius: 99px; font-size: .9rem; z-index: 3000;
+    opacity: 0; transition: opacity .3s; pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+
+  /* ── Spinner ── */
+  .spinner {
+    display: inline-block; width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,.4);
+    border-top-color: #fff; border-radius: 50%;
+    animation: spin .7s linear infinite; vertical-align: middle; margin-right: 6px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .empty-state { text-align: center; color: #aaa; padding: 3rem 1rem; font-size: 1rem; }
+</style>
+</head>
+<body>
+
+<!-- Password Gate -->
+<div id="gate">
+  <div class="gate-box">
+    <span class="cake">🎂</span>
+    <h1>Happy 70th, Aunt Julie!</h1>
+    <p>Enter the password to share your memories.</p>
+    <input type="password" id="gate-input" placeholder="Password" autocomplete="off">
+    <button onclick="checkPassword()">Enter</button>
+    <p class="gate-error" id="gate-error"></p>
+  </div>
+</div>
+
+<!-- Header -->
+<header>
+  <span class="emoji">🎉</span>
+  <h1>Happy 70th Birthday, Aunt Julie!</h1>
+  <p>Share a memory, a wish, or a moment that made you smile.</p>
+</header>
+
+<!-- Counter -->
+<div class="counter-wrap">
+  <div class="counter-label">Memories Shared</div>
+  <div class="counter-num"><span id="count">0</span> <span style="font-size:1.4rem;color:var(--mid)">/ 70</span></div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+</div>
+
+<main>
+  <!-- Submit Form -->
+  <div class="form-card">
+    <h2>✍️ Add Your Memory</h2>
+    <div class="form-row">
+      <label>Your Name</label>
+      <input type="text" id="f-name" placeholder="e.g. Sarah">
+    </div>
+    <div class="form-row">
+      <label>Your Memory or Message</label>
+      <textarea id="f-message" placeholder="Share a memory, a wish, or something that makes Aunt Julie special to you…"></textarea>
+    </div>
+    <div class="form-row">
+      <label>Photos (optional)</label>
+      <div class="upload-area" onclick="document.getElementById('f-photos').click()">
+        <input type="file" id="f-photos" accept="image/*" multiple onchange="addFormPreviews(this.files)">
+        <div class="upload-icon">📷</div>
+        <p>Click to add photos</p>
+      </div>
+      <div class="preview-strip" id="f-preview"></div>
+    </div>
+    <button class="submit-btn" id="submit-btn" onclick="submitMemory()">Share Memory</button>
+    <p class="token-note">First time? <a onclick="promptToken()">Set up GitHub access</a> so memories are saved.</p>
+  </div>
+
+  <!-- Entries -->
+  <div class="section-title" id="entries-title">Memories</div>
+  <div id="entries-grid" class="entries-grid">
+    <div class="empty-state">Loading memories…</div>
+  </div>
+</main>
+
+<!-- Edit Modal -->
+<div class="modal-overlay hidden" id="edit-modal">
+  <div class="modal">
+    <h2>Edit Memory</h2>
+    <div class="form-row">
+      <label>Name</label>
+      <input type="text" id="edit-name">
+    </div>
+    <div class="form-row">
+      <label>Message</label>
+      <textarea id="edit-message" style="min-height:120px"></textarea>
+    </div>
+    <div class="form-row">
+      <label>Photos</label>
+      <div class="preview-strip" id="edit-preview"></div>
+      <div class="upload-area" style="margin-top:.5rem" onclick="document.getElementById('edit-photos').click()">
+        <input type="file" id="edit-photos" accept="image/*" multiple onchange="addEditPreviews(this.files)">
+        <div class="upload-icon">📷</div>
+        <p>Add more photos</p>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-delete" onclick="deleteEntry()">Delete</button>
+      <button class="btn-cancel" onclick="closeEdit()">Cancel</button>
+      <button class="btn-save" onclick="saveEdit()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox hidden" id="lightbox" onclick="closeLightbox()">
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Config ──────────────────────────────────────────────────────────────────
+const CONFIG = {
+  owner:    'gu-27',
+  repo:     'aunt-julie-70',
+  branch:   'main',
+  dataPath: 'docs/memories.json',
+  password: 'AJ2026',
+  goal:     70,
+  token:    '' // loaded from localStorage
+};
+
+// ── State ────────────────────────────────────────────────────────────────────
+let memories = [];
+let fileSHA  = '';
+let formImages = [];      // {dataURI}
+let editImages = [];      // {dataURI, toDelete: bool}
+let editingId  = null;
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('aj_auth') === '1') {
+    unlockApp();
+  }
+  CONFIG.token = localStorage.getItem('aj_token') || '';
+  document.getElementById('gate-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkPassword();
+  });
+});
+
+// ── Password ──────────────────────────────────────────────────────────────────
+function checkPassword() {
+  const val = document.getElementById('gate-input').value.trim();
+  if (val === CONFIG.password) {
+    localStorage.setItem('aj_auth', '1');
+    unlockApp();
+  } else {
+    document.getElementById('gate-error').textContent = 'Incorrect password. Try again.';
+  }
+}
+
+function unlockApp() {
+  document.getElementById('gate').classList.add('hidden');
+  loadMemories();
+}
+
+// ── Token ─────────────────────────────────────────────────────────────────────
+function promptToken() {
+  const t = prompt('Enter your GitHub Personal Access Token (needs repo scope):');
+  if (t) {
+    CONFIG.token = t.trim();
+    localStorage.setItem('aj_token', CONFIG.token);
+    toast('Token saved locally.');
+  }
+}
+
+// ── GitHub API ────────────────────────────────────────────────────────────────
+async function apiGet() {
+  const url = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.dataPath}`;
+  const res = await fetch(url, {
+    headers: CONFIG.token ? { Authorization: `token ${CONFIG.token}` } : {}
+  });
+  if (!res.ok) throw new Error(`GitHub GET failed: ${res.status}`);
+  const data = await res.json();
+  fileSHA = data.sha;
+  const json = decodeBase64UTF8(data.content.replace(/\n/g, ''));
+  return JSON.parse(json);
+}
+
+async function apiPut(data) {
+  if (!CONFIG.token) {
+    promptToken();
+    if (!CONFIG.token) throw new Error('No token — cannot save.');
+  }
+  const content = encodeBase64UTF8(JSON.stringify(data, null, 2));
+  const url = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.dataPath}`;
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      Authorization: `token ${CONFIG.token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      message: `Update memories.json`,
+      content,
+      sha: fileSHA,
+      branch: CONFIG.branch
+    })
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || `GitHub PUT failed: ${res.status}`);
+  }
+  const result = await res.json();
+  fileSHA = result.content.sha;
+}
+
+// ── UTF-8 safe base64 ─────────────────────────────────────────────────────────
+function encodeBase64UTF8(str) {
+  const bytes = new TextEncoder().encode(str);
+  let binary = '';
+  bytes.forEach(b => binary += String.fromCharCode(b));
+  return btoa(binary);
+}
+function decodeBase64UTF8(b64) {
+  const binary = atob(b64);
+  const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+
+// ── Load ──────────────────────────────────────────────────────────────────────
+async function loadMemories() {
+  try {
+    memories = await apiGet();
+  } catch (e) {
+    console.warn('Could not load from GitHub:', e.message);
+    memories = [];
+  }
+  renderAll();
+}
+
+// ── Render ────────────────────────────────────────────────────────────────────
+function renderAll() {
+  updateCounter();
+  renderEntries();
+}
+
+function updateCounter() {
+  const n = memories.length;
+  document.getElementById('count').textContent = n;
+  const pct = Math.min(100, (n / CONFIG.goal) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+function renderEntries() {
+  const grid = document.getElementById('entries-grid');
+  if (memories.length === 0) {
+    grid.innerHTML = '<div class="empty-state">No memories yet — be the first! 💛</div>';
+    return;
+  }
+  grid.innerHTML = '';
+  // Newest first
+  [...memories].reverse().forEach(m => {
+    grid.appendChild(makeCard(m));
+  });
+}
+
+function makeCard(m) {
+  const card = document.createElement('div');
+  card.className = 'entry-card';
+  card.dataset.id = m.id;
+
+  const date = m.timestamp ? new Date(m.timestamp).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '';
+
+  let photosHTML = '';
+  if (m.images && m.images.length) {
+    photosHTML = `<div class="entry-photos">${m.images.map(src =>
+      `<img src="${src}" onclick="openLightbox('${escAttr(src)}')" alt="photo">`
+    ).join('')}</div>`;
+  }
+
+  card.innerHTML = `
+    <div class="entry-name">${esc(m.name)}</div>
+    <div class="entry-date">${date}</div>
+    <div class="entry-message">${esc(m.message)}</div>
+    ${photosHTML}
+    <div class="entry-actions">
+      <button class="edit-btn" onclick="openEdit('${m.id}')">Edit</button>
+    </div>
+  `;
+  return card;
+}
+
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function escAttr(s) {
+  return String(s || '').replace(/"/g, '&quot;');
+}
+
+// ── Image Handling ────────────────────────────────────────────────────────────
+function compressImage(file) {
+  return new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      const img = new Image();
+      img.onload = () => {
+        const MAX = 1200;
+        let w = img.width, h = img.height;
+        if (w > MAX || h > MAX) {
+          if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+          else        { w = Math.round(w * MAX / h); h = MAX; }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', 0.75));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// ── Form Images ───────────────────────────────────────────────────────────────
+async function addFormPreviews(files) {
+  for (const f of files) {
+    const uri = await compressImage(f);
+    formImages.push({ dataURI: uri });
+  }
+  renderFormPreviews();
+  // Reset input so same file can be re-added
+  document.getElementById('f-photos').value = '';
+}
+
+function renderFormPreviews() {
+  const strip = document.getElementById('f-preview');
+  strip.innerHTML = '';
+  formImages.forEach((img, i) => {
+    const thumb = document.createElement('div');
+    thumb.className = 'preview-thumb';
+    thumb.innerHTML = `
+      <img src="${img.dataURI}" alt="">
+      <button class="del-btn" onclick="removeFormImage(${i})">✕</button>
+    `;
+    strip.appendChild(thumb);
+  });
+}
+
+function removeFormImage(i) {
+  formImages.splice(i, 1);
+  renderFormPreviews();
+}
+
+// ── Submit ────────────────────────────────────────────────────────────────────
+async function submitMemory() {
+  const name    = document.getElementById('f-name').value.trim();
+  const message = document.getElementById('f-message').value.trim();
+  if (!name || !message) {
+    toast('Please enter your name and a message.');
+    return;
+  }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Saving…';
+
+  try {
+    const entry = {
+      id:        Date.now().toString(),
+      name,
+      message,
+      images:    formImages.map(i => i.dataURI),
+      timestamp: new Date().toISOString()
+    };
+
+    memories.push(entry);
+    await apiPut(memories);
+
+    // Reset form
+    document.getElementById('f-name').value    = '';
+    document.getElementById('f-message').value = '';
+    formImages = [];
+    renderFormPreviews();
+
+    renderAll();
+    toast('Memory saved! 💛');
+  } catch (e) {
+    memories.pop(); // rollback
+    toast('Could not save: ' + e.message);
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Share Memory';
+}
+
+// ── Edit ──────────────────────────────────────────────────────────────────────
+function openEdit(id) {
+  const m = memories.find(x => x.id === id);
+  if (!m) return;
+  editingId = id;
+  editImages = (m.images || []).map(src => ({ dataURI: src, toDelete: false }));
+
+  document.getElementById('edit-name').value    = m.name;
+  document.getElementById('edit-message').value = m.message;
+  renderEditPreviews();
+  document.getElementById('edit-modal').classList.remove('hidden');
+}
+
+function closeEdit() {
+  document.getElementById('edit-modal').classList.add('hidden');
+  editingId  = null;
+  editImages = [];
+  document.getElementById('edit-photos').value = '';
+}
+
+async function addEditPreviews(files) {
+  for (const f of files) {
+    const uri = await compressImage(f);
+    editImages.push({ dataURI: uri, toDelete: false });
+  }
+  renderEditPreviews();
+  document.getElementById('edit-photos').value = '';
+}
+
+function renderEditPreviews() {
+  const strip = document.getElementById('edit-preview');
+  strip.innerHTML = '';
+  editImages.forEach((img, i) => {
+    if (img.toDelete) return;
+    const thumb = document.createElement('div');
+    thumb.className = 'preview-thumb';
+    thumb.innerHTML = `
+      <img src="${img.dataURI}" alt="">
+      <button class="del-btn" onclick="markDeleteEditImage(${i})">✕</button>
+    `;
+    strip.appendChild(thumb);
+  });
+}
+
+function markDeleteEditImage(i) {
+  editImages[i].toDelete = true;
+  renderEditPreviews();
+}
+
+async function saveEdit() {
+  const name    = document.getElementById('edit-name').value.trim();
+  const message = document.getElementById('edit-message').value.trim();
+  if (!name || !message) { toast('Name and message required.'); return; }
+
+  const saveBtn = document.querySelector('#edit-modal .btn-save');
+  saveBtn.disabled = true;
+  saveBtn.innerHTML = '<span class="spinner"></span>Saving…';
+
+  try {
+    const idx = memories.findIndex(x => x.id === editingId);
+    memories[idx] = {
+      ...memories[idx],
+      name,
+      message,
+      images: editImages.filter(i => !i.toDelete).map(i => i.dataURI)
+    };
+    await apiPut(memories);
+    renderAll();
+    closeEdit();
+    toast('Updated! 💛');
+  } catch (e) {
+    toast('Could not save: ' + e.message);
+  }
+
+  saveBtn.disabled = false;
+  saveBtn.textContent = 'Save';
+}
+
+async function deleteEntry() {
+  if (!confirm('Delete this memory permanently?')) return;
+
+  try {
+    memories = memories.filter(x => x.id !== editingId);
+    await apiPut(memories);
+    renderAll();
+    closeEdit();
+    toast('Memory deleted.');
+  } catch (e) {
+    toast('Could not delete: ' + e.message);
+  }
+}
+
+// ── Lightbox ──────────────────────────────────────────────────────────────────
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.remove('hidden');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.add('hidden');
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
+});
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
+}
+</script>
+</body>
+</html>
