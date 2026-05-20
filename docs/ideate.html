@@ -510,10 +510,10 @@ body { font-family: 'Georgia', serif; background: var(--cream); color: var(--dar
 // Sample Data — 70 Entries
 // ══════════════════════════════════════════
 const MEMORIES = [
-  { id:1,  name:"Bill (husband)",         decade:"always",  emoji:"💛", msg:"Seventy years of you. And I'd choose every single one again." },
-  { id:2,  name:"Bill (husband)",         decade:"always",  emoji:"💛", msg:"The first time I saw you across the room I thought: that's the person. I was 22. I was right." },
-  { id:3,  name:"Bill (husband)",         decade:"always",  emoji:"💛", msg:"You have never once gone to sleep without saying goodnight. Not once in 47 years." },
-  { id:4,  name:"Bill (husband)",         decade:"always",  emoji:"💛", msg:"You still write me a card for our anniversary. Every year. Handwritten. I've kept every one." },
+  { id:1,  name:"Sarah (daughter)",       decade:"always",  emoji:"💛", msg:"Seventy years of you, Mom. Every single one has been a gift." },
+  { id:2,  name:"Michael (son)",          decade:"always",  emoji:"💛", msg:"You have been the constant in every chapter of my life. I can't imagine any of it without you." },
+  { id:3,  name:"Carol (best friend)",    decade:"always",  emoji:"💛", msg:"You have never once gone to sleep without checking on the people you love. Not once in all the years I've known you." },
+  { id:4,  name:"Emma (granddaughter)",   decade:"always",  emoji:"💛", msg:"Grandma, you are the heart of this whole family. Everything good we do, we learned from you." },
   { id:5,  name:"Sarah (daughter)",       decade:"family",  emoji:"🌸", msg:"You taught me that homemade always beats store-bought. I've spent 30 years trying to prove you wrong. I still can't." },
   { id:6,  name:"Sarah (daughter)",       decade:"family",  emoji:"🌸", msg:"You used to pack little notes in my lunchbox. I'm 42 and I still find myself wishing there was a note sometimes." },
   { id:7,  name:"Sarah (daughter)",       decade:"family",  emoji:"🌸", msg:"You have never — not once — said 'I told you so.' And you have had plenty of opportunities." },
@@ -557,7 +557,7 @@ const MEMORIES = [
   { id:45, name:"Cousin Pete",            decade:"family",  emoji:"🕺", msg:"The story of how she talked her way backstage at a Neil Diamond concert in 1987 is the best story in our family. I have asked for it at every reunion since I was old enough to understand it." },
   { id:46, name:"Aunt Mary",              decade:"family",  emoji:"🎄", msg:"The way she decorates for Christmas should be illegal. I have been trying to replicate her centerpiece for a decade." },
   { id:47, name:"Aunt Mary",              decade:"family",  emoji:"🎄", msg:"Her pie crust recipe is a state secret. I have begged. I have bribed. The recipe has not moved." },
-  { id:48, name:"Karen (Bill's sister)",  decade:"family",  emoji:"👯", msg:"She became my real sister the day she married Bill. Some things are just meant to be." },
+  { id:48, name:"Karen (childhood friend)",decade:"friends", emoji:"👯", msg:"We have been inseparable since the third grade. Seventy years later I still can't imagine my life without her in it." },
   { id:49, name:"Mark (son-in-law)",      decade:"family",  emoji:"🏡", msg:"When I was nervous to propose to Sarah, Julie pulled me aside and whispered 'We've been waiting for you, honey.' Best thing anyone's ever said to me." },
   { id:50, name:"Mark (son-in-law)",      decade:"family",  emoji:"🏡", msg:"Every Thanksgiving she sneaks a little extra stuffing onto my plate when Sarah's not looking. We don't discuss it but we both know." },
   { id:51, name:"Mark (son-in-law)",      decade:"family",  emoji:"🏡", msg:"She treats me like her own son. Not a son-in-law. There's a difference and she knows it and she chose the better one." },
@@ -577,14 +577,14 @@ const MEMORIES = [
   { id:65, name:"Zoe (Emma's friend)",    decade:"recent",  emoji:"🌟", msg:"She corrected my college essay in a completely non-condescending way and I got into my first choice school. I credit her every time I tell that story." },
   { id:66, name:"Zoe (Emma's friend)",    decade:"recent",  emoji:"🌟", msg:"I didn't grow up with a lot of family around. Being at Emma's house with Mrs. Julie felt like what I imagine family is supposed to feel like." },
   { id:67, name:"Sarah (daughter)",       decade:"family",  emoji:"🌸", msg:"The Christmas of '98 when you made lasagna for 32 people and it was somehow still perfect. I still don't know how you did it." },
-  { id:68, name:"Bill (husband)",         decade:"always",  emoji:"💛", msg:"47 years and you still make me laugh every single day. That's the real miracle." },
+  { id:68, name:"Tommy (grandson)",        decade:"recent",  emoji:"🐦", msg:"Grandma makes me laugh every single day. That's my favorite thing about her." },
   { id:69, name:"Uncle Bob",              decade:"family",  emoji:"🃏", msg:"She is the one in this family who remembers. The birthdays, the anniversaries, the small promises. She is the memory of this family." },
   { id:70, name:"Michael (son)",          decade:"family",  emoji:"⚾", msg:"Mom, I don't say this enough: you are the reason I know how to love people well. Everything good in me, I learned from watching you." },
 ];
 
 // Decade config for timeline
 const DECADES = [
-  { key:"always",    label:"A Constant",       title:"The constants across all 70 years",  icon:"💛" },
+  { key:"always",    label:"From the Heart",    title:"Messages from the people who love her most", icon:"💛" },
   { key:"family",    label:"Family",           title:"From the people she raised and loves",icon:"🌸" },
   { key:"recent",    label:"The Grandkids",    title:"A whole new generation to love",      icon:"✨" },
   { key:"friends",   label:"Lifelong Friends", title:"Friendships that have stood the test", icon:"☕" },
