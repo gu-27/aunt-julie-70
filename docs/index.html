@@ -324,7 +324,6 @@
       <div class="preview-strip" id="f-preview"></div>
     </div>
     <button class="submit-btn" id="submit-btn" onclick="submitMemory()">Share Memory</button>
-    <p class="token-note">First time? <a onclick="promptToken()">Set up GitHub access</a> so memories are saved.</p>
   </div>
 
   <!-- Entries -->
@@ -380,7 +379,7 @@ const CONFIG = {
   dataPath: 'docs/memories.json',
   password: 'AJ2026',
   goal:     70,
-  token:    '' // loaded from localStorage
+  token:    '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'
 };
 
 // ── State ────────────────────────────────────────────────────────────────────
@@ -395,7 +394,6 @@ window.addEventListener('DOMContentLoaded', () => {
   if (localStorage.getItem('aj_auth') === '1') {
     unlockApp();
   }
-  CONFIG.token = localStorage.getItem('aj_token') || '';
   document.getElementById('gate-input').addEventListener('keydown', e => {
     if (e.key === 'Enter') checkPassword();
   });
