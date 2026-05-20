@@ -460,12 +460,19 @@ async function apiGet() {
   return JSON.parse(json);
 }
 
-async function apiPut(data) {
-  if (!CONFIG.token) {
-    promptToken();
-    if (!CONFIG.token) throw new Error('No token — cannot save.');
-  }
-  const content = encodeBase64UTF8(JSON.stringify(data, null, 2));
+// apiSafeWrite: always fetches the latest file first, applies a transform,
+// then writes — so concurrent submissions from different people never collide.
+async function apiSafeWrite(transformFn) {
+  if (!CONFIG.token) throw new Error('No token — cannot save.');
+
+  // 1. Fresh read to get current data + SHA
+  const latest = await apiGet();
+
+  // 2. Apply the change to the latest data
+  const updated = transformFn(latest);
+
+  // 3. Write with the fresh SHA
+  const content = encodeBase64UTF8(JSON.stringify(updated, null, 2));
   const url = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.dataPath}`;
   const res = await fetch(url, {
     method: 'PUT',
@@ -474,7 +481,7 @@ async function apiPut(data) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      message: `Update memories.json`,
+      message: 'Update memories.json',
       content,
       sha: fileSHA,
       branch: CONFIG.branch
@@ -647,8 +654,8 @@ async function submitMemory() {
       timestamp: new Date().toISOString()
     };
 
-    memories.push(entry);
-    await apiPut(memories);
+    // Fresh read → append → write (safe for concurrent users)
+    await apiSafeWrite(latest => [...latest, entry]);
 
     // Reset form
     document.getElementById('f-name').value    = '';
@@ -656,10 +663,10 @@ async function submitMemory() {
     formImages = [];
     renderFormPreviews();
 
-    renderAll();
+    // Reload from GitHub so everyone's latest entries appear
+    await loadMemories();
     toast('Memory saved! 💛');
   } catch (e) {
-    memories.pop(); // rollback
     toast('Could not save: ' + e.message);
   }
 
@@ -725,17 +732,15 @@ async function saveEdit() {
   saveBtn.disabled = true;
   saveBtn.innerHTML = '<span class="spinner"></span>Saving…';
 
+  const id     = editingId;
+  const images = editImages.filter(i => !i.toDelete).map(i => i.dataURI);
+
   try {
-    const idx = memories.findIndex(x => x.id === editingId);
-    memories[idx] = {
-      ...memories[idx],
-      name,
-      message,
-      images: editImages.filter(i => !i.toDelete).map(i => i.dataURI)
-    };
-    await apiPut(memories);
-    renderAll();
+    await apiSafeWrite(latest =>
+      latest.map(m => m.id === id ? { ...m, name, message, images } : m)
+    );
     closeEdit();
+    await loadMemories();
     toast('Updated! 💛');
   } catch (e) {
     toast('Could not save: ' + e.message);
@@ -748,11 +753,11 @@ async function saveEdit() {
 async function deleteEntry() {
   if (!confirm('Delete this memory permanently?')) return;
 
+  const id = editingId;
   try {
-    memories = memories.filter(x => x.id !== editingId);
-    await apiPut(memories);
-    renderAll();
+    await apiSafeWrite(latest => latest.filter(m => m.id !== id));
     closeEdit();
+    await loadMemories();
     toast('Memory deleted.');
   } catch (e) {
     toast('Could not delete: ' + e.message);
