@@ -124,6 +124,10 @@
     transition: border-color .2s, background .2s;
   }
   .upload-area:hover { border-color: var(--pink); background: var(--pink-light); }
+  .upload-area.drag-over {
+    border-color: var(--pink); background: var(--pink-light);
+    transform: scale(1.01);
+  }
   .upload-area input { display: none; }
   .upload-area .upload-icon { font-size: 1.8rem; }
   .upload-area p { font-size: .9rem; color: var(--mid); margin-top: .3rem; }
@@ -316,10 +320,10 @@
     </div>
     <div class="form-row">
       <label>Photos (optional)</label>
-      <div class="upload-area" onclick="document.getElementById('f-photos').click()">
+      <div class="upload-area" id="form-drop-area" onclick="document.getElementById('f-photos').click()">
         <input type="file" id="f-photos" accept="image/*" multiple onchange="addFormPreviews(this.files)">
         <div class="upload-icon">📷</div>
-        <p>Click to add photos</p>
+        <p>Click or drag & drop photos here</p>
       </div>
       <div class="preview-strip" id="f-preview"></div>
     </div>
@@ -348,10 +352,10 @@
     <div class="form-row">
       <label>Photos</label>
       <div class="preview-strip" id="edit-preview"></div>
-      <div class="upload-area" style="margin-top:.5rem" onclick="document.getElementById('edit-photos').click()">
+      <div class="upload-area" id="edit-drop-area" style="margin-top:.5rem" onclick="document.getElementById('edit-photos').click()">
         <input type="file" id="edit-photos" accept="image/*" multiple onchange="addEditPreviews(this.files)">
         <div class="upload-icon">📷</div>
-        <p>Add more photos</p>
+        <p>Click or drag & drop photos here</p>
       </div>
     </div>
     <div class="modal-actions">
@@ -398,6 +402,24 @@ window.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Enter') checkPassword();
   });
 });
+
+// ── Drag & Drop ───────────────────────────────────────────────────────────────
+function setupDropArea(areaId, handler) {
+  const area = document.getElementById(areaId);
+  if (!area) return;
+  area.addEventListener('dragenter', e => { e.preventDefault(); area.classList.add('drag-over'); });
+  area.addEventListener('dragover',  e => { e.preventDefault(); area.classList.add('drag-over'); });
+  area.addEventListener('dragleave', e => { if (!area.contains(e.relatedTarget)) area.classList.remove('drag-over'); });
+  area.addEventListener('drop', e => {
+    e.preventDefault();
+    area.classList.remove('drag-over');
+    const files = [...e.dataTransfer.files].filter(f => f.type.startsWith('image/'));
+    if (files.length) handler(files);
+  });
+}
+setupDropArea('form-drop-area', addFormPreviews);
+// Edit drop area wired after modal opens (DOM always present, just hidden)
+setupDropArea('edit-drop-area', addEditPreviews);
 
 // ── Password ──────────────────────────────────────────────────────────────────
 function checkPassword() {
