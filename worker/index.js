@@ -70,16 +70,25 @@ export default {
     }
 
     try {
-      // 1. Read current file + SHA
-      const getRes = await fetch(GH_API, {
+      // 1a. Get SHA via Contents API (works for any file size)
+      const metaRes = await fetch(GH_API, {
         headers: { Authorization: `token ${token}`, 'User-Agent': 'aunt-julie-worker' }
       });
-      if (!getRes.ok) {
-        return cors(JSON.stringify({ error: `GitHub read failed: ${getRes.status}` }), 502);
+      if (!metaRes.ok) {
+        return cors(JSON.stringify({ error: `GitHub meta read failed: ${metaRes.status}` }), 502);
       }
-      const fileData = await getRes.json();
-      const sha = fileData.sha;
-      const memories = JSON.parse(decodeBase64UTF8(fileData.content.replace(/\n/g, '')));
+      const meta = await metaRes.json();
+      const sha = meta.sha;
+
+      // 1b. Read actual content via raw URL — no size limit
+      const rawRes = await fetch(
+        `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/${DATA_PATH}`,
+        { headers: { Authorization: `token ${token}`, 'User-Agent': 'aunt-julie-worker' } }
+      );
+      if (!rawRes.ok) {
+        return cors(JSON.stringify({ error: `GitHub raw read failed: ${rawRes.status}` }), 502);
+      }
+      const memories = await rawRes.json();
 
       // 2. Apply transform
       const { entry, id, updates } = body;
