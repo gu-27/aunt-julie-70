@@ -399,6 +399,10 @@ window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('gate-input').addEventListener('keydown', e => {
     if (e.key === 'Enter') checkPassword();
   });
+
+  // Auto-save draft as user types
+  document.getElementById('f-name').addEventListener('input',    saveDraft);
+  document.getElementById('f-message').addEventListener('input', saveDraft);
 });
 
 // ── Drag & Drop ───────────────────────────────────────────────────────────────
@@ -432,7 +436,8 @@ function checkPassword() {
 
 function unlockApp() {
   document.getElementById('gate').classList.add('hidden');
-  loadMemories();
+  restoreDraft();
+  loadMemories().then(retryPending);
 }
 
 // ── GitHub API ────────────────────────────────────────────────────────────────
@@ -581,6 +586,87 @@ function removeFormImage(i) {
   renderFormPreviews();
 }
 
+// ── Draft Auto-Save ──────────────────────────────────────────────────────────
+function saveDraft() {
+  const name    = document.getElementById('f-name').value;
+  const message = document.getElementById('f-message').value;
+  if (name || message) {
+    localStorage.setItem('aj_draft', JSON.stringify({ name, message }));
+  } else {
+    localStorage.removeItem('aj_draft');
+  }
+}
+
+function restoreDraft() {
+  const raw = localStorage.getItem('aj_draft');
+  if (!raw) return;
+  try {
+    const { name, message } = JSON.parse(raw);
+    if (name)    document.getElementById('f-name').value    = name;
+    if (message) document.getElementById('f-message').value = message;
+    if (name || message) toast('Draft restored 💛');
+  } catch { localStorage.removeItem('aj_draft'); }
+}
+
+function clearDraft() {
+  localStorage.removeItem('aj_draft');
+}
+
+// ── Failed Submission Queue ───────────────────────────────────────────────────
+function queueFailed(entry) {
+  const q = getPendingQueue();
+  q.push(entry);
+  localStorage.setItem('aj_pending', JSON.stringify(q));
+}
+
+function getPendingQueue() {
+  try { return JSON.parse(localStorage.getItem('aj_pending') || '[]'); }
+  catch { return []; }
+}
+
+function clearPending(id) {
+  const q = getPendingQueue().filter(e => e.id !== id);
+  localStorage.setItem('aj_pending', JSON.stringify(q));
+}
+
+async function retryPending() {
+  const q = getPendingQueue();
+  if (q.length === 0) return;
+  toast(`Retrying ${q.length} unsent memory…`);
+  for (const entry of q) {
+    try {
+      await workerPost({ action: 'add', entry });
+      clearPending(entry.id);
+      toast('Pending memory saved! 💛');
+    } catch {
+      // Will retry next visit
+    }
+  }
+  if (getPendingQueue().length === 0) await loadMemories();
+}
+
+// ── Image Upload to R2 ───────────────────────────────────────────────────────
+// Takes an array of {dataURI} objects, uploads new ones to R2 via the Worker,
+// returns an array of public URLs. Existing https:// URLs are passed through unchanged.
+async function uploadImages(images, namePrefix) {
+  const urls = [];
+  const prefix = namePrefix.toLowerCase().replace(/[^a-z0-9]/g, '_').slice(0, 20);
+  for (let i = 0; i < images.length; i++) {
+    const src = images[i].dataURI || images[i];
+    // Already a URL (existing R2 image) — keep as-is
+    if (typeof src === 'string' && src.startsWith('http')) {
+      urls.push(src);
+      continue;
+    }
+    const [header, data] = src.split(',');
+    const contentType = (header.match(/:(.*?);/) || [])[1] || 'image/jpeg';
+    const filename = `${Date.now()}_${prefix}_${i}.jpg`;
+    const result = await workerPost({ action: 'upload-image', filename, contentType, data });
+    urls.push(result.url);
+  }
+  return urls;
+}
+
 // ── Submit ────────────────────────────────────────────────────────────────────
 async function submitMemory() {
   const name    = document.getElementById('f-name').value.trim();
@@ -592,18 +678,22 @@ async function submitMemory() {
 
   const btn = document.getElementById('submit-btn');
   btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span>Saving…';
+  btn.innerHTML = '<span class="spinner"></span>Uploading photos…';
 
   try {
+    const imageUrls = await uploadImages(formImages, name);
+
+    btn.innerHTML = '<span class="spinner"></span>Saving…';
     const entry = {
       id:        Date.now().toString(),
       name,
       message,
-      images:    formImages.map(i => i.dataURI),
+      images:    imageUrls,
       timestamp: new Date().toISOString()
     };
 
     await workerPost({ action: 'add', entry });
+    clearDraft();
 
     // Reset form
     document.getElementById('f-name').value    = '';
@@ -615,7 +705,9 @@ async function submitMemory() {
     await loadMemories();
     toast('Memory saved! 💛');
   } catch (e) {
-    toast('Could not save: ' + e.message);
+    // Queue locally so it can be retried next visit
+    queueFailed(entry);
+    toast('Could not save right now — will retry next time you visit 💛');
   }
 
   btn.disabled = false;
@@ -680,11 +772,13 @@ async function saveEdit() {
   saveBtn.disabled = true;
   saveBtn.innerHTML = '<span class="spinner"></span>Saving…';
 
-  const id     = editingId;
-  const images = editImages.filter(i => !i.toDelete).map(i => i.dataURI);
+  const id          = editingId;
+  const editName    = document.getElementById('edit-name').value.trim();
+  const toKeep      = editImages.filter(i => !i.toDelete);
+  const imageUrls   = await uploadImages(toKeep, editName);
 
   try {
-    await workerPost({ action: 'edit', id, updates: { name, message, images } });
+    await workerPost({ action: 'edit', id, updates: { name, message, images: imageUrls } });
     closeEdit();
     await loadMemories();
     toast('Updated! 💛');

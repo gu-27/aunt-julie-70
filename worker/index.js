@@ -1,57 +1,78 @@
 /**
  * Aunt Julie 70 — Cloudflare Worker
  *
- * Proxies GitHub API writes so the token never touches the browser.
- * Reads happen directly from the client (public repo, no auth needed).
+ * Handles two responsibilities:
+ *   1. Image uploads → Cloudflare R2 (returns public URL)
+ *   2. Memory writes → GitHub API (add / edit / delete)
  *
- * Secret required in Cloudflare dashboard:
- *   GITHUB_TOKEN  — fine-grained PAT with Contents: Read & Write on gu-27/aunt-julie-70
+ * Reads happen directly from the client via raw.githubusercontent.com.
+ *
+ * Bindings required (set in Cloudflare dashboard → Worker → Settings):
+ *   Secret:      GITHUB_TOKEN     fine-grained PAT, Contents R/W on gu-27/aunt-julie-70
+ *   Secret:      R2_PUBLIC_URL    public bucket URL, e.g. https://pub-xxxx.r2.dev
+ *   R2 Bucket:   MEMORIES_BUCKET  bound to your aunt-julie-memories bucket
  */
 
-const OWNER    = 'gu-27';
-const REPO     = 'aunt-julie-70';
-const BRANCH   = 'main';
+const OWNER     = 'gu-27';
+const REPO      = 'aunt-julie-70';
+const BRANCH    = 'main';
 const DATA_PATH = 'docs/memories.json';
-const GH_API   = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${DATA_PATH}`;
-
-// Allowed origins — tighten if needed
-const ALLOWED_ORIGIN = '*';
+const GH_API    = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${DATA_PATH}`;
 
 export default {
   async fetch(request, env) {
-    // CORS preflight
-    if (request.method === 'OPTIONS') {
-      return cors('', 204);
-    }
-
-    if (request.method !== 'POST') {
-      return cors(JSON.stringify({ error: 'POST only' }), 405);
-    }
+    if (request.method === 'OPTIONS') return cors('', 204);
+    if (request.method !== 'POST') return cors(JSON.stringify({ error: 'POST only' }), 405);
 
     let body;
-    try {
-      body = await request.json();
-    } catch {
-      return cors(JSON.stringify({ error: 'Invalid JSON' }), 400);
+    try { body = await request.json(); }
+    catch { return cors(JSON.stringify({ error: 'Invalid JSON' }), 400); }
+
+    const { action } = body;
+
+    // ── Image upload ──────────────────────────────────────────────────────────
+    if (action === 'upload-image') {
+      if (!env.MEMORIES_BUCKET) {
+        return cors(JSON.stringify({ error: 'R2 bucket not bound — check Worker settings' }), 500);
+      }
+      if (!env.R2_PUBLIC_URL) {
+        return cors(JSON.stringify({ error: 'R2_PUBLIC_URL secret not set' }), 500);
+      }
+
+      const { filename, contentType, data } = body;
+      if (!filename || !data) {
+        return cors(JSON.stringify({ error: 'filename and data required' }), 400);
+      }
+
+      // Decode base64 image data
+      const binaryStr = atob(data);
+      const bytes = new Uint8Array(binaryStr.length);
+      for (let i = 0; i < binaryStr.length; i++) {
+        bytes[i] = binaryStr.charCodeAt(i);
+      }
+
+      await env.MEMORIES_BUCKET.put(filename, bytes, {
+        httpMetadata: { contentType: contentType || 'image/jpeg' }
+      });
+
+      const baseUrl = env.R2_PUBLIC_URL.replace(/\/$/, '');
+      return cors(JSON.stringify({ ok: true, url: `${baseUrl}/${filename}` }));
     }
 
-    const { action, entry, id, updates } = body;
+    // ── Memory writes ─────────────────────────────────────────────────────────
     if (!['add', 'edit', 'delete'].includes(action)) {
       return cors(JSON.stringify({ error: 'Unknown action' }), 400);
     }
 
     const token = env.GITHUB_TOKEN;
     if (!token) {
-      return cors(JSON.stringify({ error: 'Worker misconfigured: no GITHUB_TOKEN' }), 500);
+      return cors(JSON.stringify({ error: 'GITHUB_TOKEN secret not set' }), 500);
     }
 
     try {
       // 1. Read current file + SHA
       const getRes = await fetch(GH_API, {
-        headers: {
-          Authorization: `token ${token}`,
-          'User-Agent':  'aunt-julie-worker'
-        }
+        headers: { Authorization: `token ${token}`, 'User-Agent': 'aunt-julie-worker' }
       });
       if (!getRes.ok) {
         return cors(JSON.stringify({ error: `GitHub read failed: ${getRes.status}` }), 502);
@@ -61,6 +82,7 @@ export default {
       const memories = JSON.parse(decodeBase64UTF8(fileData.content.replace(/\n/g, '')));
 
       // 2. Apply transform
+      const { entry, id, updates } = body;
       let updated;
       if (action === 'add') {
         updated = [...memories, entry];
@@ -81,12 +103,7 @@ export default {
           'Content-Type': 'application/json',
           'User-Agent':   'aunt-julie-worker'
         },
-        body: JSON.stringify({
-          message: 'Update memories.json',
-          content,
-          sha,
-          branch: BRANCH
-        })
+        body: JSON.stringify({ message: 'Update memories.json', content, sha, branch: BRANCH })
       });
 
       if (!putRes.ok) {
@@ -109,7 +126,7 @@ function cors(body, status = 200) {
     status,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin':  ALLOWED_ORIGIN,
+      'Access-Control-Allow-Origin':  '*',
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type'
     }
