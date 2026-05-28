@@ -70,65 +70,72 @@ export default {
     }
 
     try {
-      // 1a. Get file SHA via Contents API
-      const metaRes = await fetch(GH_API, {
-        headers: { Authorization: `token ${token}`, 'User-Agent': 'aunt-julie-worker' }
-      });
-      if (!metaRes.ok) {
-        return cors(JSON.stringify({ error: `GitHub meta read failed: ${metaRes.status}` }), 502);
-      }
-      const meta = await metaRes.json();
-      const sha = meta.sha;
-
-      // 1b. Read content via Git Blobs API using the blob SHA — always current,
-      //     no size limit (supports up to 100MB), never served from cache.
-      const blobRes = await fetch(
-        `https://api.github.com/repos/${OWNER}/${REPO}/git/blobs/${sha}`,
-        {
-          headers: {
-            Authorization: `token ${token}`,
-            'User-Agent':  'aunt-julie-worker',
-            'Accept':      'application/vnd.github.raw+json'
-          }
+      // Retry up to 3 times on 409 conflict (concurrent writes)
+      for (let attempt = 0; attempt < 3; attempt++) {
+        // 1a. Get file SHA via Contents API (always current)
+        const metaRes = await fetch(GH_API, {
+          headers: { Authorization: `token ${token}`, 'User-Agent': 'aunt-julie-worker' }
+        });
+        if (!metaRes.ok) {
+          return cors(JSON.stringify({ error: `GitHub meta read failed: ${metaRes.status}` }), 502);
         }
-      );
-      if (!blobRes.ok) {
-        return cors(JSON.stringify({ error: `GitHub blob read failed: ${blobRes.status}` }), 502);
+        const meta = await metaRes.json();
+        const sha = meta.sha;
+
+        // 1b. Read content via Git Blobs API — always current, no size limit
+        const blobRes = await fetch(
+          `https://api.github.com/repos/${OWNER}/${REPO}/git/blobs/${sha}`,
+          {
+            headers: {
+              Authorization: `token ${token}`,
+              'User-Agent':  'aunt-julie-worker',
+              'Accept':      'application/vnd.github.raw+json'
+            }
+          }
+        );
+        if (!blobRes.ok) {
+          return cors(JSON.stringify({ error: `GitHub blob read failed: ${blobRes.status}` }), 502);
+        }
+        const memories = await blobRes.json();
+
+        // 2. Apply transform
+        const { entry, id, updates } = body;
+        let updated;
+        if (action === 'add') {
+          updated = [...memories, entry];
+        } else if (action === 'edit') {
+          if (!id || !updates) return cors(JSON.stringify({ error: 'id and updates required' }), 400);
+          updated = memories.map(m => m.id === id ? { ...m, ...updates } : m);
+        } else if (action === 'delete') {
+          if (!id) return cors(JSON.stringify({ error: 'id required' }), 400);
+          updated = memories.filter(m => m.id !== id);
+        }
+
+        // 3. Write back
+        const content = encodeBase64UTF8(JSON.stringify(updated, null, 2));
+        const putRes = await fetch(GH_API, {
+          method: 'PUT',
+          headers: {
+            Authorization:  `token ${token}`,
+            'Content-Type': 'application/json',
+            'User-Agent':   'aunt-julie-worker'
+          },
+          body: JSON.stringify({ message: 'Update memories.json', content, sha, branch: BRANCH })
+        });
+
+        // 409 = SHA conflict from concurrent write — retry with fresh SHA
+        if (putRes.status === 409) continue;
+
+        if (!putRes.ok) {
+          const err = await putRes.json().catch(() => ({}));
+          return cors(JSON.stringify({ error: err.message || `GitHub write failed: ${putRes.status}` }), 502);
+        }
+
+        const result = await putRes.json();
+        return cors(JSON.stringify({ ok: true, sha: result.content.sha }));
       }
-      const memories = await blobRes.json();
 
-      // 2. Apply transform
-      const { entry, id, updates } = body;
-      let updated;
-      if (action === 'add') {
-        updated = [...memories, entry];
-      } else if (action === 'edit') {
-        if (!id || !updates) return cors(JSON.stringify({ error: 'id and updates required' }), 400);
-        updated = memories.map(m => m.id === id ? { ...m, ...updates } : m);
-      } else if (action === 'delete') {
-        if (!id) return cors(JSON.stringify({ error: 'id required' }), 400);
-        updated = memories.filter(m => m.id !== id);
-      }
-
-      // 3. Write back
-      const content = encodeBase64UTF8(JSON.stringify(updated, null, 2));
-      const putRes = await fetch(GH_API, {
-        method: 'PUT',
-        headers: {
-          Authorization:  `token ${token}`,
-          'Content-Type': 'application/json',
-          'User-Agent':   'aunt-julie-worker'
-        },
-        body: JSON.stringify({ message: 'Update memories.json', content, sha, branch: BRANCH })
-      });
-
-      if (!putRes.ok) {
-        const err = await putRes.json().catch(() => ({}));
-        return cors(JSON.stringify({ error: err.message || `GitHub write failed: ${putRes.status}` }), 502);
-      }
-
-      const result = await putRes.json();
-      return cors(JSON.stringify({ ok: true, sha: result.content.sha }));
+      return cors(JSON.stringify({ error: 'Write failed after 3 attempts — please try again' }), 502);
 
     } catch (e) {
       return cors(JSON.stringify({ error: e.message }), 500);
@@ -154,10 +161,4 @@ function encodeBase64UTF8(str) {
   let binary = '';
   bytes.forEach(b => binary += String.fromCharCode(b));
   return btoa(binary);
-}
-
-function decodeBase64UTF8(b64) {
-  const binary = atob(b64);
-  const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
-  return new TextDecoder().decode(bytes);
 }

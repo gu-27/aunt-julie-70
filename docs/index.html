@@ -442,8 +442,8 @@ function unlockApp() {
 
 // ── GitHub API ────────────────────────────────────────────────────────────────
 async function apiGet() {
-  // Use raw URL — bypasses GitHub's 1MB content API limit.
-  const url = `https://raw.githubusercontent.com/${CONFIG.owner}/${CONFIG.repo}/main/${CONFIG.dataPath}`;
+  // Cache-bust so we always get the latest version after a write.
+  const url = `https://raw.githubusercontent.com/${CONFIG.owner}/${CONFIG.repo}/main/${CONFIG.dataPath}?t=${Date.now()}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`GitHub GET failed: ${res.status}`);
   return res.json();
@@ -666,11 +666,13 @@ async function submitMemory() {
   btn.disabled = true;
   btn.innerHTML = '<span class="spinner"></span>Uploading photos…';
 
+  // Declare entry outside try so catch can access it for queuing
+  let entry = null;
   try {
     const imageUrls = await uploadImages(formImages, name);
 
     btn.innerHTML = '<span class="spinner"></span>Saving…';
-    const entry = {
+    entry = {
       id:        Date.now().toString(),
       name,
       message,
@@ -692,7 +694,7 @@ async function submitMemory() {
     toast('Memory saved! 💛');
   } catch (e) {
     // Queue locally so it can be retried next visit
-    queueFailed(entry);
+    if (entry) queueFailed(entry);
     toast('Could not save right now — will retry next time you visit 💛');
   }
 
