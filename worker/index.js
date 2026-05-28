@@ -70,7 +70,7 @@ export default {
     }
 
     try {
-      // 1a. Get SHA via Contents API (works for any file size)
+      // 1a. Get file SHA via Contents API
       const metaRes = await fetch(GH_API, {
         headers: { Authorization: `token ${token}`, 'User-Agent': 'aunt-julie-worker' }
       });
@@ -80,15 +80,22 @@ export default {
       const meta = await metaRes.json();
       const sha = meta.sha;
 
-      // 1b. Read actual content via raw URL — no size limit
-      const rawRes = await fetch(
-        `https://raw.githubusercontent.com/${OWNER}/${REPO}/main/${DATA_PATH}`,
-        { headers: { Authorization: `token ${token}`, 'User-Agent': 'aunt-julie-worker' } }
+      // 1b. Read content via Git Blobs API using the blob SHA — always current,
+      //     no size limit (supports up to 100MB), never served from cache.
+      const blobRes = await fetch(
+        `https://api.github.com/repos/${OWNER}/${REPO}/git/blobs/${sha}`,
+        {
+          headers: {
+            Authorization: `token ${token}`,
+            'User-Agent':  'aunt-julie-worker',
+            'Accept':      'application/vnd.github.raw+json'
+          }
+        }
       );
-      if (!rawRes.ok) {
-        return cors(JSON.stringify({ error: `GitHub raw read failed: ${rawRes.status}` }), 502);
+      if (!blobRes.ok) {
+        return cors(JSON.stringify({ error: `GitHub blob read failed: ${blobRes.status}` }), 502);
       }
-      const memories = await rawRes.json();
+      const memories = await blobRes.json();
 
       // 2. Apply transform
       const { entry, id, updates } = body;
