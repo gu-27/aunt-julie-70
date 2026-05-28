@@ -760,22 +760,22 @@ async function saveEdit() {
   saveBtn.disabled = true;
   saveBtn.innerHTML = '<span class="spinner"></span>Saving…';
 
-  const id          = editingId;
-  const editName    = document.getElementById('edit-name').value.trim();
-  const toKeep      = editImages.filter(i => !i.toDelete);
-  const imageUrls   = await uploadImages(toKeep, editName);
-
   try {
+    const id       = editingId;
+    const editName = document.getElementById('edit-name').value.trim();
+    const toKeep   = editImages.filter(i => !i.toDelete);
+    const imageUrls = await uploadImages(toKeep, editName);
+
     await workerPost({ action: 'edit', id, updates: { name, message, images: imageUrls } });
     closeEdit();
     await loadMemories();
     toast('Updated! 💛');
   } catch (e) {
     toast('Could not save: ' + e.message);
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.textContent = 'Save';
   }
-
-  saveBtn.disabled = false;
-  saveBtn.textContent = 'Save';
 }
 
 async function deleteEntry() {
