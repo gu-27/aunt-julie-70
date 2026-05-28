@@ -437,13 +437,11 @@ function unlockApp() {
 
 // ── GitHub API ────────────────────────────────────────────────────────────────
 async function apiGet() {
-  // Public repo — reads never need authentication.
-  const url = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.dataPath}`;
+  // Use raw URL — bypasses GitHub's 1MB content API limit.
+  const url = `https://raw.githubusercontent.com/${CONFIG.owner}/${CONFIG.repo}/main/${CONFIG.dataPath}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`GitHub GET failed: ${res.status}`);
-  const data = await res.json();
-  const json = decodeBase64UTF8(data.content.replace(/\n/g, ''));
-  return JSON.parse(json);
+  return res.json();
 }
 
 // workerPost: sends write actions to the Cloudflare Worker.
@@ -457,13 +455,6 @@ async function workerPost(payload) {
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(data.error || `Worker error: ${res.status}`);
   return data;
-}
-
-// ── UTF-8 safe base64 ─────────────────────────────────────────────────────────
-function decodeBase64UTF8(b64) {
-  const binary = atob(b64);
-  const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
-  return new TextDecoder().decode(bytes);
 }
 
 // ── Load ──────────────────────────────────────────────────────────────────────
