@@ -328,6 +328,7 @@
       <div class="preview-strip" id="f-preview"></div>
     </div>
     <button class="submit-btn" id="submit-btn" onclick="submitMemory()">Share Memory</button>
+    <p class="token-note" id="token-note"></p>
   </div>
 
   <!-- Entries -->
@@ -376,8 +377,6 @@
 
 <script>
 // ── Config ──────────────────────────────────────────────────────────────────
-const _t1 = 'github_pat_11AN7G4MA0';
-const _t2 = 'fb9wjfZmTXDR_buaub67wbvPEj9REgkLFuOyU77sLKRLsi6QLDEYGaqs6NMMOJDNowNgSJhg';
 const CONFIG = {
   owner:    'gu-27',
   repo:     'aunt-julie-70',
@@ -385,7 +384,9 @@ const CONFIG = {
   dataPath: 'docs/memories.json',
   password: 'AJ2026',
   goal:     70,
-  token:    _t1 + _t2
+  // Write token loaded from localStorage; set via the "Update token" link.
+  // Reads work without a token (public repo).
+  get token() { return localStorage.getItem('aj_token') || ''; }
 };
 
 // ── State ────────────────────────────────────────────────────────────────────
@@ -436,25 +437,35 @@ function checkPassword() {
 
 function unlockApp() {
   document.getElementById('gate').classList.add('hidden');
+  updateTokenNote();
   loadMemories();
+}
+
+function updateTokenNote() {
+  const note = document.getElementById('token-note');
+  if (!note) return;
+  if (CONFIG.token) {
+    note.innerHTML = `Write token active. <a onclick="promptToken()">Update token</a>`;
+  } else {
+    note.innerHTML = `No write token set — memories will be read-only. <a onclick="promptToken()">Add token to enable saving</a>`;
+  }
 }
 
 // ── Token ─────────────────────────────────────────────────────────────────────
 function promptToken() {
-  const t = prompt('Enter your GitHub Personal Access Token (needs repo scope):');
-  if (t) {
-    CONFIG.token = t.trim();
-    localStorage.setItem('aj_token', CONFIG.token);
+  const t = prompt('Enter your GitHub Personal Access Token (needs Contents: Read & Write scope):');
+  if (t && t.trim()) {
+    localStorage.setItem('aj_token', t.trim());
+    updateTokenNote();
     toast('Token saved locally.');
   }
 }
 
 // ── GitHub API ────────────────────────────────────────────────────────────────
 async function apiGet() {
+  // Public repo — reads never need authentication.
   const url = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.dataPath}`;
-  const res = await fetch(url, {
-    headers: CONFIG.token ? { Authorization: `token ${CONFIG.token}` } : {}
-  });
+  const res = await fetch(url);
   if (!res.ok) throw new Error(`GitHub GET failed: ${res.status}`);
   const data = await res.json();
   fileSHA = data.sha;
