@@ -328,7 +328,6 @@
       <div class="preview-strip" id="f-preview"></div>
     </div>
     <button class="submit-btn" id="submit-btn" onclick="submitMemory()">Share Memory</button>
-    <p class="token-note" id="token-note"></p>
   </div>
 
   <!-- Entries -->
@@ -378,20 +377,16 @@
 <script>
 // ── Config ──────────────────────────────────────────────────────────────────
 const CONFIG = {
-  owner:    'gu-27',
-  repo:     'aunt-julie-70',
-  branch:   'main',
-  dataPath: 'docs/memories.json',
-  password: 'AJ2026',
-  goal:     70,
-  // Write token loaded from localStorage; set via the "Update token" link.
-  // Reads work without a token (public repo).
-  get token() { return localStorage.getItem('aj_token') || ''; }
+  owner:      'gu-27',
+  repo:       'aunt-julie-70',
+  dataPath:   'docs/memories.json',
+  password:   'AJ2026',
+  goal:       70,
+  workerUrl:  'REPLACE_WITH_YOUR_WORKER_URL'   // e.g. https://aunt-julie.you.workers.dev
 };
 
 // ── State ────────────────────────────────────────────────────────────────────
-let memories = [];
-let fileSHA  = '';
+let memories   = [];
 let formImages = [];      // {dataURI}
 let editImages = [];      // {dataURI, toDelete: bool}
 let editingId  = null;
@@ -437,28 +432,7 @@ function checkPassword() {
 
 function unlockApp() {
   document.getElementById('gate').classList.add('hidden');
-  updateTokenNote();
   loadMemories();
-}
-
-function updateTokenNote() {
-  const note = document.getElementById('token-note');
-  if (!note) return;
-  if (CONFIG.token) {
-    note.innerHTML = `Write token active. <a onclick="promptToken()">Update token</a>`;
-  } else {
-    note.innerHTML = `No write token set — memories will be read-only. <a onclick="promptToken()">Add token to enable saving</a>`;
-  }
-}
-
-// ── Token ─────────────────────────────────────────────────────────────────────
-function promptToken() {
-  const t = prompt('Enter your GitHub Personal Access Token (needs Contents: Read & Write scope):');
-  if (t && t.trim()) {
-    localStorage.setItem('aj_token', t.trim());
-    updateTokenNote();
-    toast('Token saved locally.');
-  }
 }
 
 // ── GitHub API ────────────────────────────────────────────────────────────────
@@ -468,53 +442,24 @@ async function apiGet() {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`GitHub GET failed: ${res.status}`);
   const data = await res.json();
-  fileSHA = data.sha;
   const json = decodeBase64UTF8(data.content.replace(/\n/g, ''));
   return JSON.parse(json);
 }
 
-// apiSafeWrite: always fetches the latest file first, applies a transform,
-// then writes — so concurrent submissions from different people never collide.
-async function apiSafeWrite(transformFn) {
-  if (!CONFIG.token) throw new Error('No token — cannot save.');
-
-  // 1. Fresh read to get current data + SHA
-  const latest = await apiGet();
-
-  // 2. Apply the change to the latest data
-  const updated = transformFn(latest);
-
-  // 3. Write with the fresh SHA
-  const content = encodeBase64UTF8(JSON.stringify(updated, null, 2));
-  const url = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/${CONFIG.dataPath}`;
-  const res = await fetch(url, {
-    method: 'PUT',
-    headers: {
-      Authorization: `token ${CONFIG.token}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      message: 'Update memories.json',
-      content,
-      sha: fileSHA,
-      branch: CONFIG.branch
-    })
+// workerPost: sends write actions to the Cloudflare Worker.
+// The Worker holds the GitHub token securely and handles the read-write cycle.
+async function workerPost(payload) {
+  const res = await fetch(CONFIG.workerUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
   });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.message || `GitHub PUT failed: ${res.status}`);
-  }
-  const result = await res.json();
-  fileSHA = result.content.sha;
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || `Worker error: ${res.status}`);
+  return data;
 }
 
 // ── UTF-8 safe base64 ─────────────────────────────────────────────────────────
-function encodeBase64UTF8(str) {
-  const bytes = new TextEncoder().encode(str);
-  let binary = '';
-  bytes.forEach(b => binary += String.fromCharCode(b));
-  return btoa(binary);
-}
 function decodeBase64UTF8(b64) {
   const binary = atob(b64);
   const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
@@ -667,8 +612,7 @@ async function submitMemory() {
       timestamp: new Date().toISOString()
     };
 
-    // Fresh read → append → write (safe for concurrent users)
-    await apiSafeWrite(latest => [...latest, entry]);
+    await workerPost({ action: 'add', entry });
 
     // Reset form
     document.getElementById('f-name').value    = '';
@@ -749,9 +693,7 @@ async function saveEdit() {
   const images = editImages.filter(i => !i.toDelete).map(i => i.dataURI);
 
   try {
-    await apiSafeWrite(latest =>
-      latest.map(m => m.id === id ? { ...m, name, message, images } : m)
-    );
+    await workerPost({ action: 'edit', id, updates: { name, message, images } });
     closeEdit();
     await loadMemories();
     toast('Updated! 💛');
@@ -768,7 +710,7 @@ async function deleteEntry() {
 
   const id = editingId;
   try {
-    await apiSafeWrite(latest => latest.filter(m => m.id !== id));
+    await workerPost({ action: 'delete', id });
     closeEdit();
     await loadMemories();
     toast('Memory deleted.');
