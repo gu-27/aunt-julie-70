@@ -162,107 +162,78 @@
     flex-shrink: 0;
   }
 
-  /* ── Mosaic tile ────────────────────────────────────────────────────────── */
+  /* ── Mosaic tile — orbit-style glowing circles ──────────────────────────── */
   .mosaic-tile {
     width: var(--cell); height: var(--cell);
-    border-radius: clamp(3px, .4vw, 6px);
+    border-radius: 50%;
     cursor: pointer;
     position: relative;
-    display: flex; flex-direction: column;
+    display: flex;
     align-items: center; justify-content: center;
-    transition: transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .18s, z-index 0s;
+    transition: transform .2s cubic-bezier(.34,1.56,.64,1), box-shadow .2s;
     z-index: 1;
     overflow: visible;
   }
   .mosaic-tile:hover,
-  .mosaic-tile:focus { transform: scale(1.22); z-index: 20; outline: none; }
+  .mosaic-tile:focus { transform: scale(1.5); z-index: 20; outline: none; }
 
-  /* Variant borders + backgrounds */
-  .mosaic-tile.v0 { background: rgba(232,64,42,.1);   border: 1.5px solid rgba(232,64,42,.5); }
-  .mosaic-tile.v1 { background: rgba(43,179,163,.1);  border: 1.5px solid rgba(43,179,163,.5); }
-  .mosaic-tile.v2 { background: rgba(250,243,224,.06); border: 1.5px solid rgba(250,243,224,.35); }
-  .mosaic-tile.v3 { background: rgba(244,211,94,.08); border: 1.5px solid rgba(244,211,94,.45); }
-  .mosaic-tile.v4 { background: rgba(184,197,207,.06); border: 1.5px solid rgba(184,197,207,.35); }
-  .mosaic-tile.v5 { background: rgba(91,200,168,.1);  border: 1.5px solid rgba(91,200,168,.5); }
+  /* Orbit-style solid fills with ambient glow */
+  .mosaic-tile.v0 { background: rgba(232,64,42,.75);  box-shadow: 0 0 8px rgba(232,64,42,.5),  0 0 22px rgba(232,64,42,.22); }
+  .mosaic-tile.v1 { background: rgba(43,179,163,.75); box-shadow: 0 0 8px rgba(43,179,163,.5), 0 0 22px rgba(43,179,163,.22); }
+  .mosaic-tile.v2 { background: rgba(244,211,94,.75); box-shadow: 0 0 8px rgba(244,211,94,.5), 0 0 22px rgba(244,211,94,.22); }
+  .mosaic-tile.v3 { background: rgba(91,200,168,.75); box-shadow: 0 0 8px rgba(91,200,168,.5), 0 0 22px rgba(91,200,168,.22); }
+  .mosaic-tile.v4 { background: rgba(91,200,194,.75); box-shadow: 0 0 8px rgba(91,200,194,.5), 0 0 22px rgba(91,200,194,.22); }
+  .mosaic-tile.v5 { background: rgba(247,108,94,.75); box-shadow: 0 0 8px rgba(247,108,94,.5), 0 0 22px rgba(247,108,94,.22); }
 
-  /* Glow on hover per variant */
-  .mosaic-tile.v0:hover { box-shadow: 0 0 18px rgba(232,64,42,.55),  0 0 6px rgba(232,64,42,.3); }
-  .mosaic-tile.v1:hover { box-shadow: 0 0 18px rgba(43,179,163,.55), 0 0 6px rgba(43,179,163,.3); }
-  .mosaic-tile.v2:hover { box-shadow: 0 0 18px rgba(250,243,224,.35),0 0 6px rgba(250,243,224,.2); }
-  .mosaic-tile.v3:hover { box-shadow: 0 0 18px rgba(244,211,94,.55), 0 0 6px rgba(244,211,94,.3); }
-  .mosaic-tile.v4:hover { box-shadow: 0 0 18px rgba(184,197,207,.45),0 0 6px rgba(184,197,207,.25); }
-  .mosaic-tile.v5:hover { box-shadow: 0 0 18px rgba(91,200,168,.55), 0 0 6px rgba(91,200,168,.3); }
+  /* Strong glow burst on hover */
+  .mosaic-tile.v0:hover, .mosaic-tile.v0:focus { box-shadow: 0 0 20px rgba(232,64,42,.95),  0 0 50px rgba(232,64,42,.55),  0 0 90px rgba(232,64,42,.2); }
+  .mosaic-tile.v1:hover, .mosaic-tile.v1:focus { box-shadow: 0 0 20px rgba(43,179,163,.95), 0 0 50px rgba(43,179,163,.55), 0 0 90px rgba(43,179,163,.2); }
+  .mosaic-tile.v2:hover, .mosaic-tile.v2:focus { box-shadow: 0 0 20px rgba(244,211,94,.95), 0 0 50px rgba(244,211,94,.55), 0 0 90px rgba(244,211,94,.2); }
+  .mosaic-tile.v3:hover, .mosaic-tile.v3:focus { box-shadow: 0 0 20px rgba(91,200,168,.95), 0 0 50px rgba(91,200,168,.55), 0 0 90px rgba(91,200,168,.2); }
+  .mosaic-tile.v4:hover, .mosaic-tile.v4:focus { box-shadow: 0 0 20px rgba(91,200,194,.95), 0 0 50px rgba(91,200,194,.55), 0 0 90px rgba(91,200,194,.2); }
+  .mosaic-tile.v5:hover, .mosaic-tile.v5:focus { box-shadow: 0 0 20px rgba(247,108,94,.95), 0 0 50px rgba(247,108,94,.55), 0 0 90px rgba(247,108,94,.2); }
 
-  /* Tile content */
-  .tile-mark {
-    font-size: clamp(8px, 1vw, 14px);
-    opacity: .55;
-    line-height: 1;
-    display: block;
-  }
-  .mosaic-tile.v0 .tile-mark { color: var(--v0-acc); }
-  .mosaic-tile.v1 .tile-mark { color: var(--v1-acc); }
-  .mosaic-tile.v2 .tile-mark { color: var(--v2-acc); }
-  .mosaic-tile.v3 .tile-mark { color: var(--v3-acc); }
-  .mosaic-tile.v4 .tile-mark { color: var(--v4-acc); }
-  .mosaic-tile.v5 .tile-mark { color: var(--v5-acc); }
-
-  .tile-name {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(5px, 0.65vw, 9px);
-    letter-spacing: .04em;
-    color: rgba(250,243,224,.55);
-    text-align: center;
-    max-width: 100%;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    padding: 0 2px;
-    line-height: 1.1;
-  }
-
-  /* Tooltip */
+  /* Memory popup tooltip */
   .tile-tip {
     position: absolute;
-    bottom: calc(100% + 8px);
+    bottom: calc(100% + 14px);
     left: 50%; transform: translateX(-50%);
     background: rgba(8,14,30,.97);
-    border: 1px solid rgba(43,179,163,.45);
-    border-radius: 10px;
-    padding: .65rem .85rem;
-    min-width: 180px; max-width: 240px;
+    border: 1.5px solid rgba(43,179,163,.6);
+    border-radius: 14px;
+    padding: 1.1rem 1.3rem;
+    min-width: 230px; max-width: 310px;
     pointer-events: none;
     opacity: 0;
-    transition: opacity .16s;
+    transition: opacity .18s;
     z-index: 50;
-    box-shadow: 0 8px 24px rgba(0,0,0,.6), 0 0 12px rgba(43,179,163,.12);
+    box-shadow: 0 14px 40px rgba(0,0,0,.8), 0 0 24px rgba(43,179,163,.2);
     white-space: normal;
   }
   .mosaic-tile:hover .tile-tip,
   .mosaic-tile:focus .tile-tip { opacity: 1; }
 
-  /* Flip tooltip to below for top rows */
   .mosaic-tile.tip-below .tile-tip {
     bottom: auto;
-    top: calc(100% + 8px);
+    top: calc(100% + 14px);
   }
 
   .tip-name {
     font-family: 'Playfair Display', serif;
-    font-size: .78rem; font-weight: 700;
-    color: var(--teal-lt); margin-bottom: .3rem;
+    font-size: 1rem; font-weight: 700;
+    color: var(--teal-lt); margin-bottom: .5rem;
     display: block;
   }
   .tip-preview {
     font-family: 'Merriweather', serif;
-    font-size: .68rem; line-height: 1.6;
-    color: rgba(250,243,224,.72);
+    font-size: .82rem; line-height: 1.75;
+    color: rgba(250,243,224,.9);
     display: block;
   }
   .tip-cta {
     font-family: 'Playfair Display', serif;
-    font-size: .58rem; letter-spacing: .1em; text-transform: uppercase;
-    color: rgba(43,179,163,.65); margin-top: .4rem;
+    font-size: .64rem; letter-spacing: .1em; text-transform: uppercase;
+    color: rgba(43,179,163,.75); margin-top: .55rem;
     display: block;
   }
 
@@ -473,26 +444,18 @@ const LETTER_POSITIONS = [
   [8,0],[8,9],
   [9,0],[9,9],
   [10,0],[10,9],
-  // ── J ──────────────────────────────────────────────────────────────────
-  // top bar
+  // ── J — T-shape: crossbar top + center stem + lollipop circle ───────────
+  // top bar (9)
   [0,11],[0,12],[0,13],[0,14],[0,15],[0,16],[0,17],[0,18],[0,19],
-  // double-width stem descending
-  [1,18],[1,19],
-  [2,18],[2,19],
-  [3,18],[3,19],
-  [4,18],[4,19],
-  [5,18],[5,19],
-  // left foot appears + stem continues
-  [6,11],[6,18],[6,19],
-  [7,11],[7,18],[7,19],
-  [8,11],[8,18],[8,19],
-  [9,11],[9,18],[9,19],
-  // bottom curve — connects foot to stem
-  [10,11],[10,12],[10,13],[10,14],[10,15],[10,16],[10,17],
+  // center stem (5)
+  [1,15],[2,15],[3,15],[4,15],[5,15],
+  // lollipop circle (24) — ties into bottom of stem
+  [6,12],[6,13],[6,14],[6,15],[6,16],[6,17],[6,18],
+  [7,12],[7,13],[7,17],[7,18],
+  [8,11],[8,12],[8,18],[8,19],
+  [9,12],[9,13],[9,17],[9,18],
+  [10,13],[10,14],[10,15],[10,16],[10,17],
 ];
-
-// Decorative mark per variant
-const TILE_MARKS = ['◆','✦','✶','⬡','◈','✺'];
 
 // ── State ─────────────────────────────────────────────────────────────────
 let memories     = [];
@@ -570,17 +533,13 @@ function buildMosaic() {
     tile.setAttribute('role', 'button');
     tile.setAttribute('aria-label', `Memory from ${esc(mem.name || 'Anonymous')}`);
 
-    const nameShort = tileLabel(mem.name);
-    const preview   = (mem.message || '').trim().slice(0, 90);
-    const hasMore   = (mem.message || '').length > 90;
+    const fullMsg = (mem.message || '').trim();
 
     tile.innerHTML = `
-      <span class="tile-mark" aria-hidden="true">${TILE_MARKS[v]}</span>
-      <span class="tile-name">${esc(nameShort)}</span>
       <div class="tile-tip" role="tooltip">
         <strong class="tip-name">${esc(mem.name || 'Anonymous')}</strong>
-        ${preview ? `<span class="tip-preview">${esc(preview)}${hasMore ? '…' : ''}</span>` : ''}
-        <span class="tip-cta">click to read full memory</span>
+        ${fullMsg ? `<span class="tip-preview">${esc(fullMsg)}</span>` : ''}
+        <span class="tip-cta">click to open</span>
       </div>`;
 
     tile.addEventListener('click', () => openLightbox(memIdx));

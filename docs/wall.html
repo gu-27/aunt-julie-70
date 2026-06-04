@@ -1110,11 +1110,11 @@ function makeCard(mem, memIdx, seq) {
 // ════════════════════════════════════════════════════════════════════════
 
 const RING_DEFS = [
-  { rxF: 0.44, ryF: 0.34, tilt:  15, period: 60000 },
-  { rxF: 0.56, ryF: 0.42, tilt: -22, period: 82000 },
-  { rxF: 0.67, ryF: 0.49, tilt:  32, period: 108000 },
-  { rxF: 0.77, ryF: 0.55, tilt: -12, period: 140000 },
-  { rxF: 0.90, ryF: 0.62, tilt:  24, period: 180000 },
+  { rxF: 0.52, ryF: 0.44, tilt:  15, period: 60000 },
+  { rxF: 0.62, ryF: 0.52, tilt: -22, period: 82000 },
+  { rxF: 0.73, ryF: 0.58, tilt:  32, period: 108000 },
+  { rxF: 0.83, ryF: 0.64, tilt: -12, period: 140000 },
+  { rxF: 0.94, ryF: 0.70, tilt:  24, period: 180000 },
 ];
 
 function initOrbit() {
@@ -1211,7 +1211,7 @@ function drawNucleus() {
   const v = document.getElementById('view-orbit');
   const cx = v.clientWidth / 2;
   const cy = v.clientHeight / 2;
-  const size = clamp(120, Math.min(v.clientWidth, v.clientHeight) * 0.28, 300);
+  const size = clamp(150, Math.min(v.clientWidth, v.clientHeight) * 0.35, 380);
   nucleusSvgRadius = size / 2;
   const r = size / 2;
   const nPoints = 20;
