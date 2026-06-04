@@ -3,22 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Omnipresent AJ — 70 Years, Everywhere in Our Lives</title>
+  <title>AJ's Birthday Drinking Game 🍸</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Merriweather:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
   <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --teal:     #2BB3A3;
-    --teal-lt:  #5BC8C2;
-    --navy:     #221410;  /* warm dark brown instead of cold navy */
-    --navy-dk:  #160D08;  /* deep warm dark */
-    --butter:   #F4D35E;
-    --coral:    #E8402A;  /* richer cherry-red for diner feel */
-    --cream:    #FAF3E0;
-    --charcoal: #2B2B2B;
-    --cherry:   #C0392B;
-    --mint:     #5BC8A8;
+    --teal:    #2BB3A3;
+    --teal-lt: #5BC8C2;
+    --navy:    #0F1A30;
+    --navy-dk: #080E1E;
+    --butter:  #F4D35E;
+    --coral:   #E8402A;
+    --cream:   #FAF3E0;
+    --gold:    #D4A434;
+    --win-bg:  #0F2010;
+    --loss-bg: #200808;
   }
 
   html, body { height: 100%; }
@@ -46,15 +46,9 @@
     max-width: 380px; width: 90%;
     box-shadow: 0 0 40px rgba(43,179,163,.15), 0 8px 40px rgba(0,0,0,.5);
   }
-  .gate-star { font-size: 2.8rem; margin-bottom: .75rem; display: block; }
-  .gate-box h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5rem; color: var(--butter); margin-bottom: .25rem;
-  }
-  .gate-box p {
-    color: rgba(255,255,255,.5); margin-bottom: 1.5rem;
-    font-size: .9rem; font-family: 'Merriweather', serif;
-  }
+  .gate-star  { font-size: 2.8rem; margin-bottom: .75rem; display: block; }
+  .gate-box h1 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--butter); margin-bottom: .25rem; }
+  .gate-box p  { color: rgba(255,255,255,.5); margin-bottom: 1.5rem; font-size: .9rem; }
   .gate-box input {
     width: 100%; padding: .75rem 1rem;
     background: rgba(255,255,255,.06);
@@ -74,744 +68,282 @@
     transition: background .2s, box-shadow .2s;
   }
   .gate-box button:hover { background: var(--teal-lt); box-shadow: 0 0 18px rgba(91,200,194,.4); }
-  .gate-error { color: var(--coral); font-size: .82rem; margin-top: .5rem; font-family: 'Merriweather', serif; }
+  .gate-error { color: var(--coral); font-size: .82rem; margin-top: .5rem; }
 
-  /* ── App shell ──────────────────────────────────────────────────────────── */
+  /* ── App ─────────────────────────────────────────────────────────────────── */
   #app.hidden { display: none; }
 
-  /* ── Top bar ────────────────────────────────────────────────────────────── */
+  /* ── Top bar ─────────────────────────────────────────────────────────────── */
   .top-bar {
     position: sticky; top: 0; z-index: 100;
-    background: rgba(15,26,48,.94);
+    background: rgba(8,14,30,.94);
     backdrop-filter: blur(8px);
-    border-bottom: 1px solid rgba(43,179,163,.2);
-    padding: .75rem 1.5rem;
+    border-bottom: 1px solid rgba(43,179,163,.18);
+    padding: .65rem 1.5rem;
     display: flex; align-items: center; justify-content: space-between;
-    flex-wrap: wrap; gap: .75rem;
+    flex-wrap: wrap; gap: .65rem;
   }
   .top-title {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(.85rem, 2vw, 1.05rem);
+    font-size: clamp(.8rem, 1.8vw, 1rem);
     color: var(--butter); letter-spacing: .03em;
   }
   .top-title span { color: var(--teal); }
-  .top-right { display: flex; align-items: center; gap: 1rem; }
-  .count-badge {
-    font-size: .7rem; font-weight: 700; letter-spacing: .12em;
-    text-transform: uppercase; color: var(--butter);
-    background: rgba(244,211,94,.1);
-    border: 1px solid rgba(244,211,94,.3);
-    padding: .3rem .8rem; border-radius: 100px;
-    white-space: nowrap; font-family: 'Playfair Display', serif;
-  }
-  .toggle-wrap { display: flex; gap: .4rem; }
+  .top-right { display: flex; align-items: center; gap: .9rem; }
+  .toggle-wrap { display: flex; gap: .35rem; }
   .toggle-btn {
-    font-size: .68rem; font-weight: 700; letter-spacing: .08em;
+    padding: .38rem .8rem;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.12);
+    color: rgba(255,255,255,.45);
+    border-radius: 100px; cursor: pointer;
+    font-size: .68rem; font-weight: 700; letter-spacing: .1em;
     text-transform: uppercase;
-    padding: .38rem .85rem; border-radius: 100px;
-    border: 1px solid rgba(43,179,163,.4);
-    background: transparent; color: rgba(255,255,255,.45);
-    cursor: pointer;
-    transition: background .2s, color .2s, border-color .2s, box-shadow .2s;
     font-family: 'Playfair Display', serif;
+    transition: background .2s, color .2s, border-color .2s;
   }
-  .toggle-btn.active {
-    background: var(--teal); color: var(--navy-dk);
-    border-color: var(--teal);
-    box-shadow: 0 0 12px rgba(43,179,163,.4);
-  }
-  .toggle-btn:not(.active):hover { border-color: var(--teal); color: var(--teal-lt); }
+  .toggle-btn:hover  { background: rgba(43,179,163,.1); color: var(--teal-lt); border-color: rgba(43,179,163,.35); }
+  .toggle-btn.active { background: rgba(43,179,163,.15); color: var(--teal-lt); border-color: rgba(43,179,163,.5); }
 
-  /* ── View containers ────────────────────────────────────────────────────── */
-  .view { display: none; }
-  .view.active { display: block; }
-
-  /* ════════════════════════════════════════════════════════════════════════
-     VIEW A — ORBIT
-  ════════════════════════════════════════════════════════════════════════ */
-  #view-orbit {
-    position: relative; width: 100%;
-    height: calc(100svh - 52px);
-    overflow: hidden; background: var(--navy-dk);
-  }
-  #orbit-bg {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-  }
-  #orbit-nucleus {
-    position: absolute;
-    transform: translate(-50%, -50%);
+  /* ── Game main ───────────────────────────────────────────────────────────── */
+  .game-main {
+    min-height: calc(100vh - 52px);
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    pointer-events: none; z-index: 5;
-  }
-  .nucleus-svg {
-    animation: nucleus-pulse 3s ease-in-out infinite;
-  }
-  @media (prefers-reduced-motion: reduce) { .nucleus-svg { animation: none; } }
-  @keyframes nucleus-pulse {
-    0%, 100% { filter: drop-shadow(0 0 8px rgba(43,179,163,.6)) drop-shadow(0 0 20px rgba(43,179,163,.3)); }
-    50%       { filter: drop-shadow(0 0 14px rgba(43,179,163,.9)) drop-shadow(0 0 40px rgba(43,179,163,.5)); }
+    padding: 1.25rem 1rem 2rem;
   }
 
-  /* Canvas layer for connecting lines (between SVG and nodes) */
-  #orbit-lines {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    pointer-events: none; z-index: 2;
+  /* ── Score bar ───────────────────────────────────────────────────────────── */
+  .score-bar {
+    display: flex; align-items: center; gap: 1.25rem;
+    margin-bottom: 1.4rem;
+  }
+  .score-pill {
+    display: flex; align-items: center; gap: .4rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; font-weight: 700;
+    padding: .35rem .9rem;
+    border-radius: 100px;
+    letter-spacing: .05em;
+  }
+  .score-pill.win  { background: rgba(244,211,94,.1); border: 1px solid rgba(244,211,94,.35); color: var(--butter); }
+  .score-pill.loss { background: rgba(232,64,42,.1);  border: 1px solid rgba(232,64,42,.35);  color: var(--coral); }
+  .score-pill .num { font-size: 1.3rem; line-height: 1; }
+  .progress-txt {
+    font-family: 'Playfair Display', serif;
+    font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+    color: rgba(250,243,224,.3);
   }
 
-  /* Nucleus — centered HTML text over starburst */
-  #orbit-nucleus {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    z-index: 15; pointer-events: none; /* above nodes (z-index 10) */
-    text-align: center;
+  /* ── Game card ───────────────────────────────────────────────────────────── */
+  .game-card {
+    width: 100%; max-width: 560px;
+    perspective: 1400px;
   }
-  .nucleus-bg {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    animation: nucleus-pulse 3.5s ease-in-out infinite;
-    pointer-events: none;
-    background: var(--navy-dk);
-    border-radius: 50%;
-  }
-  @media (prefers-reduced-motion: reduce) { .nucleus-bg { animation: none; } }
-  .nucleus-content {
-    position: relative; z-index: 1;
-    display: flex; flex-direction: column;
-    align-items: center; gap: .1rem;
-  }
-  .nucleus-omni {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(.6rem, 1.5vw, .85rem);
-    letter-spacing: .22em;
-    text-transform: uppercase;
-    color: var(--teal-lt);
-    opacity: .85;
-  }
-  .nucleus-aj {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2.6rem, 6.5vw, 4.4rem);
-    font-weight: 700;
-    color: var(--butter);
-    line-height: .9;
-    text-shadow: 0 0 24px rgba(244,211,94,.65), 0 0 50px rgba(244,211,94,.25);
-  }
-  .nucleus-sub {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(.52rem, 1.2vw, .72rem);
-    font-style: italic;
-    color: rgba(250,243,224,.5);
-    letter-spacing: .04em;
-    line-height: 1.5;
-    max-width: 210px;
-    margin-top: .2rem;
-  }
-
-  /* Memory orbit nodes — glowing dots, no names */
-  .orbit-node {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    z-index: 10; cursor: pointer;
-  }
-  .orbit-node:focus { outline: none; }
-  .node-orb {
-    width: 11px; height: 11px;
-    border-radius: 50%;
-    background: var(--teal);
-    box-shadow: 0 0 6px var(--teal), 0 0 14px rgba(43,179,163,.4);
-    transition: transform .18s, box-shadow .18s;
-  }
-  .orbit-node.has-photo .node-orb {
-    background: var(--butter);
-    box-shadow: 0 0 6px var(--butter), 0 0 14px rgba(244,211,94,.4);
-  }
-  .orbit-node:hover .node-orb,
-  .orbit-node:focus .node-orb {
-    transform: scale(1.7);
-    box-shadow: 0 0 12px var(--teal), 0 0 26px rgba(43,179,163,.65);
-  }
-  .orbit-node.has-photo:hover .node-orb,
-  .orbit-node.has-photo:focus .node-orb {
-    box-shadow: 0 0 12px var(--butter), 0 0 26px rgba(244,211,94,.65);
-  }
-  .orbit-node:focus-visible .node-orb {
-    outline: 2px solid var(--butter); outline-offset: 3px;
-  }
-  /* Tooltip: hidden by default, shows on hover/focus */
-  .node-tooltip {
-    position: absolute;
-    bottom: calc(100% + 10px);
-    left: 50%; transform: translateX(-50%);
-    background: rgba(12,22,44,.96);
-    border: 1px solid rgba(43,179,163,.35);
-    border-radius: 8px;
-    padding: .5rem .7rem;
-    width: 170px;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity .18s;
-    z-index: 20;
-  }
-  .orbit-node:hover .node-tooltip,
-  .orbit-node:focus .node-tooltip { opacity: 1; }
-  .tooltip-msg {
-    font-family: 'Merriweather', serif;
-    font-size: .6rem; font-style: italic;
-    color: rgba(250,243,224,.8);
-    line-height: 1.5;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    margin-bottom: .3rem;
-  }
-  .tooltip-name {
-    font-family: 'Playfair Display', serif;
-    font-size: .58rem; font-weight: 700;
-    color: var(--teal-lt); letter-spacing: .06em;
-    text-align: right;
-  }
-
-  /* ════════════════════════════════════════════════════════════════════════
-     VIEW B — MARQUEE (default)
-  ════════════════════════════════════════════════════════════════════════ */
-  #view-marquee {
-    background: var(--navy-dk);
-    min-height: calc(100svh - 52px);
-    padding-bottom: 4rem;
-  }
-
-  /* Pylon — compact and anchored to left on desktop */
-  .pylon-wrap {
-    display: flex;
-    align-items: flex-end;
-    gap: 2rem;
-    padding: 2rem 2rem 1.5rem;
-    border-bottom: 1px solid rgba(43,179,163,.12);
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-  }
-  .pylon-left {
-    display: flex; flex-direction: column; align-items: center;
-    flex-shrink: 0;
-  }
-  .pylon-starburst {
-    width: clamp(56px, 8vw, 80px);
-    height: clamp(56px, 8vw, 80px);
-    margin-bottom: -2px;
-    filter: drop-shadow(0 0 6px rgba(244,211,94,.5));
-    animation: pylon-glow 4s ease-in-out infinite;
-  }
-  @media (prefers-reduced-motion: reduce) { .pylon-starburst { animation: none; } }
-  @keyframes pylon-glow {
-    0%, 100% { filter: drop-shadow(0 0 6px rgba(244,211,94,.5)); }
-    50%       { filter: drop-shadow(0 0 14px rgba(244,211,94,.9)) drop-shadow(0 0 28px rgba(244,211,94,.4)); }
-  }
-  .pylon-body {
-    display: flex; flex-direction: column; align-items: stretch;
-    width: clamp(140px, 22vw, 220px);
-    border: 1.5px solid var(--teal);
-    box-shadow: 0 0 20px rgba(43,179,163,.1);
-  }
-  .pylon-name {
-    background: var(--navy);
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.3rem, 4vw, 2.2rem);
-    font-weight: 700; letter-spacing: .3em;
-    color: var(--teal-lt);
-    text-shadow: 0 0 8px rgba(91,200,194,.7), 0 0 20px rgba(91,200,194,.3);
-    padding: .4rem .75rem;
-    text-align: center;
-  }
-  .pylon-num {
-    background: var(--navy-dk);
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 7vw, 4.5rem);
-    font-weight: 700; color: var(--butter); line-height: 1;
-    padding: .3rem .75rem .4rem;
-    letter-spacing: .08em; text-align: center;
-    text-shadow: 0 0 10px rgba(244,211,94,.6), 0 0 24px rgba(244,211,94,.25);
-    border-top: 1.5px solid var(--teal);
-  }
-  .pylon-sub {
-    background: var(--teal); color: var(--navy-dk);
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(.58rem, 1.5vw, .72rem);
-    font-weight: 700; letter-spacing: .18em;
-    text-transform: uppercase; padding: .4rem .75rem;
-    text-align: center;
-    border-top: 1.5px solid rgba(0,0,0,.2);
-  }
-  .pylon-tagline {
-    flex: 1;
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.1rem, 2.5vw, 1.8rem);
-    font-style: italic;
-    color: rgba(250,243,224,.45);
-    line-height: 1.35;
-    padding-bottom: .25rem;
-  }
-  .pylon-tagline strong {
-    display: block;
-    font-style: normal;
-    font-weight: 700;
-    font-size: clamp(1.6rem, 4vw, 2.8rem);
-    color: rgba(250,243,224,.7);
-    letter-spacing: -.01em;
-  }
-
-  /* ── Wall header ────────────────────────────────────────────────────────── */
-  .wall-header {
-    text-align: center;
-    padding: 2.5rem 1.5rem 1.5rem;
-    border-bottom: 1px solid rgba(43,179,163,.12);
-    margin-bottom: 1.5rem;
-  }
-  .wall-h-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.6rem, 4.5vw, 3rem);
-    font-weight: 700; color: var(--butter);
-    text-shadow: 0 0 24px rgba(244,211,94,.3);
-    line-height: 1.1;
-  }
-  .wall-h-sub {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(.95rem, 2.6vw, 1.5rem);
-    color: rgba(250,243,224,.5);
-    margin: .3rem 0 .6rem;
-  }
-  .wall-h-sub em  { font-style: italic; }
-  .wall-h-sub span { color: var(--teal-lt); font-style: normal; }
-  .wall-h-tagline {
-    font-family: 'Merriweather', serif;
-    font-size: clamp(.72rem, 1.6vw, .88rem);
-    color: rgba(250,243,224,.32);
-    line-height: 1.8;
-  }
-
-  /* Cards grid */
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.25rem;
-    padding: 0 1.5rem 2rem;
-    max-width: 1300px; margin: 0 auto;
-  }
-
-  /* Card base — perspective container for 3D flip */
-  .mem-card {
+  .game-card-inner {
     position: relative;
-    height: 240px;
-    cursor: pointer;
-    perspective: 900px;
-    transition: transform .22s ease;
-  }
-  .mem-card:hover { transform: translateY(-5px); }
-  .mem-card:focus { outline: none; }
-  .mem-card:focus-visible { outline: 2px solid var(--butter); outline-offset: 3px; }
-  .mem-card.flipped { z-index: 2; }
-
-  /* 3D flip mechanism */
-  .card-inner {
-    position: absolute; inset: 0;
     transform-style: preserve-3d;
-    transition: transform .58s cubic-bezier(.4,0,.2,1);
+    transition: transform .65s cubic-bezier(.4,0,.2,1);
   }
-  .mem-card:hover .card-inner,
-  .mem-card.flipped .card-inner { transform: rotateY(180deg); }
+  .game-card-inner.flipped { transform: rotateY(180deg); }
 
-  /* Shared face rules */
-  .card-front, .card-back {
-    position: absolute; inset: 0;
+  .game-front, .game-back {
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
-    overflow: hidden;
-  }
-  .card-front {
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: .3rem;
-  }
-  .card-back {
-    transform: rotateY(180deg);
-    padding: 1.25rem 1.2rem;
+    border-radius: 20px;
     display: flex; flex-direction: column;
   }
 
-  /* Front-face era photo */
-  .card-era-photo-wrap {
-    position: absolute; inset: 0;
-    overflow: hidden; z-index: 1;
-    border-radius: inherit;
+  /* ── Front: memory question ──────────────────────────────────────────────── */
+  .game-front {
+    background: var(--navy);
+    border: 1px solid rgba(43,179,163,.25);
+    padding: 2rem 2.5rem 2rem;
+    box-shadow: 0 0 50px rgba(43,179,163,.08), 0 20px 60px rgba(0,0,0,.55);
+    min-height: 440px;
+    justify-content: space-between;
   }
-  .card-era-photo-wrap img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    opacity: 0.58;
-    filter: saturate(0.55) brightness(0.85) contrast(1.05);
-    transition: opacity .45s, filter .45s;
-    display: block;
+  .q-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 1.25rem;
   }
-  .mem-card:hover .card-era-photo-wrap img {
-    opacity: 0.28;
-    filter: saturate(0.2) brightness(0.6) blur(1.5px);
+  .q-num {
+    font-family: 'Playfair Display', serif;
+    font-size: .72rem; letter-spacing: .18em; text-transform: uppercase;
+    color: rgba(43,179,163,.6);
   }
-  .card-era-photo-wrap::after {
-    content: '';
-    position: absolute; inset: 0;
-    pointer-events: none;
+  .q-icon { font-size: 1.5rem; opacity: .35; }
+
+  .q-memory {
+    flex: 1;
+    display: flex; align-items: center;
+    padding: 1.25rem 0 1.5rem;
   }
-  /* Per-variant warm color-grade overlays */
-  .card-v0 .card-era-photo-wrap::after { background: linear-gradient(160deg, rgba(192,57,43,.12) 0%, rgba(192,57,43,.52) 100%); }
-  .card-v1 .card-era-photo-wrap::after { background: linear-gradient(160deg, rgba(43,130,163,.12) 0%, rgba(43,179,163,.50) 100%); }
-  .card-v2 .card-era-photo-wrap::after { background: linear-gradient(160deg, rgba(210,195,160,.10) 0%, rgba(250,243,224,.40) 100%); }
-  .card-v3 .card-era-photo-wrap::after { background: linear-gradient(160deg, rgba(180,150,40,.10) 0%, rgba(244,211,94,.45) 100%); }
-  .card-v4 .card-era-photo-wrap::after { background: linear-gradient(160deg, rgba(100,110,120,.12) 0%, rgba(184,197,207,.42) 100%); }
-  .card-v5 .card-era-photo-wrap::after { background: linear-gradient(160deg, rgba(43,179,163,.10) 0%, rgba(91,200,168,.50) 100%); }
-  .card-era-photo-attr {
-    position: absolute; bottom: 2.4rem; right: .5rem;
-    font-size: .3rem; color: rgba(255,255,255,.2);
-    letter-spacing: .04em; pointer-events: none; z-index: 5;
+  .q-memory-text {
     font-family: 'Merriweather', serif;
+    font-size: clamp(.88rem, 2vw, 1.05rem);
+    line-height: 1.85;
+    color: rgba(250,243,224,.88);
+    white-space: pre-wrap; word-break: break-word;
+    max-height: 280px; overflow-y: auto;
   }
-
-  .card-front-hint {
-    font-family: 'Playfair Display', serif;
-    font-size: .46rem; letter-spacing: .22em; text-transform: uppercase;
-    color: rgba(250,243,224,.35);
-    position: relative; z-index: 5;
-    transition: color .3s, text-shadow .3s;
-    text-shadow: 0 1px 4px rgba(0,0,0,.6);
-  }
-  .mem-card:hover .card-front-hint {
-    color: rgba(250,243,224,.8);
-    text-shadow: 0 0 12px rgba(250,243,224,.4), 0 1px 4px rgba(0,0,0,.7);
-  }
-
-  /* ── Card variants — 50s/60s Diner Edition ── */
-  /* v0: Red vinyl booth */
-  .card-v0 {
-    background: rgba(192,57,43,.1);
-    border: 1.5px solid rgba(232,64,42,.5);
-    border-radius: 8px;
-  }
-  .mem-card:hover .card-back.card-v0,
-  .mem-card.flipped .card-back.card-v0 { box-shadow: 0 8px 32px rgba(232,64,42,.25); }
-
-  /* v1: Mint counter tile */
-  .card-v1 {
-    background: rgba(43,179,163,.08);
-    border: 1.5px solid rgba(91,200,194,.5);
-    border-radius: 4px 24px 4px 24px;
-  }
-  .mem-card:hover .card-back.card-v1,
-  .mem-card.flipped .card-back.card-v1 { box-shadow: 0 8px 32px rgba(91,200,194,.2); }
-
-  /* v2: Menu card cream */
-  .card-v2 {
-    background: rgba(250,243,224,.05);
-    border: 1.5px solid rgba(250,243,224,.3);
-    border-radius: 12px 12px 4px 4px;
-  }
-  .card-front.card-v2::before,
-  .card-back.card-v2::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0;
-    height: 4px;
-    background: linear-gradient(to right, var(--teal), var(--coral), var(--teal));
-    border-radius: 12px 12px 0 0;
-  }
-  .mem-card:hover .card-back.card-v2,
-  .mem-card.flipped .card-back.card-v2 { box-shadow: 0 8px 32px rgba(250,243,224,.1); }
-
-  /* v3: Butter yellow diner special */
-  .card-v3 {
-    background: rgba(244,211,94,.07);
-    border: 1.5px solid rgba(244,211,94,.45);
-    border-radius: 10px;
-  }
-  .card-front.card-v3::after,
-  .card-back.card-v3::after {
-    content: '★';
-    position: absolute; top: .4rem; right: .6rem;
-    font-size: .7rem; color: var(--butter);
-    opacity: .4; pointer-events: none;
-  }
-  .mem-card:hover .card-back.card-v3,
-  .mem-card.flipped .card-back.card-v3 { box-shadow: 0 8px 32px rgba(244,211,94,.15); }
-
-  /* v4: Chrome diner trim — top & bottom bars */
-  .card-v4 {
-    background: rgba(22,13,8,.98);
-    border: 1.5px solid rgba(184,197,207,.35);
-    border-radius: 0;
-  }
-  .card-back.card-v4 { padding-top: 1.5rem; }
-  .card-front.card-v4::before,
-  .card-back.card-v4::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0;
-    height: 4px;
-    background: linear-gradient(to right, rgba(184,197,207,.1), rgba(184,197,207,.6), rgba(184,197,207,.1));
-  }
-  .card-front.card-v4::after,
-  .card-back.card-v4::after {
-    content: '';
-    position: absolute; bottom: 0; left: 0; right: 0;
-    height: 4px;
-    background: linear-gradient(to right, rgba(184,197,207,.1), rgba(184,197,207,.6), rgba(184,197,207,.1));
-  }
-  .mem-card:hover .card-back.card-v4,
-  .mem-card.flipped .card-back.card-v4 { box-shadow: 0 8px 32px rgba(184,197,207,.15); }
-
-  /* v5: Checkered napkin */
-  .card-v5 {
-    background: repeating-conic-gradient(rgba(250,243,224,.03) 0% 25%, transparent 0% 50%) 0 0 / 16px 16px,
-                rgba(22,13,8,.6);
-    border: 1.5px solid rgba(250,243,224,.18);
-    border-radius: 14px;
-  }
-  .card-back.card-v5 { padding: 1.5rem 1.6rem; }
-  .mem-card:hover .card-back.card-v5,
-  .mem-card.flipped .card-back.card-v5 { box-shadow: 0 8px 32px rgba(250,243,224,.08); }
-
-  /* Card content (inside .card-back) */
-  .card-name-row {
-    display: flex; align-items: baseline; justify-content: space-between;
-    gap: .5rem; margin-bottom: .55rem;
-  }
-  .card-name {
-    font-family: 'Playfair Display', serif;
-    font-size: .88rem; font-weight: 700;
-    letter-spacing: .07em; text-transform: uppercase;
-  }
-  .card-seq {
-    font-family: 'Playfair Display', serif;
-    font-size: .6rem; font-weight: 400;
-    letter-spacing: .08em; opacity: .45;
-    white-space: nowrap; flex-shrink: 0;
-  }
-  .card-v0 .card-name { color: var(--coral);   text-shadow: 0 0 8px rgba(232,64,42,.35); }
-  .card-v1 .card-name { color: var(--teal-lt); text-shadow: 0 0 8px rgba(91,200,194,.35); }
-  .card-v2 .card-name { color: var(--cream);   text-shadow: 0 0 6px rgba(250,243,224,.2); }
-  .card-v3 .card-name { color: var(--butter);  text-shadow: 0 0 8px rgba(244,211,94,.35); }
-  .card-v4 .card-name { color: rgba(184,197,207,.9); text-shadow: 0 0 8px rgba(184,197,207,.25); }
-  .card-v5 .card-name { color: var(--cream);   opacity: .85; }
-
-  /* Photo-first hero layout */
-  .card-photo-hero {
-    width: calc(100% + 2.4rem);
-    margin: -.55rem -1.2rem .9rem;
-    height: 150px; object-fit: cover;
-    display: block;
-  }
-  .card-v0 .card-photo-hero { border-radius: 38px 8px 0 0; }
-  .card-v1 .card-photo-hero { border-radius: 8px 34px 0 0; }
-  .card-v2 .card-photo-hero { border-radius: 4px 30px 0 0; }
-  .card-v3 .card-photo-hero { border-radius: 8px 8px 0 0; }
-  .card-v4 .card-photo-hero { border-radius: 0; }
-  .card-v5 .card-photo-hero { border-radius: 48px 48px 0 0; }
-
-  .card-msg {
-    font-family: 'Merriweather', serif;
-    font-size: .78rem; line-height: 1.72;
-    color: rgba(250,243,224,.78);
-  }
-  .card-msg.clamp-long {
-    display: -webkit-box;
-    -webkit-line-clamp: 6;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .card-msg.clamp-short {
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .card-photos {
-    display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .6rem;
-  }
-  .card-photo-thumb {
-    width: 52px; height: 52px;
-    object-fit: cover; border-radius: 6px; opacity: .88;
-    transition: opacity .15s;
-  }
-  .card-photo-thumb:hover { opacity: 1; }
-  .card-more-photos {
-    width: 52px; height: 52px; border-radius: 6px;
-    background: rgba(255,255,255,.07);
-    border: 1px solid rgba(255,255,255,.14);
-    display: flex; align-items: center; justify-content: center;
-    font-size: .6rem; color: rgba(255,255,255,.45);
-    font-family: 'Playfair Display', serif;
-  }
-  .card-corner-mark {
-    position: absolute; bottom: .55rem; right: .7rem;
-    opacity: .15; pointer-events: none;
+  .q-memory-text.photo-only {
+    font-style: italic; color: rgba(250,243,224,.45);
     font-size: .9rem;
   }
 
-  /* ── Lightbox ───────────────────────────────────────────────────────────── */
-  #lightbox {
-    position: fixed; inset: 0;
-    background: rgba(10,15,28,.93);
-    backdrop-filter: blur(6px);
-    z-index: 2000;
-    display: flex; align-items: center; justify-content: center;
-    padding: 1.5rem;
-    opacity: 0; pointer-events: none;
-    transition: opacity .22s ease;
-  }
-  #lightbox.open { opacity: 1; pointer-events: auto; }
-
-  .lb-outer {
-    display: flex; align-items: center; gap: .75rem;
-    width: 100%; max-width: 680px;
-  }
-
-  /* Prev / Next nav arrows */
-  .lb-nav {
-    background: rgba(255,255,255,.07);
-    border: 1px solid rgba(255,255,255,.15);
-    color: rgba(255,255,255,.5);
-    width: 40px; height: 40px; flex-shrink: 0;
-    border-radius: 50%; cursor: pointer; font-size: 1.1rem;
-    display: flex; align-items: center; justify-content: center;
-    transition: background .18s, color .18s, border-color .18s;
-  }
-  .lb-nav:hover:not(:disabled) { background: var(--teal); color: var(--navy-dk); border-color: var(--teal); }
-  .lb-nav:disabled { opacity: .2; cursor: default; pointer-events: none; }
-  @media (max-width: 520px) { .lb-nav { display: none; } }
-
-  .lb-box {
-    background: var(--navy);
-    border: 1px solid rgba(43,179,163,.3);
-    border-radius: 16px;
-    flex: 1; min-width: 0;
-    max-height: 88vh; overflow-y: auto;
-    padding: 1.5rem 1.75rem 1.75rem;
-    box-shadow: 0 0 60px rgba(43,179,163,.12), 0 24px 60px rgba(0,0,0,.6);
-    position: relative;
-  }
-
-  .lb-top {
-    display: flex; align-items: flex-start;
-    justify-content: space-between; gap: 1rem;
+  .q-footer { text-align: center; }
+  .q-hint {
+    font-family: 'Playfair Display', serif;
+    font-size: .7rem; letter-spacing: .14em; text-transform: uppercase;
+    color: rgba(250,243,224,.3);
     margin-bottom: 1rem;
+    display: block;
   }
-  .lb-name-wrap { display: flex; flex-direction: column; gap: .2rem; }
-  .lb-name {
+  .reveal-btn {
+    width: 100%; padding: .9rem;
+    background: var(--teal); color: var(--navy-dk);
+    border: none; border-radius: 12px;
     font-family: 'Playfair Display', serif;
-    font-size: 1.25rem; font-weight: 700;
-    color: var(--teal-lt); line-height: 1.2;
-    text-shadow: 0 0 8px rgba(91,200,194,.3);
+    font-size: 1rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+    cursor: pointer;
+    transition: background .2s, box-shadow .2s, transform .1s;
+    box-shadow: 0 0 20px rgba(43,179,163,.35);
   }
-  .lb-pos {
+  .reveal-btn:hover  { background: var(--teal-lt); box-shadow: 0 0 30px rgba(43,179,163,.55); }
+  .reveal-btn:active { transform: scale(.97); }
+
+  /* ── Back: reveal ────────────────────────────────────────────────────────── */
+  .game-back {
+    position: absolute; inset: 0;
+    transform: rotateY(180deg);
+    background: #0C1E1A;
+    border: 1px solid rgba(43,179,163,.35);
+    padding: 2rem 2.5rem;
+    box-shadow: 0 0 50px rgba(43,179,163,.12), 0 20px 60px rgba(0,0,0,.55);
+    align-items: center;
+    gap: 1.1rem;
+    min-height: 440px;
+  }
+  .reveal-label {
     font-family: 'Playfair Display', serif;
-    font-size: .68rem; letter-spacing: .1em;
-    color: rgba(250,243,224,.35);
+    font-size: .68rem; letter-spacing: .22em; text-transform: uppercase;
+    color: rgba(43,179,163,.55);
+    align-self: flex-start;
   }
-  .lb-close {
-    /* Fixed position, not sticky+float — reliable across browsers */
+  .reveal-photo-wrap {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid rgba(43,179,163,.5);
+    box-shadow: 0 0 24px rgba(43,179,163,.3);
     flex-shrink: 0;
-    background: rgba(255,255,255,.08);
-    border: 1px solid rgba(255,255,255,.15);
-    color: rgba(255,255,255,.55);
-    width: 30px; height: 30px; border-radius: 50%;
-    cursor: pointer; font-size: .95rem; line-height: 1;
+    background: rgba(43,179,163,.08);
     display: flex; align-items: center; justify-content: center;
-    transition: background .18s, color .18s;
   }
-  .lb-close:hover { background: var(--coral); color: white; border-color: var(--coral); }
-  .lb-divider {
-    width: 36px; height: 2px;
-    background: linear-gradient(to right, var(--teal), transparent);
-    margin-bottom: .9rem;
+  .reveal-photo-wrap img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
   }
-  .lb-message {
-    font-family: 'Merriweather', serif;
-    font-size: .9rem; line-height: 1.82;
-    color: rgba(250,243,224,.86);
-    white-space: pre-wrap; word-break: break-word;
-  }
-  .lb-photos {
-    display: flex; flex-direction: column; gap: .75rem; margin-top: 1.25rem;
-  }
-  .lb-photo {
-    width: 100%; max-height: 400px;
-    object-fit: contain; border-radius: 8px;
-    cursor: zoom-in; display: block;
-    background: rgba(0,0,0,.3);
-    transition: opacity .15s;
-  }
-  .lb-photo:hover { opacity: .92; }
-
-  /* Mobile keyboard nav hint */
-  .lb-keyboard-hint {
-    text-align: center; margin-top: 1rem;
+  .reveal-photo-wrap .reveal-initial {
     font-family: 'Playfair Display', serif;
-    font-size: .6rem; letter-spacing: .1em;
-    color: rgba(255,255,255,.2);
+    font-size: 2.6rem; font-weight: 700;
+    color: var(--teal-lt); opacity: .7;
   }
-  @media (pointer: coarse) { .lb-keyboard-hint { display: none; } }
-
-  /* Full-image zoom */
-  .lb-photo-full {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,.96);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 3000; cursor: zoom-out;
+  .reveal-name-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+    font-weight: 700;
+    color: var(--butter);
+    text-align: center;
+    text-shadow: 0 0 24px rgba(244,211,94,.4);
+    line-height: 1.2;
   }
-  .lb-photo-full img { max-width: 95vw; max-height: 95vh; border-radius: 6px; }
-  .lb-photo-full.hidden { display: none; }
+  .reveal-divider {
+    width: 50px; height: 2px;
+    background: linear-gradient(to right, transparent, var(--teal), transparent);
+  }
+  .verdict-q {
+    font-family: 'Playfair Display', serif;
+    font-size: .8rem; letter-spacing: .1em; text-transform: uppercase;
+    color: rgba(250,243,224,.4);
+  }
+  .verdict-btns {
+    display: flex; gap: .75rem; width: 100%;
+  }
+  .verdict-btn {
+    flex: 1; padding: .85rem .5rem;
+    border: none; border-radius: 12px;
+    font-family: 'Playfair Display', serif;
+    font-size: .88rem; font-weight: 700; letter-spacing: .06em;
+    cursor: pointer;
+    transition: opacity .2s, transform .1s, box-shadow .2s;
+  }
+  .verdict-btn:active { transform: scale(.96); }
+  .verdict-btn.win  {
+    background: rgba(244,211,94,.15); border: 1.5px solid rgba(244,211,94,.5);
+    color: var(--butter);
+  }
+  .verdict-btn.win:hover  { background: rgba(244,211,94,.25); box-shadow: 0 0 18px rgba(244,211,94,.35); }
+  .verdict-btn.loss {
+    background: rgba(232,64,42,.15); border: 1.5px solid rgba(232,64,42,.5);
+    color: var(--coral);
+  }
+  .verdict-btn.loss:hover { background: rgba(232,64,42,.25); box-shadow: 0 0 18px rgba(232,64,42,.35); }
 
-  /* ── Easter egg ─────────────────────────────────────────────────────────── */
-  #pour-btn {
-    position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 500;
-    background: rgba(21,35,63,.9);
-    border: 1px solid rgba(247,108,94,.45);
-    color: var(--coral); padding: .5rem 1rem;
-    border-radius: 100px;
-    font-size: .7rem; font-weight: 700; letter-spacing: .08em;
-    text-transform: uppercase; cursor: pointer;
+  /* ── Feedback overlay ────────────────────────────────────────────────────── */
+  #feedback {
+    position: fixed; inset: 0; z-index: 2000;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity .18s ease;
+  }
+  #feedback.show { opacity: 1; pointer-events: auto; }
+  #feedback.fb-win  { background: rgba(10,40,10,.88); }
+  #feedback.fb-loss { background: rgba(50,5,5,.88); }
+  .fb-emoji { font-size: clamp(5rem, 14vw, 9rem); line-height: 1; }
+  .fb-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 4vw, 2.6rem); font-weight: 700;
+    margin-top: .6rem; text-align: center;
+    letter-spacing: .04em;
+  }
+  #feedback.fb-win  .fb-text { color: var(--butter); }
+  #feedback.fb-loss .fb-text { color: var(--coral); }
+
+  /* ── Start / Game-over screens ───────────────────────────────────────────── */
+  #screen-start, #screen-gameover {
+    width: 100%; max-width: 520px;
+    background: var(--navy);
+    border: 1px solid rgba(43,179,163,.25);
+    border-radius: 20px;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    box-shadow: 0 0 50px rgba(43,179,163,.08), 0 20px 60px rgba(0,0,0,.5);
+  }
+  .screen-icon   { font-size: 3.5rem; display: block; margin-bottom: 1rem; }
+  .screen-title  { font-family: 'Playfair Display', serif; font-size: clamp(1.3rem, 3vw, 2rem); font-weight: 700; color: var(--butter); margin-bottom: .75rem; }
+  .screen-body   { font-family: 'Merriweather', serif; font-size: .88rem; line-height: 1.75; color: rgba(250,243,224,.6); margin-bottom: 2rem; }
+  .screen-rules  { text-align: left; margin: 1.5rem 0; }
+  .screen-rules li { font-family: 'Merriweather', serif; font-size: .82rem; line-height: 1.75; color: rgba(250,243,224,.65); margin-bottom: .3rem; list-style: none; padding-left: 1.4rem; position: relative; }
+  .screen-rules li::before { content: attr(data-icon); position: absolute; left: 0; }
+  .screen-final  { display: flex; gap: 1.5rem; justify-content: center; margin: 1.25rem 0; }
+  .final-pill    { font-family: 'Playfair Display', serif; font-size: 1.1rem; padding: .5rem 1.2rem; border-radius: 100px; }
+  .final-pill.win  { background: rgba(244,211,94,.12); border: 1px solid rgba(244,211,94,.35); color: var(--butter); }
+  .final-pill.loss { background: rgba(232,64,42,.12);  border: 1px solid rgba(232,64,42,.35);  color: var(--coral); }
+  .start-btn, .again-btn {
+    display: inline-block; padding: .9rem 2.5rem;
+    background: var(--teal); color: var(--navy-dk);
+    border: none; border-radius: 12px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    cursor: pointer;
     transition: background .2s, box-shadow .2s;
-    backdrop-filter: blur(4px);
-    font-family: 'Playfair Display', serif;
+    box-shadow: 0 0 20px rgba(43,179,163,.35);
   }
-  #pour-btn:hover { background: rgba(247,108,94,.12); box-shadow: 0 0 14px rgba(247,108,94,.3); }
+  .start-btn:hover, .again-btn:hover { background: var(--teal-lt); box-shadow: 0 0 30px rgba(43,179,163,.5); }
 
-  #pour-overlay {
-    position: fixed; inset: 0;
-    background: rgba(10,15,28,.88);
-    backdrop-filter: blur(6px); z-index: 2500;
-    display: flex; align-items: center; justify-content: center; padding: 1.5rem;
-    opacity: 0; pointer-events: none; transition: opacity .22s ease;
-  }
-  #pour-overlay.open { opacity: 1; pointer-events: auto; }
-  .pour-sign {
-    position: relative; max-width: 440px; width: 100%;
-    border: 2px solid var(--coral); background: var(--navy);
-    border-radius: 0 0 20px 20px; padding: 1.75rem;
-    box-shadow: 0 0 30px rgba(247,108,94,.18);
-  }
-  .pour-sign::before {
-    content: '';
-    position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
-    width: 36px; height: 18px; background: var(--coral);
-    clip-path: polygon(50% 0%, 61% 38%, 98% 38%, 68% 62%, 79% 100%, 50% 76%, 21% 100%, 32% 62%, 2% 38%, 39% 38%);
-  }
-  .pour-label { font-family: 'Playfair Display', serif; font-size: .68rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--coral); margin-bottom: .5rem; }
-  .pour-name  { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--butter); margin-bottom: .75rem; }
-  .pour-msg   { font-family: 'Merriweather', serif; font-size: .85rem; line-height: 1.75; color: rgba(250,243,224,.8); white-space: pre-wrap; max-height: 40vh; overflow-y: auto; }
-  .pour-close { display: block; margin: 1.25rem auto 0; padding: .45rem 1.5rem; background: none; border: 1px solid rgba(247,108,94,.45); color: var(--coral); border-radius: 100px; cursor: pointer; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; font-family: 'Playfair Display', serif; transition: background .2s; }
-  .pour-close:hover { background: rgba(247,108,94,.1); }
-
-  /* ── Misc ───────────────────────────────────────────────────────────────── */
-  .loading-msg { text-align: center; padding: 4rem 1rem; color: rgba(255,255,255,.3); font-family: 'Playfair Display', serif; font-size: 1rem; letter-spacing: .1em; }
+  #screen-gameover { display: none; }
   </style>
 </head>
 <body>
@@ -819,9 +351,9 @@
 <!-- ── Password Gate ──────────────────────────────────────────────────────── -->
 <div id="gate">
   <div class="gate-box">
-    <span class="gate-star">✦</span>
+    <span class="gate-star">🍸</span>
     <h1>Omnipresent AJ</h1>
-    <p>Enter the password to celebrate 70 years of memories.</p>
+    <p>Enter the password to play.</p>
     <input type="password" id="gate-input" placeholder="Password" autocomplete="off">
     <button onclick="checkPassword()">Enter</button>
     <p class="gate-error" id="gate-error"></p>
@@ -833,72 +365,93 @@
   <div class="top-bar">
     <div class="top-title">Omnipresent <span>AJ</span> &nbsp;·&nbsp; 70 Years, Everywhere in Our Lives</div>
     <div class="top-right">
-      <div class="count-badge" id="count-badge">— / 70</div>
       <div class="toggle-wrap">
         <button class="toggle-btn" onclick="location.href='wall.html'">◈ Memories</button>
-        <button class="toggle-btn" id="btn-orbit" onclick="setView('orbit')">✦ Orbit</button>
-        <button class="toggle-btn active" id="btn-marquee" onclick="setView('marquee')">⬡ Memories V2</button>
+        <button class="toggle-btn active">🍸 Drinking Game</button>
         <button class="toggle-btn" onclick="location.href='wall-v3.html'">⬟ Mosaic AJ</button>
       </div>
     </div>
   </div>
 
-  <!-- View B: Marquee (default) -->
-  <div id="view-marquee" class="view active">
-    <div class="wall-header">
-      <div class="wall-h-title">Happy 70th Birthday</div>
-      <div class="wall-h-sub">to our <em>Omnipresent</em> <span>AJ</span></div>
-      <div class="wall-h-tagline">She's everywhere and means everything to us.<br>Here are 70 memories — and more to come.</div>
-    </div>
-    <div class="cards-grid" id="cards-grid">
-      <div class="loading-msg">Loading memories…</div>
-    </div>
-  </div>
+  <main class="game-main" id="game-main">
 
-  <!-- View A: Orbit -->
-  <div id="view-orbit" class="view">
-    <svg id="orbit-bg" aria-hidden="true"></svg>
-    <canvas id="orbit-lines" aria-hidden="true"></canvas>
-    <div id="orbit-nucleus" aria-hidden="true"></div>
-    <div id="orbit-nodes" role="list" aria-label="Memories orbiting AJ"></div>
-  </div>
-</div>
+    <!-- Start screen -->
+    <div id="screen-start">
+      <span class="screen-icon">🍸</span>
+      <h2 class="screen-title">AJ's Memory Drinking Game</h2>
+      <p class="screen-body">70 memories from the people who love AJ most.<br>Can she guess who sent each one?</p>
+      <ul class="screen-rules">
+        <li data-icon="✦">A memory appears — read it out loud</li>
+        <li data-icon="🤔">Everyone guesses who sent it</li>
+        <li data-icon="✦">Tap <strong>Reveal</strong> to see who it's really from</li>
+        <li data-icon="🎉">Guess right? Keep your drink!</li>
+        <li data-icon="🥃">Guess wrong? Take a shot!</li>
+      </ul>
+      <button class="start-btn" id="start-btn" onclick="startGame()">Deal the First Memory</button>
+    </div>
 
-<!-- ── Lightbox ───────────────────────────────────────────────────────────── -->
-<div id="lightbox" role="dialog" aria-modal="true" aria-label="Memory detail">
-  <div class="lb-outer">
-    <button class="lb-nav" id="lb-prev" onclick="lbStep(-1)" aria-label="Previous memory">&#8592;</button>
-    <div class="lb-box">
-      <div class="lb-top">
-        <div class="lb-name-wrap">
-          <div class="lb-name" id="lb-name"></div>
-          <div class="lb-pos" id="lb-pos"></div>
-        </div>
-        <button class="lb-close" onclick="closeLightbox()" aria-label="Close">✕</button>
+    <!-- Game screen (hidden until game starts) -->
+    <div id="screen-game" style="display:none; width:100%; max-width:560px;">
+      <div class="score-bar">
+        <div class="score-pill win">🏆 <span class="num" id="score-right">0</span></div>
+        <span class="progress-txt" id="progress-txt">— / —</span>
+        <div class="score-pill loss">🥃 <span class="num" id="score-wrong">0</span></div>
       </div>
-      <div class="lb-divider"></div>
-      <div class="lb-message" id="lb-message"></div>
-      <div class="lb-photos" id="lb-photos"></div>
-      <div class="lb-keyboard-hint">← → to browse &nbsp;·&nbsp; Esc to close</div>
+
+      <div class="game-card">
+        <div class="game-card-inner" id="card-inner">
+
+          <!-- FRONT: the memory -->
+          <div class="game-front">
+            <div class="q-header">
+              <span class="q-num" id="q-num">Memory 1</span>
+              <span class="q-icon">✦</span>
+            </div>
+            <div class="q-memory">
+              <div class="q-memory-text" id="q-text"></div>
+            </div>
+            <div class="q-footer">
+              <span class="q-hint">Who sent this to AJ?</span>
+              <button class="reveal-btn" onclick="doReveal()">Reveal →</button>
+            </div>
+          </div>
+
+          <!-- BACK: the reveal -->
+          <div class="game-back">
+            <span class="reveal-label">It was…</span>
+            <div class="reveal-photo-wrap" id="reveal-photo"></div>
+            <div class="reveal-name-text" id="reveal-name"></div>
+            <div class="reveal-divider"></div>
+            <span class="verdict-q">Were you right?</span>
+            <div class="verdict-btns">
+              <button class="verdict-btn win"  onclick="verdict(true)">🎉 Got it!</button>
+              <button class="verdict-btn loss" onclick="verdict(false)">🥃 Take a shot</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
-    <button class="lb-nav" id="lb-next" onclick="lbStep(1)" aria-label="Next memory">&#8594;</button>
-  </div>
+
+    <!-- Game over screen -->
+    <div id="screen-gameover">
+      <span class="screen-icon">🎊</span>
+      <h2 class="screen-title">That's all 70!</h2>
+      <p class="screen-body">Happy Birthday AJ — your people know you so well.</p>
+      <div class="screen-final">
+        <div class="final-pill win">🏆 <strong id="final-right">0</strong> right</div>
+        <div class="final-pill loss">🥃 <strong id="final-wrong">0</strong> shots</div>
+      </div>
+      <button class="again-btn" onclick="startGame()">Play Again</button>
+    </div>
+
+  </main>
 </div>
 
-<div class="lb-photo-full hidden" id="lb-photo-full" onclick="this.classList.add('hidden')"
-     role="dialog" aria-label="Full image">
-  <img id="lb-photo-full-img" src="" alt="">
-</div>
-
-<!-- Easter egg -->
-<button id="pour-btn" onclick="pourMemory()" aria-label="Pour a random memory">🍸 Pour a memory</button>
-<div id="pour-overlay" role="dialog" aria-modal="true" aria-label="Random memory">
-  <div class="pour-sign">
-    <div class="pour-label">✦ A memory, just for you</div>
-    <div class="pour-name" id="pour-name"></div>
-    <div class="pour-msg" id="pour-msg"></div>
-    <button class="pour-close" onclick="closePour()">Close</button>
-  </div>
+<!-- Feedback flash overlay -->
+<div id="feedback">
+  <span class="fb-emoji" id="fb-emoji"></span>
+  <span class="fb-text" id="fb-text"></span>
 </div>
 
 <script>
@@ -908,19 +461,14 @@ const CFG = {
   repo:     'aunt-julie-70',
   dataPath: 'docs/memories.json',
   password: 'AJ2026',
-  goal:     70,
 };
 
 // ── State ─────────────────────────────────────────────────────────────────
-let memories      = [];
-let contributors  = [];
-let currentView   = 'marquee';
-let orbitRAF         = null;
-let orbitNodeObjs    = [];
-let orbitInited      = false;
-let nucleusSvgRadius = 0; // outer radius of starburst, used to offset line starts
-let lightboxIdx   = -1;
-let reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let memories  = [];
+let shuffled  = [];   // shuffled indices into memories[]
+let gameIdx   = 0;
+let score     = { right: 0, wrong: 0 };
+let revealed  = false;
 
 // ── Init ──────────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
@@ -930,10 +478,8 @@ window.addEventListener('DOMContentLoaded', () => {
   if (localStorage.getItem('aj_auth') === '1') unlockApp();
 });
 
-// ── Password ──────────────────────────────────────────────────────────────
 function checkPassword() {
-  const val = document.getElementById('gate-input').value.trim();
-  if (val === CFG.password) {
+  if (document.getElementById('gate-input').value.trim() === CFG.password) {
     localStorage.setItem('aj_auth', '1');
     unlockApp();
   } else {
@@ -958,595 +504,116 @@ async function loadMemories() {
     console.warn('Could not load memories:', e.message);
     memories = [];
   }
-
-  // Build contributor groups (preserve submission order)
-  const seen = new Map();
-  memories.forEach((mem, i) => {
-    const key = (mem.name || '').trim();
-    if (!seen.has(key)) seen.set(key, { name: key, indices: [] });
-    seen.get(key).indices.push(i);
-  });
-  contributors = [...seen.values()];
-
-  document.getElementById('count-badge').textContent = `${memories.length} / ${CFG.goal}`;
-
-  renderMarquee();
-}
-
-// ── View toggle ───────────────────────────────────────────────────────────
-function setView(v) {
-  currentView = v;
-  document.getElementById('view-marquee').classList.toggle('active', v === 'marquee');
-  document.getElementById('view-orbit').classList.toggle('active', v === 'orbit');
-  document.getElementById('btn-marquee').classList.toggle('active', v === 'marquee');
-  document.getElementById('btn-orbit').classList.toggle('active', v === 'orbit');
-
-  if (v === 'orbit') {
-    initOrbit();           // safe: guarded by orbitInited flag
-    startOrbitAnimation();
-  } else {
-    if (orbitRAF) { cancelAnimationFrame(orbitRAF); orbitRAF = null; }
+  // Memories loaded — start button now live
+  const btn = document.getElementById('start-btn');
+  if (memories.length === 0) {
+    btn.textContent = 'No memories yet — check back soon!';
+    btn.disabled = true;
   }
 }
 
-// Pause animation when tab is hidden; resume when visible again
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden) {
-    if (orbitRAF) { cancelAnimationFrame(orbitRAF); orbitRAF = null; }
-  } else if (currentView === 'orbit' && orbitInited) {
-    startOrbitAnimation();
+// ── Game flow ─────────────────────────────────────────────────────────────
+function startGame() {
+  // Shuffle indices using Fisher-Yates
+  shuffled = memories.map((_, i) => i);
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
-});
+  gameIdx = 0;
+  score   = { right: 0, wrong: 0 };
 
-// ════════════════════════════════════════════════════════════════════════
-// MARQUEE VIEW
-// ════════════════════════════════════════════════════════════════════════
+  document.getElementById('screen-start').style.display    = 'none';
+  document.getElementById('screen-gameover').style.display = 'none';
+  document.getElementById('screen-game').style.display     = 'block';
 
-function buildSeqMap() {
-  const map = new Map();
-  contributors.forEach(c => {
-    c.indices.forEach((idx, pos) => {
-      map.set(idx, { pos: pos + 1, total: c.indices.length });
-    });
-  });
-  return map;
+  loadCard();
 }
 
-function renderMarquee() {
-  const grid = document.getElementById('cards-grid');
-  if (!memories.length) {
-    grid.innerHTML = '<div class="loading-msg">No memories yet.</div>';
+function loadCard() {
+  if (gameIdx >= shuffled.length) {
+    showGameOver();
     return;
   }
-  grid.innerHTML = '';
-  const seqMap = buildSeqMap();
-  memories.forEach((mem, i) => grid.appendChild(makeCard(mem, i, seqMap.get(i))));
-}
 
-const CORNER_MARKS = ['◆', '✦', '✶', '⬡', '◈', '✺'];
+  const mem = memories[shuffled[gameIdx]];
+  revealed  = false;
 
-// ── 50s/60s Diner front-face objects ─────────────────────────────────────
-function getCardObject(v) {
-  const ERA_PHOTOS = [
-    {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/6/64/JB_Neon_Sign_Nite_2002.jpg',
-      alt: "Johnie's Broiler neon sign, Downey CA",
-      attr: '© Wikimedia CC BY-SA'
-    },
-    {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/f/f8/Wurlitzer_jukebox.jpg',
-      alt: 'Wurlitzer jukebox, 1950s',
-      attr: '© Wikimedia CC BY-SA'
-    },
-    {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/3/32/Soda_fountain_at_Weed%27s_Pharmacy%2C_circa_1910_%28MOHAI_9541%29.jpg',
-      alt: 'Vintage soda fountain counter, c. 1910',
-      attr: '© Wikimedia Public Domain'
-    },
-    {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/2/2b/The_Ship_Restaurant%2C_Route_1%2C_Saugus%2C_Massachusetts.jpg',
-      alt: 'The Ship Restaurant, Route 1, Saugus MA — Googie architecture',
-      attr: '© Wikimedia Public Domain'
-    },
-    {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/a/a3/Wagon_wheel_neon1.jpg',
-      alt: 'Wagon Wheel Motel neon sign, vintage',
-      attr: '© Wikimedia CC BY 2.5'
-    },
-    {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/9/9f/S%26S_Diner_Miami_interior_July_2016.jpg',
-      alt: "S&S Diner Miami — classic diner interior",
-      attr: '© Wikimedia CC BY 2.0'
-    }
-  ];
-  const p = ERA_PHOTOS[v] || ERA_PHOTOS[0];
-  return `<div class="card-era-photo-wrap">
-    <img src="${p.src}" alt="${p.alt}" loading="lazy" crossorigin="anonymous">
-  </div>
-  <span class="card-era-photo-attr">${p.attr}</span>`;
-}
+  // Reset flip
+  const inner = document.getElementById('card-inner');
+  inner.style.transition = 'none';
+  inner.classList.remove('flipped');
+  // Force reflow before re-enabling transition
+  void inner.offsetHeight;
+  inner.style.transition = '';
 
-function makeCard(mem, memIdx, seq) {
-  const v = memIdx % 6;
-  const card = document.createElement('div');
-  card.className = 'mem-card';
-  card.setAttribute('tabindex', '0');
-  card.setAttribute('role', 'button');
-  card.setAttribute('aria-label', `Memory from ${mem.name || 'Anonymous'}`);
-
-  const msg     = (mem.message || '').trim();
-  const images  = mem.images || [];
-  const photoFirst = msg.length < 60 && images.length > 0;
-
-  let msgClass = 'card-msg';
-  if (msg.length > 400) msgClass += ' clamp-long';
-  else if (msg.length > 150) msgClass += ' clamp-short';
-
-  const seqLabel = seq && seq.total > 1
-    ? `<span class="card-seq">${seq.pos} of ${seq.total}</span>` : '';
-
-  let photosHTML = '';
-  const thumbStart = photoFirst ? 1 : 0;
-  if (images.length > thumbStart) {
-    const shown = images.slice(thumbStart, thumbStart + 3).map(src =>
-      `<img class="card-photo-thumb" src="${escAttr(src)}" alt="Photo from ${escAttr(mem.name)}" loading="lazy">`
-    ).join('');
-    const extra = images.length > thumbStart + 3
-      ? `<div class="card-more-photos">+${images.length - (thumbStart + 3)}</div>` : '';
-    photosHTML = `<div class="card-photos">${shown}${extra}</div>`;
+  // Populate question side
+  document.getElementById('q-num').textContent = `Memory ${gameIdx + 1} of ${shuffled.length}`;
+  const msgEl = document.getElementById('q-text');
+  if (mem.message && mem.message.trim()) {
+    msgEl.textContent = mem.message.trim();
+    msgEl.className = 'q-memory-text';
+  } else {
+    msgEl.textContent = '[ This memory came with a photo — no text. ]';
+    msgEl.className = 'q-memory-text photo-only';
   }
 
-  const heroHTML = photoFirst
-    ? `<img class="card-photo-hero" src="${escAttr(images[0])}" alt="Photo from ${escAttr(mem.name)}" loading="lazy">`
-    : '';
-
-  card.innerHTML = `
-    <div class="card-inner">
-      <div class="card-front card-v${v}">
-        ${getCardObject(v)}
-        <span class="card-front-hint">hover to remember</span>
-        <div class="card-corner-mark" aria-hidden="true">${CORNER_MARKS[v]}</div>
-      </div>
-      <div class="card-back card-v${v}">
-        <div class="card-name-row">
-          <span class="card-name">${esc(mem.name || 'Anonymous')}</span>
-          ${seqLabel}
-        </div>
-        ${heroHTML}
-        ${msg ? `<div class="${msgClass}">${esc(msg)}</div>` : ''}
-        ${photosHTML}
-        <div class="card-corner-mark" aria-hidden="true">${CORNER_MARKS[v]}</div>
-      </div>
-    </div>`;
-
-  // Mobile: tap to flip, second tap opens lightbox
-  card.addEventListener('click', () => {
-    if (!card.classList.contains('flipped') && window.matchMedia('(hover: none)').matches) {
-      card.classList.add('flipped');
-    } else {
-      openLightbox(memIdx);
-    }
-  });
-  card.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(memIdx); }
-  });
-  return card;
-}
-
-// ════════════════════════════════════════════════════════════════════════
-// ORBIT VIEW
-// ════════════════════════════════════════════════════════════════════════
-
-const RING_DEFS = [
-  { rxF: 0.44, ryF: 0.34, tilt:  15, period: 60000 },
-  { rxF: 0.56, ryF: 0.42, tilt: -22, period: 82000 },
-  { rxF: 0.67, ryF: 0.49, tilt:  32, period: 108000 },
-  { rxF: 0.77, ryF: 0.55, tilt: -12, period: 140000 },
-  { rxF: 0.90, ryF: 0.62, tilt:  24, period: 180000 },
-];
-
-function initOrbit() {
-  if (orbitInited || !memories.length) return;
-  orbitInited = true;
-
-  buildOrbitNodes();
-  drawOrbitSVG();
-  drawNucleus();
-  resizeOrbitCanvas();
-
-  window.addEventListener('resize', debounce(() => {
-    drawOrbitSVG();
-    drawNucleus();
-    resizeOrbitCanvas();
-  }, 150));
-}
-
-function resizeOrbitCanvas() {
-  const v = document.getElementById('view-orbit');
-  const canvas = document.getElementById('orbit-lines');
-  canvas.width  = v.clientWidth;
-  canvas.height = v.clientHeight;
-}
-
-function getOrbitBase() {
-  const v = document.getElementById('view-orbit');
-  return Math.min(v.clientWidth * 0.46, v.clientHeight * 0.46);
-}
-
-function buildOrbitNodes() {
-  const container = document.getElementById('orbit-nodes');
-  container.innerHTML = '';
-  orbitNodeObjs = [];
-
-  const n = memories.length;
-
-  // Distribute n memories across 5 rings by circumference
-  const circumferences = RING_DEFS.map(d =>
-    2 * Math.PI * Math.sqrt((d.rxF * d.rxF + d.ryF * d.ryF) / 2)
-  );
-  const totalC = circumferences.reduce((s, c) => s + c, 0);
-  const counts = circumferences.map(c => Math.max(0, Math.round(n * c / totalC)));
-  let diff = n - counts.reduce((s, c) => s + c, 0);
-  for (let ri = RING_DEFS.length - 1; diff !== 0; ri = (ri - 1 + RING_DEFS.length) % RING_DEFS.length) {
-    if (diff > 0) { counts[ri]++; diff--; }
-    else if (counts[ri] > 0) { counts[ri]--; diff++; }
+  // Populate reveal side
+  document.getElementById('reveal-name').textContent = mem.name || 'Anonymous';
+  const photoWrap = document.getElementById('reveal-photo');
+  if (mem.images && mem.images.length > 0) {
+    photoWrap.innerHTML = `<img src="${escAttr(mem.images[0])}" alt="Photo from ${escAttr(mem.name)}" loading="eager">`;
+  } else {
+    const initial = (mem.name || '?').trim().charAt(0).toUpperCase();
+    photoWrap.innerHTML = `<span class="reveal-initial">${esc(initial)}</span>`;
   }
 
-  let memIdx = 0;
-  RING_DEFS.forEach((rd, ri) => {
-    const ringCount = counts[ri];
-    for (let ni = 0; ni < ringCount && memIdx < memories.length; ni++) {
-      const idx = memIdx; // capture for closure
-      const mem = memories[idx];
-      const hasPhoto = (mem.images || []).length > 0;
-      const startAngle = (2 * Math.PI * ni / ringCount) + (ri * 0.618 * Math.PI);
-      const rawMsg = (mem.message || '').trim();
-      const snippet = rawMsg.slice(0, 80);
-      const ellipsis = rawMsg.length > 80 ? '…' : '';
-
-      const el = document.createElement('div');
-      el.className = 'orbit-node' + (hasPhoto ? ' has-photo' : '');
-      el.setAttribute('role', 'listitem');
-      el.setAttribute('tabindex', '0');
-      el.setAttribute('aria-label', `Memory from ${mem.name || 'Anonymous'}`);
-
-      el.innerHTML = `
-        <div class="node-orb"></div>
-        <div class="node-tooltip">
-          ${snippet ? `<div class="tooltip-msg">${esc(snippet)}${ellipsis}</div>` : ''}
-          <div class="tooltip-name">— ${esc(mem.name || 'Anonymous')}</div>
-        </div>`;
-
-      el.addEventListener('click', () => openLightbox(idx));
-      el.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(idx); }
-      });
-
-      el.addEventListener('mouseenter', () => { nodeObj.paused = true; });
-      el.addEventListener('mouseleave', () => { nodeObj.paused = false; });
-      el.addEventListener('focus',      () => { nodeObj.paused = true; });
-      el.addEventListener('blur',       () => { nodeObj.paused = false; });
-
-      container.appendChild(el);
-      const nodeObj = { el, ringIdx: ri, angle: startAngle, paused: false, x: 0, y: 0 };
-      orbitNodeObjs.push(nodeObj);
-      memIdx++;
-    }
-  });
+  // Update score display
+  document.getElementById('score-right').textContent  = score.right;
+  document.getElementById('score-wrong').textContent  = score.wrong;
+  document.getElementById('progress-txt').textContent = `${gameIdx + 1} of ${shuffled.length}`;
 }
 
-function drawNucleus() {
-  const v = document.getElementById('view-orbit');
-  const cx = v.clientWidth / 2;
-  const cy = v.clientHeight / 2;
-  const size = clamp(120, Math.min(v.clientWidth, v.clientHeight) * 0.28, 300);
-  nucleusSvgRadius = size / 2;
-  const r = size / 2;
-  const nPoints = 20;
-  const pts = [];
-  for (let i = 0; i < nPoints * 2; i++) {
-    const rad = i % 2 === 0 ? r : r * 0.44;
-    const a = (i * Math.PI / nPoints) - Math.PI / 2;
-    pts.push(`${(r + rad * Math.cos(a)).toFixed(1)},${(r + rad * Math.sin(a)).toFixed(1)}`);
+function doReveal() {
+  if (revealed) return;
+  revealed = true;
+  document.getElementById('card-inner').classList.add('flipped');
+}
+
+function verdict(isRight) {
+  if (isRight) {
+    score.right++;
+    flashFeedback('🎉', 'Nailed it!', 'fb-win');
+  } else {
+    score.wrong++;
+    flashFeedback('🥃', 'Take a shot!', 'fb-loss');
   }
-  const nuc = document.getElementById('orbit-nucleus');
-  nuc.style.left = cx + 'px';
-  nuc.style.top  = cy + 'px';
-  nuc.innerHTML = `
-    <div class="nucleus-bg">
-      <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" aria-hidden="true">
-        <polygon points="${pts.join(' ')}" fill="var(--teal)" opacity=".16"/>
-        <polygon points="${pts.join(' ')}" fill="none" stroke="var(--teal)" stroke-width="1.5" opacity=".72"/>
-      </svg>
-    </div>
-    <div class="nucleus-content">
-      <span class="nucleus-omni">Omnipresent</span>
-      <span class="nucleus-aj">AJ</span>
-      <span class="nucleus-sub">She's everywhere and means everything to us.</span>
-    </div>`;
+  gameIdx++;
+  // Load next card after feedback fades
+  setTimeout(loadCard, 1100);
 }
 
-function drawOrbitSVG() {
-  const v   = document.getElementById('view-orbit');
-  const svg = document.getElementById('orbit-bg');
-  const W   = v.clientWidth;
-  const H   = v.clientHeight;
-  const cx  = W / 2;
-  const cy  = H / 2;
-  const base = getOrbitBase();
-
-  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-  const rng = mulberry32(42);
-  let markup = '';
-
-  // Starfield
-  const N = Math.min(180, Math.floor(W * H / 4500));
-  for (let i = 0; i < N; i++) {
-    const sx = rng() * W;
-    const sy = rng() * H;
-    const sr = rng() * 1.1 + 0.3;
-    markup += `<circle cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="${sr.toFixed(1)}" fill="white" opacity="${(rng()*.45+.12).toFixed(2)}"/>`;
-  }
-
-  // Orbit rings
-  RING_DEFS.forEach((d, i) => {
-    const rx = d.rxF * base;
-    const ry = d.ryF * base;
-    markup += `<ellipse cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}"
-               transform="rotate(${d.tilt} ${cx.toFixed(1)} ${cy.toFixed(1)})"
-               fill="none" stroke="var(--teal)" stroke-width="0.75" opacity="${(0.1 + i*0.025).toFixed(3)}"
-               stroke-dasharray="3 7"/>`;
-  });
-
-  // Decorative asterisk marks
-  const spots = [[.1,.15],[.9,.12],[.08,.8],[.92,.82],[.5,.07],[.17,.5],[.83,.5]];
-  spots.forEach(([fx, fy]) => {
-    const x = W * fx; const y = H * fy;
-    const r = 5 + rng() * 4;
-    const pts = [];
-    for (let i = 0; i < 12; i++) {
-      const rr = i % 2 === 0 ? r : r * 0.42;
-      const a = (i * Math.PI / 6) - Math.PI / 2;
-      pts.push(`${(x+rr*Math.cos(a)).toFixed(1)},${(y+rr*Math.sin(a)).toFixed(1)}`);
-    }
-    markup += `<polygon points="${pts.join(' ')}" fill="${rng()>.5?'var(--teal)':'var(--butter)'}" opacity="0.14"/>`;
-  });
-
-  svg.innerHTML = markup;
+function showGameOver() {
+  document.getElementById('screen-game').style.display     = 'none';
+  document.getElementById('screen-gameover').style.display = 'block';
+  document.getElementById('final-right').textContent  = score.right;
+  document.getElementById('final-wrong').textContent  = score.wrong;
 }
 
-// ── Orbit connecting lines (canvas, drawn each frame) ────────────────────
-function drawOrbitLines(cx, cy) {
-  const canvas = document.getElementById('orbit-lines');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  const dotR   = 8;   // stop line this many px before the dot center
-  const arrLen = 5;   // arrowhead arm length
-
-  orbitNodeObjs.forEach(node => {
-    const dx   = node.x - cx;
-    const dy   = node.y - cy;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    if (dist < 1) return;
-    const ux = dx / dist;
-    const uy = dy / dist;
-
-    // Line tip: just before the dot
-    const tx = node.x - ux * dotR;
-    const ty = node.y - uy * dotR;
-
-    // Line from nucleus edge outward (not from dead center)
-    const margin = nucleusSvgRadius + 4;
-    const sx = cx + margin * ux;
-    const sy = cy + margin * uy;
-    if (dist <= margin + dotR) return; // node is inside nucleus, skip
-    ctx.beginPath();
-    ctx.moveTo(sx, sy);
-    ctx.lineTo(tx, ty);
-    ctx.strokeStyle = 'rgba(43,179,163,0.16)';
-    ctx.lineWidth = 0.75;
-    ctx.stroke();
-
-    // Arrowhead
-    const angle = Math.atan2(uy, ux);
-    ctx.beginPath();
-    ctx.moveTo(tx, ty);
-    ctx.lineTo(
-      tx - arrLen * Math.cos(angle - Math.PI / 6),
-      ty - arrLen * Math.sin(angle - Math.PI / 6)
-    );
-    ctx.moveTo(tx, ty);
-    ctx.lineTo(
-      tx - arrLen * Math.cos(angle + Math.PI / 6),
-      ty - arrLen * Math.sin(angle + Math.PI / 6)
-    );
-    ctx.strokeStyle = 'rgba(43,179,163,0.30)';
-    ctx.lineWidth = 0.75;
-    ctx.stroke();
-  });
+// ── Feedback flash ────────────────────────────────────────────────────────
+function flashFeedback(emoji, text, cls) {
+  const el = document.getElementById('feedback');
+  el.className = `show ${cls}`;
+  document.getElementById('fb-emoji').textContent = emoji;
+  document.getElementById('fb-text').textContent  = text;
+  setTimeout(() => { el.className = ''; }, 900);
 }
-
-// ── Orbit animation (delta-time, per-node pause) ──────────────────────────
-function startOrbitAnimation() {
-  if (orbitRAF) cancelAnimationFrame(orbitRAF);
-  let lastTime = null;
-
-  function frame(now) {
-    const delta = lastTime === null ? 0 : Math.min(now - lastTime, 100); // cap at 100ms
-    lastTime = now;
-
-    const v   = document.getElementById('view-orbit');
-    const cx  = v.clientWidth / 2;
-    const cy  = v.clientHeight / 2;
-    const base = getOrbitBase();
-
-    orbitNodeObjs.forEach(node => {
-      // Advance angle unless paused or reduced-motion
-      if (!node.paused && !reducedMotion) {
-        const rd = RING_DEFS[node.ringIdx];
-        node.angle += (2 * Math.PI * delta) / rd.period;
-      }
-
-      const rd = RING_DEFS[node.ringIdx];
-      const rx = rd.rxF * base;
-      const ry = rd.ryF * base;
-      const tiltRad = rd.tilt * Math.PI / 180;
-      const px = rx * Math.cos(node.angle);
-      const py = ry * Math.sin(node.angle);
-      const x  = cx + px * Math.cos(tiltRad) - py * Math.sin(tiltRad);
-      const y  = cy + px * Math.sin(tiltRad) + py * Math.cos(tiltRad);
-
-      node.x = x;
-      node.y = y;
-      node.el.style.left = x + 'px';
-      node.el.style.top  = y + 'px';
-    });
-
-    drawOrbitLines(cx, cy);
-    orbitRAF = requestAnimationFrame(frame);
-  }
-
-  orbitRAF = requestAnimationFrame(frame);
-}
-
-// ════════════════════════════════════════════════════════════════════════
-// LIGHTBOX
-// ════════════════════════════════════════════════════════════════════════
-
-function openLightbox(idx) {
-  lightboxIdx = idx;
-  renderLightbox();
-  const lb = document.getElementById('lightbox');
-  lb.classList.add('open');
-  lb.querySelector('.lb-box').scrollTop = 0;
-  document.getElementById('lb-prev').focus();
-}
-
-function renderLightbox() {
-  const mem = memories[lightboxIdx];
-  if (!mem) return;
-
-  document.getElementById('lb-name').textContent = mem.name || 'Anonymous';
-
-  // Position label: show "2 of 8" if person has multiple entries
-  const contrib = contributors.find(c => c.name === (mem.name || '').trim());
-  let posText = `${lightboxIdx + 1} of ${memories.length}`;
-  if (contrib && contrib.indices.length > 1) {
-    const posInGroup = contrib.indices.indexOf(lightboxIdx) + 1;
-    posText += ` · memory ${posInGroup} of ${contrib.indices.length} from ${contrib.name}`;
-  }
-  document.getElementById('lb-pos').textContent = posText;
-
-  document.getElementById('lb-message').textContent = mem.message || '';
-
-  // Photos — full-width stacked for proper viewing
-  const photos = document.getElementById('lb-photos');
-  photos.innerHTML = '';
-  (mem.images || []).forEach((src, i) => {
-    const img = document.createElement('img');
-    img.className = 'lb-photo';
-    img.src = src;
-    img.alt = `Photo ${i + 1} from ${mem.name}`;
-    img.loading = i === 0 ? 'eager' : 'lazy';
-    img.addEventListener('click', e => {
-      e.stopPropagation();
-      document.getElementById('lb-photo-full-img').src = src;
-      document.getElementById('lb-photo-full-img').alt = img.alt;
-      document.getElementById('lb-photo-full').classList.remove('hidden');
-    });
-    photos.appendChild(img);
-  });
-
-  // Update nav button state
-  document.getElementById('lb-prev').disabled = lightboxIdx <= 0;
-  document.getElementById('lb-next').disabled = lightboxIdx >= memories.length - 1;
-}
-
-function lbStep(dir) {
-  const next = lightboxIdx + dir;
-  if (next < 0 || next >= memories.length) return;
-  lightboxIdx = next;
-  renderLightbox();
-  document.getElementById('lightbox').querySelector('.lb-box').scrollTop = 0;
-}
-
-function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('open');
-  document.getElementById('lb-photo-full').classList.add('hidden');
-}
-
-document.getElementById('lightbox').addEventListener('click', e => {
-  if (e.target === document.getElementById('lightbox')) closeLightbox();
-});
-
-document.addEventListener('keydown', e => {
-  const lbOpen = document.getElementById('lightbox').classList.contains('open');
-  const fullOpen = !document.getElementById('lb-photo-full').classList.contains('hidden');
-  const pourOpen = document.getElementById('pour-overlay').classList.contains('open');
-
-  if (e.key === 'Escape') {
-    if (fullOpen) { document.getElementById('lb-photo-full').classList.add('hidden'); return; }
-    if (lbOpen)   { closeLightbox(); return; }
-    if (pourOpen) { closePour(); return; }
-  }
-  if (lbOpen && !fullOpen) {
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); lbStep(1); }
-    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   { e.preventDefault(); lbStep(-1); }
-  }
-});
-
-// ════════════════════════════════════════════════════════════════════════
-// EASTER EGG — Pour a memory
-// ════════════════════════════════════════════════════════════════════════
-
-function pourMemory() {
-  if (!memories.length) return;
-  const mem = memories[Math.floor(Math.random() * memories.length)];
-  document.getElementById('pour-name').textContent = mem.name || 'Anonymous';
-  document.getElementById('pour-msg').textContent  = mem.message || '';
-  document.getElementById('pour-overlay').classList.add('open');
-}
-function closePour() { document.getElementById('pour-overlay').classList.remove('open'); }
-document.getElementById('pour-overlay').addEventListener('click', e => {
-  if (e.target === document.getElementById('pour-overlay')) closePour();
-});
 
 // ── Utilities ─────────────────────────────────────────────────────────────
-
-function shortName(name) {
-  if (!name) return '—';
-  const s = name.trim();
-  if (s.length <= 14) return s;
-  // Find a clean break (prefer space boundary, avoid trailing comma)
-  const trunc = s.slice(0, 13);
-  const lastSpace = trunc.lastIndexOf(' ');
-  const cut = lastSpace > 5 ? trunc.slice(0, lastSpace) : trunc;
-  return cut.replace(/[,\s]+$/, '') + '…';
-}
-
 function esc(s) {
-  return String(s || '')
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-function escAttr(s) { return String(s || '').replace(/"/g, '&quot;'); }
-function clamp(min, val, max) { return Math.max(min, Math.min(max, val)); }
-
-function debounce(fn, ms) {
-  let t;
-  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
-}
-
-function mulberry32(seed) {
-  return function() {
-    let t = seed += 0x6D2B79F5;
-    t = Math.imul(t ^ t >>> 15, t | 1);
-    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-    return ((t ^ t >>> 14) >>> 0) / 4294967296;
-  };
-}
+function escAttr(s) { return String(s || '').replace(/"/g,'&quot;'); }
 </script>
 </body>
 </html>
