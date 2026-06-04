@@ -359,6 +359,35 @@
     letter-spacing: -.01em;
   }
 
+  /* ── Wall header ────────────────────────────────────────────────────────── */
+  .wall-header {
+    text-align: center;
+    padding: 2.5rem 1.5rem 1.5rem;
+    border-bottom: 1px solid rgba(43,179,163,.12);
+    margin-bottom: 1.5rem;
+  }
+  .wall-h-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4.5vw, 3rem);
+    font-weight: 700; color: var(--butter);
+    text-shadow: 0 0 24px rgba(244,211,94,.3);
+    line-height: 1.1;
+  }
+  .wall-h-sub {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(.95rem, 2.6vw, 1.5rem);
+    color: rgba(250,243,224,.5);
+    margin: .3rem 0 .6rem;
+  }
+  .wall-h-sub em  { font-style: italic; }
+  .wall-h-sub span { color: var(--teal-lt); font-style: normal; }
+  .wall-h-tagline {
+    font-family: 'Merriweather', serif;
+    font-size: clamp(.72rem, 1.6vw, .88rem);
+    color: rgba(250,243,224,.32);
+    line-height: 1.8;
+  }
+
   /* Cards grid */
   .cards-grid {
     display: grid;
@@ -747,24 +776,10 @@
 
   <!-- View B: Marquee (default) -->
   <div id="view-marquee" class="view active">
-    <div class="pylon-wrap">
-      <div class="pylon-left">
-        <svg class="pylon-starburst" viewBox="0 0 120 120" aria-hidden="true">
-          <polygon points="60,4 65,42 98,22 76,50 116,50 84,68 104,98 68,80 60,116 52,80 16,98 36,68 4,50 44,50 22,22 55,42"
-                   fill="var(--butter)" stroke="var(--navy-dk)" stroke-width="1"/>
-          <text x="60" y="68" text-anchor="middle" font-family="Playfair Display, serif"
-                font-size="22" font-weight="700" fill="var(--navy-dk)">AJ</text>
-        </svg>
-        <div class="pylon-body">
-          <div class="pylon-name">JULIE</div>
-          <div class="pylon-num">70</div>
-          <div class="pylon-sub">70 years of memories</div>
-        </div>
-      </div>
-      <div class="pylon-tagline">
-        Everywhere,<br>in all of our lives.
-        <strong>Happy 70th, Aunt Julie.</strong>
-      </div>
+    <div class="wall-header">
+      <div class="wall-h-title">Happy 70th Birthday</div>
+      <div class="wall-h-sub">to our <em>Omnipresent</em> <span>AJ</span></div>
+      <div class="wall-h-tagline">She's everywhere and means everything to us.<br>Here are 70 memories — and more to come.</div>
     </div>
     <div class="cards-grid" id="cards-grid">
       <div class="loading-msg">Loading memories…</div>
