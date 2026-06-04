@@ -513,13 +513,33 @@ async function loadMemories() {
 }
 
 // ── Game flow ─────────────────────────────────────────────────────────────
-function startGame() {
-  // Shuffle indices using Fisher-Yates
-  shuffled = memories.map((_, i) => i);
-  for (let i = shuffled.length - 1; i > 0; i--) {
+function shuffleFY(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    [arr[i], arr[j]] = [arr[j], arr[i]];
   }
+}
+
+// Sort memories by message length: long = specific = easier to guess; short = vague = harder.
+// Interleave them so the game alternates rather than clustering all vague ones together.
+function buildInterleavedDeck() {
+  const indexed = memories.map((m, i) => ({ i, len: (m.message || '').length }));
+  indexed.sort((a, b) => b.len - a.len);
+  const half   = Math.ceil(indexed.length / 2);
+  const easier = indexed.slice(0, half).map(x => x.i);
+  const harder = indexed.slice(half).map(x => x.i);
+  shuffleFY(easier);
+  shuffleFY(harder);
+  const result = [];
+  for (let k = 0; k < Math.max(easier.length, harder.length); k++) {
+    if (k < easier.length) result.push(easier[k]);
+    if (k < harder.length) result.push(harder[k]);
+  }
+  return result;
+}
+
+function startGame() {
+  shuffled = buildInterleavedDeck();
   gameIdx = 0;
   score   = { right: 0, wrong: 0 };
 
