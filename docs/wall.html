@@ -20,7 +20,6 @@
   }
 
   html, body { height: 100%; }
-
   body {
     font-family: 'Merriweather', Georgia, serif;
     background: var(--navy-dk);
@@ -28,7 +27,7 @@
     overflow-x: hidden;
   }
 
-  /* ── Password Gate ─────────────────────────────────────────────────────── */
+  /* ── Password Gate ──────────────────────────────────────────────────────── */
   #gate {
     position: fixed; inset: 0;
     background: var(--navy-dk);
@@ -45,33 +44,25 @@
     max-width: 380px; width: 90%;
     box-shadow: 0 0 40px rgba(43,179,163,.15), 0 8px 40px rgba(0,0,0,.5);
   }
-  .gate-star {
-    font-size: 2.8rem;
-    margin-bottom: .75rem;
-    display: block;
-  }
+  .gate-star { font-size: 2.8rem; margin-bottom: .75rem; display: block; }
   .gate-box h1 {
     font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
-    color: var(--butter);
-    margin-bottom: .25rem;
+    font-size: 1.5rem; color: var(--butter); margin-bottom: .25rem;
   }
-  .gate-box p { color: rgba(255,255,255,.5); margin-bottom: 1.5rem; font-size: .9rem; font-family: 'Merriweather', serif; }
+  .gate-box p {
+    color: rgba(255,255,255,.5); margin-bottom: 1.5rem;
+    font-size: .9rem; font-family: 'Merriweather', serif;
+  }
   .gate-box input {
     width: 100%; padding: .75rem 1rem;
     background: rgba(255,255,255,.06);
-    border: 1px solid rgba(43,179,163,.4);
-    border-radius: 8px;
+    border: 1px solid rgba(43,179,163,.4); border-radius: 8px;
     font-size: 1.1rem; text-align: center; letter-spacing: .2em;
-    color: white; outline: none;
-    margin-bottom: .75rem;
+    color: white; outline: none; margin-bottom: .75rem;
     transition: border-color .2s, box-shadow .2s;
     font-family: 'Merriweather', serif;
   }
-  .gate-box input:focus {
-    border-color: var(--teal);
-    box-shadow: 0 0 12px rgba(43,179,163,.3);
-  }
+  .gate-box input:focus { border-color: var(--teal); box-shadow: 0 0 12px rgba(43,179,163,.3); }
   .gate-box button {
     width: 100%; padding: .8rem;
     background: var(--teal); color: var(--navy-dk);
@@ -80,48 +71,44 @@
     cursor: pointer; font-family: 'Playfair Display', serif;
     transition: background .2s, box-shadow .2s;
   }
-  .gate-box button:hover {
-    background: var(--teal-lt);
-    box-shadow: 0 0 18px rgba(91,200,194,.4);
-  }
+  .gate-box button:hover { background: var(--teal-lt); box-shadow: 0 0 18px rgba(91,200,194,.4); }
   .gate-error { color: var(--coral); font-size: .82rem; margin-top: .5rem; font-family: 'Merriweather', serif; }
 
-  /* ── App shell ─────────────────────────────────────────────────────────── */
+  /* ── App shell ──────────────────────────────────────────────────────────── */
   #app.hidden { display: none; }
 
-  /* ── Top bar ───────────────────────────────────────────────────────────── */
+  /* ── Top bar ────────────────────────────────────────────────────────────── */
   .top-bar {
     position: sticky; top: 0; z-index: 100;
-    background: rgba(15,26,48,.92);
+    background: rgba(15,26,48,.94);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid rgba(43,179,163,.2);
     padding: .75rem 1.5rem;
-    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .75rem;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: .75rem;
   }
   .top-title {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(.9rem, 2.2vw, 1.1rem);
-    color: var(--butter);
-    letter-spacing: .04em;
+    font-size: clamp(.85rem, 2vw, 1.05rem);
+    color: var(--butter); letter-spacing: .03em;
   }
   .top-title span { color: var(--teal); }
-  .top-center { display: flex; align-items: center; gap: 1rem; }
+  .top-right { display: flex; align-items: center; gap: 1rem; }
   .count-badge {
-    font-size: .72rem; font-weight: 700; letter-spacing: .12em;
+    font-size: .7rem; font-weight: 700; letter-spacing: .12em;
     text-transform: uppercase; color: var(--butter);
     background: rgba(244,211,94,.1);
     border: 1px solid rgba(244,211,94,.3);
     padding: .3rem .8rem; border-radius: 100px;
-    white-space: nowrap;
-    font-family: 'Playfair Display', serif;
+    white-space: nowrap; font-family: 'Playfair Display', serif;
   }
   .toggle-wrap { display: flex; gap: .4rem; }
   .toggle-btn {
-    font-size: .7rem; font-weight: 700; letter-spacing: .08em;
+    font-size: .68rem; font-weight: 700; letter-spacing: .08em;
     text-transform: uppercase;
-    padding: .4rem .9rem; border-radius: 100px;
+    padding: .38rem .85rem; border-radius: 100px;
     border: 1px solid rgba(43,179,163,.4);
-    background: transparent; color: rgba(255,255,255,.5);
+    background: transparent; color: rgba(255,255,255,.45);
     cursor: pointer;
     transition: background .2s, color .2s, border-color .2s, box-shadow .2s;
     font-family: 'Playfair Display', serif;
@@ -133,489 +120,486 @@
   }
   .toggle-btn:not(.active):hover { border-color: var(--teal); color: var(--teal-lt); }
 
-  /* ── View containers ───────────────────────────────────────────────────── */
+  /* ── View containers ────────────────────────────────────────────────────── */
   .view { display: none; }
   .view.active { display: block; }
 
-  /* ══════════════════════════════════════════════════════════════════════════
+  /* ════════════════════════════════════════════════════════════════════════
      VIEW A — ORBIT
-  ══════════════════════════════════════════════════════════════════════════ */
+  ════════════════════════════════════════════════════════════════════════ */
   #view-orbit {
-    position: relative;
-    width: 100%;
+    position: relative; width: 100%;
     height: calc(100svh - 52px);
-    overflow: hidden;
-    background: var(--navy-dk);
+    overflow: hidden; background: var(--navy-dk);
   }
-
-  /* SVG background (starfield + rings) */
   #orbit-bg {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
     pointer-events: none;
   }
-
-  /* Nucleus */
   #orbit-nucleus {
     position: absolute;
     transform: translate(-50%, -50%);
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    pointer-events: none;
-    z-index: 5;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    pointer-events: none; z-index: 5;
   }
   .nucleus-svg {
     animation: nucleus-pulse 3s ease-in-out infinite;
   }
-  @media (prefers-reduced-motion: reduce) {
-    .nucleus-svg { animation: none; }
-  }
+  @media (prefers-reduced-motion: reduce) { .nucleus-svg { animation: none; } }
   @keyframes nucleus-pulse {
     0%, 100% { filter: drop-shadow(0 0 8px rgba(43,179,163,.6)) drop-shadow(0 0 20px rgba(43,179,163,.3)); }
     50%       { filter: drop-shadow(0 0 14px rgba(43,179,163,.9)) drop-shadow(0 0 40px rgba(43,179,163,.5)); }
   }
 
-  /* Memory nodes */
   .orbit-node {
     position: absolute;
     transform: translate(-50%, -50%);
-    z-index: 10;
-    cursor: pointer;
-    transition: filter .2s;
-  }
-  .orbit-node:hover .node-pill, .orbit-node:focus .node-pill {
-    background: var(--teal);
-    color: var(--navy-dk);
-    box-shadow: 0 0 12px rgba(43,179,163,.7), 0 0 24px rgba(43,179,163,.3);
-    transform: scale(1.1);
+    z-index: 10; cursor: pointer;
   }
   .orbit-node:focus { outline: none; }
-  .orbit-node:focus .node-pill {
-    outline: 2px solid var(--butter);
-    outline-offset: 2px;
-  }
+  .orbit-node:focus .node-pill { outline: 2px solid var(--butter); outline-offset: 2px; }
   .node-pill {
-    display: flex; align-items: center; gap: .35rem;
-    padding: .25rem .6rem;
-    background: rgba(21,35,63,.85);
-    border: 1px solid rgba(43,179,163,.5);
+    display: flex; align-items: center; gap: .3rem;
+    padding: .28rem .65rem;
+    background: rgba(21,35,63,.88);
+    border: 1px solid rgba(43,179,163,.45);
     border-radius: 100px;
     font-family: 'Playfair Display', serif;
-    font-size: clamp(.52rem, 1.1vw, .68rem);
+    font-size: clamp(.52rem, 1.1vw, .7rem);
     color: var(--teal-lt);
     white-space: nowrap;
     backdrop-filter: blur(4px);
-    transition: background .2s, color .2s, box-shadow .2s, transform .2s;
+    transition: background .18s, color .18s, box-shadow .18s, transform .18s;
     user-select: none;
+    will-change: transform;
+  }
+  /* Pause visual transform when node is hovered/focused */
+  .orbit-node:hover .node-pill,
+  .orbit-node:focus .node-pill {
+    background: var(--teal);
+    color: var(--navy-dk);
+    box-shadow: 0 0 14px rgba(43,179,163,.7), 0 0 28px rgba(43,179,163,.3);
+    transform: scale(1.12);
   }
   .node-dot {
     width: 5px; height: 5px;
-    background: var(--teal);
-    border-radius: 50%;
-    flex-shrink: 0;
-    box-shadow: 0 0 4px var(--teal);
+    background: var(--teal); border-radius: 50%;
+    flex-shrink: 0; box-shadow: 0 0 4px var(--teal);
+  }
+  .node-count {
+    font-size: .56rem; opacity: .65;
+    letter-spacing: 0;
+  }
+  .node-cam {
+    font-size: .58rem; opacity: .7;
+    letter-spacing: 0;
   }
 
-  /* ══════════════════════════════════════════════════════════════════════════
-     VIEW B — MARQUEE
-  ══════════════════════════════════════════════════════════════════════════ */
+  /* ════════════════════════════════════════════════════════════════════════
+     VIEW B — MARQUEE (default)
+  ════════════════════════════════════════════════════════════════════════ */
   #view-marquee {
     background: var(--navy-dk);
     min-height: calc(100svh - 52px);
     padding-bottom: 4rem;
   }
 
-  /* Pylon sign */
+  /* Pylon — compact and anchored to left on desktop */
   .pylon-wrap {
+    display: flex;
+    align-items: flex-end;
+    gap: 2rem;
+    padding: 2rem 2rem 1.5rem;
+    border-bottom: 1px solid rgba(43,179,163,.12);
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .pylon-left {
     display: flex; flex-direction: column; align-items: center;
-    padding: 3rem 1rem 2rem;
-    position: relative;
+    flex-shrink: 0;
   }
   .pylon-starburst {
-    width: clamp(80px, 14vw, 120px);
-    height: clamp(80px, 14vw, 120px);
-    margin-bottom: -.5rem;
-    filter: drop-shadow(0 0 8px rgba(244,211,94,.6)) drop-shadow(0 0 20px rgba(244,211,94,.3));
+    width: clamp(56px, 8vw, 80px);
+    height: clamp(56px, 8vw, 80px);
+    margin-bottom: -2px;
+    filter: drop-shadow(0 0 6px rgba(244,211,94,.5));
     animation: pylon-glow 4s ease-in-out infinite;
   }
   @media (prefers-reduced-motion: reduce) { .pylon-starburst { animation: none; } }
   @keyframes pylon-glow {
-    0%, 100% { filter: drop-shadow(0 0 8px rgba(244,211,94,.6)) drop-shadow(0 0 20px rgba(244,211,94,.3)); }
-    50%       { filter: drop-shadow(0 0 14px rgba(244,211,94,.9)) drop-shadow(0 0 35px rgba(244,211,94,.5)); }
+    0%, 100% { filter: drop-shadow(0 0 6px rgba(244,211,94,.5)); }
+    50%       { filter: drop-shadow(0 0 14px rgba(244,211,94,.9)) drop-shadow(0 0 28px rgba(244,211,94,.4)); }
   }
-
   .pylon-body {
     display: flex; flex-direction: column; align-items: stretch;
-    width: clamp(220px, 40vw, 400px);
-    position: relative;
+    width: clamp(140px, 22vw, 220px);
+    border: 1.5px solid var(--teal);
+    box-shadow: 0 0 20px rgba(43,179,163,.1);
   }
-  .pylon-body::after {
-    content: '';
-    display: block;
-    width: 14px; height: clamp(40px, 6vw, 80px);
-    background: linear-gradient(to bottom, rgba(43,179,163,.6), rgba(43,179,163,.2));
-    margin: 0 auto;
-  }
-  .pylon-panel {
-    border: 2px solid var(--teal);
-    padding: .75rem 1.5rem;
-    text-align: center;
-    position: relative;
-    margin-bottom: -2px;
-  }
-  .pylon-panel + .pylon-panel { border-top-color: transparent; }
   .pylon-name {
     background: var(--navy);
     font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 7vw, 4rem);
-    font-weight: 700;
-    letter-spacing: .35em;
+    font-size: clamp(1.3rem, 4vw, 2.2rem);
+    font-weight: 700; letter-spacing: .3em;
     color: var(--teal-lt);
-    text-shadow: 0 0 8px rgba(91,200,194,.8), 0 0 20px rgba(91,200,194,.4), 0 0 40px rgba(43,179,163,.3);
-    padding: .75rem 1.5rem;
-    border: 2px solid var(--teal);
+    text-shadow: 0 0 8px rgba(91,200,194,.7), 0 0 20px rgba(91,200,194,.3);
+    padding: .4rem .75rem;
+    text-align: center;
   }
   .pylon-num {
     background: var(--navy-dk);
     font-family: 'Playfair Display', serif;
-    font-size: clamp(3rem, 11vw, 7rem);
-    font-weight: 700;
-    color: var(--butter);
-    line-height: 1;
-    padding: .5rem 1.5rem .75rem;
-    letter-spacing: .08em;
-    text-shadow: 0 0 10px rgba(244,211,94,.7), 0 0 24px rgba(244,211,94,.3);
-    border: 2px solid var(--teal);
-    border-top-color: transparent;
+    font-size: clamp(2rem, 7vw, 4.5rem);
+    font-weight: 700; color: var(--butter); line-height: 1;
+    padding: .3rem .75rem .4rem;
+    letter-spacing: .08em; text-align: center;
+    text-shadow: 0 0 10px rgba(244,211,94,.6), 0 0 24px rgba(244,211,94,.25);
+    border-top: 1.5px solid var(--teal);
   }
   .pylon-sub {
-    background: var(--teal);
-    color: var(--navy-dk);
+    background: var(--teal); color: var(--navy-dk);
     font-family: 'Playfair Display', serif;
-    font-size: clamp(.7rem, 2vw, 1rem);
+    font-size: clamp(.58rem, 1.5vw, .72rem);
+    font-weight: 700; letter-spacing: .18em;
+    text-transform: uppercase; padding: .4rem .75rem;
+    text-align: center;
+    border-top: 1.5px solid rgba(0,0,0,.2);
+  }
+  .pylon-tagline {
+    flex: 1;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.8rem);
+    font-style: italic;
+    color: rgba(250,243,224,.45);
+    line-height: 1.35;
+    padding-bottom: .25rem;
+  }
+  .pylon-tagline strong {
+    display: block;
+    font-style: normal;
     font-weight: 700;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    padding: .6rem 1.5rem;
-    border: 2px solid var(--teal);
-    border-top-color: var(--navy-dk);
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
+    color: rgba(250,243,224,.7);
+    letter-spacing: -.01em;
   }
 
-  /* Memory card grid */
+  /* Cards grid */
   .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.25rem;
-    padding: 1rem 1.5rem 2rem;
-    max-width: 1300px;
-    margin: 0 auto;
+    padding: 0 1.5rem 2rem;
+    max-width: 1300px; margin: 0 auto;
   }
 
   /* Card base */
   .mem-card {
-    position: relative;
-    border-radius: 12px;
-    padding: 1.4rem 1.25rem;
+    position: relative; border-radius: 12px;
+    padding: 1.25rem 1.2rem;
     cursor: pointer;
-    transition: transform .25s ease, box-shadow .25s ease;
+    transition: transform .22s ease, box-shadow .22s ease;
     overflow: hidden;
   }
-  .mem-card:hover, .mem-card:focus {
-    transform: translateY(-4px);
-    outline: none;
-  }
+  .mem-card:hover { transform: translateY(-4px); }
+  .mem-card:focus { outline: none; }
   .mem-card:focus-visible { outline: 2px solid var(--butter); outline-offset: 3px; }
 
-  /* 6 card variants */
+  /* 6 card variants — no clip-path (kills box-shadow) */
   .card-v0 {
     background: rgba(21,35,63,.95);
-    border: 1.5px solid rgba(43,179,163,.5);
-    border-radius: 50px 12px 50px 12px;
-    box-shadow: 0 0 0 0 transparent;
+    border: 1.5px solid rgba(43,179,163,.45);
+    border-radius: 40px 10px 40px 10px;
   }
-  .card-v0:hover { box-shadow: 0 8px 30px rgba(43,179,163,.25); }
+  .card-v0:hover { box-shadow: 0 8px 32px rgba(43,179,163,.22); }
 
   .card-v1 {
-    background: rgba(247,108,94,.08);
-    border: 1.5px solid rgba(247,108,94,.5);
-    border-radius: 12px 40px 12px 40px;
-    box-shadow: 0 0 0 0 transparent;
+    background: rgba(247,108,94,.07);
+    border: 1.5px solid rgba(247,108,94,.45);
+    border-radius: 10px 36px 10px 36px;
   }
-  .card-v1:hover { box-shadow: 0 8px 30px rgba(247,108,94,.2); }
+  .card-v1:hover { box-shadow: 0 8px 32px rgba(247,108,94,.18); }
 
   .card-v2 {
     background: rgba(43,179,163,.07);
-    border: 1.5px solid rgba(43,179,163,.45);
-    border-radius: 4px 40px 4px 40px;
-    box-shadow: 0 0 0 0 transparent;
+    border: 1.5px solid rgba(43,179,163,.4);
+    border-radius: 6px 32px 6px 32px;
   }
-  .card-v2:hover { box-shadow: 0 8px 30px rgba(43,179,163,.2); }
+  .card-v2:hover { box-shadow: 0 8px 32px rgba(43,179,163,.18); }
 
   .card-v3 {
     background: rgba(244,211,94,.06);
-    border: 1.5px solid rgba(244,211,94,.4);
-    border-radius: 12px;
-    clip-path: polygon(0 0, 96% 0, 100% 4%, 100% 100%, 4% 100%, 0 96%);
-    box-shadow: 0 0 0 0 transparent;
+    border: 1.5px solid rgba(244,211,94,.38);
+    border-radius: 10px;
+    /* Corner-notch via outline offset trick instead of clip-path */
   }
-  .card-v3:hover { box-shadow: 0 8px 30px rgba(244,211,94,.15); }
+  .card-v3::after {
+    content: '';
+    position: absolute; top: -1px; right: -1px;
+    width: 18px; height: 18px;
+    background: var(--navy-dk);
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+  }
+  .card-v3:hover { box-shadow: 0 8px 32px rgba(244,211,94,.12); }
 
   .card-v4 {
     background: rgba(15,26,48,.98);
-    border: 1.5px solid rgba(247,108,94,.45);
-    border-radius: 0 0 40px 40px;
-    padding-top: 1.8rem;
-    box-shadow: 0 0 0 0 transparent;
+    border: 1.5px solid rgba(247,108,94,.4);
+    border-radius: 0 0 36px 36px;
+    padding-top: 1.5rem;
   }
   .card-v4::before {
     content: '';
-    position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
-    width: 18px; height: 18px;
-    background: var(--coral);
-    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-    box-shadow: 0 0 8px var(--coral);
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(to right, transparent, var(--coral), transparent);
   }
-  .card-v4:hover { box-shadow: 0 8px 30px rgba(247,108,94,.2); }
+  .card-v4:hover { box-shadow: 0 8px 32px rgba(247,108,94,.18); }
 
   .card-v5 {
-    background: rgba(250,243,224,.05);
-    border: 1.5px solid rgba(250,243,224,.25);
+    background: rgba(250,243,224,.04);
+    border: 1.5px solid rgba(250,243,224,.2);
     border-radius: 999px;
-    padding: 1.5rem 1.75rem;
-    box-shadow: 0 0 0 0 transparent;
+    padding: 1.5rem 1.6rem;
   }
-  .card-v5:hover { box-shadow: 0 8px 30px rgba(250,243,224,.08); }
+  .card-v5:hover { box-shadow: 0 8px 32px rgba(250,243,224,.07); }
 
   /* Card content */
+  .card-name-row {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: .5rem; margin-bottom: .55rem;
+  }
   .card-name {
     font-family: 'Playfair Display', serif;
-    font-size: .9rem;
-    font-weight: 700;
-    letter-spacing: .08em;
-    margin-bottom: .6rem;
-    text-transform: uppercase;
+    font-size: .88rem; font-weight: 700;
+    letter-spacing: .07em; text-transform: uppercase;
   }
-  .card-v0 .card-name { color: var(--teal-lt); text-shadow: 0 0 8px rgba(91,200,194,.4); }
-  .card-v1 .card-name { color: var(--coral);    text-shadow: 0 0 8px rgba(247,108,94,.4); }
-  .card-v2 .card-name { color: var(--teal-lt);  text-shadow: 0 0 8px rgba(91,200,194,.4); }
-  .card-v3 .card-name { color: var(--butter);   text-shadow: 0 0 8px rgba(244,211,94,.4); }
-  .card-v4 .card-name { color: var(--coral);    text-shadow: 0 0 8px rgba(247,108,94,.4); }
-  .card-v5 .card-name { color: var(--cream);    opacity: .85; }
+  .card-seq {
+    font-family: 'Playfair Display', serif;
+    font-size: .6rem; font-weight: 400;
+    letter-spacing: .08em; opacity: .45;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .card-v0 .card-name { color: var(--teal-lt); text-shadow: 0 0 8px rgba(91,200,194,.35); }
+  .card-v1 .card-name { color: var(--coral);   text-shadow: 0 0 8px rgba(247,108,94,.35); }
+  .card-v2 .card-name { color: var(--teal-lt); text-shadow: 0 0 8px rgba(91,200,194,.35); }
+  .card-v3 .card-name { color: var(--butter);  text-shadow: 0 0 8px rgba(244,211,94,.35); }
+  .card-v4 .card-name { color: var(--coral);   text-shadow: 0 0 8px rgba(247,108,94,.35); }
+  .card-v5 .card-name { color: var(--cream);   opacity: .85; }
+
+  /* Photo-first hero layout */
+  .card-photo-hero {
+    width: calc(100% + 2.4rem);
+    margin: -.55rem -1.2rem .9rem;
+    height: 160px; object-fit: cover;
+    display: block;
+  }
+  .card-v0 .card-photo-hero { border-radius: 38px 8px 0 0; }
+  .card-v1 .card-photo-hero { border-radius: 8px 34px 0 0; }
+  .card-v2 .card-photo-hero { border-radius: 4px 30px 0 0; }
+  .card-v3 .card-photo-hero { border-radius: 8px 8px 0 0; }
+  .card-v4 .card-photo-hero { border-radius: 0; }
+  .card-v5 .card-photo-hero { border-radius: 48px 48px 0 0; }
 
   .card-msg {
     font-family: 'Merriweather', serif;
-    font-size: .78rem;
-    line-height: 1.7;
-    color: rgba(250,243,224,.75);
+    font-size: .78rem; line-height: 1.72;
+    color: rgba(250,243,224,.78);
+  }
+  .card-msg.clamp-long {
     display: -webkit-box;
-    -webkit-line-clamp: 5;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .card-msg.clamp-short {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
 
   .card-photos {
-    display: flex; flex-wrap: wrap; gap: .35rem;
-    margin-top: .75rem;
+    display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .75rem;
   }
   .card-photo-thumb {
-    width: 52px; height: 52px;
-    object-fit: cover;
-    border-radius: 6px;
-    opacity: .85;
+    width: 58px; height: 58px;
+    object-fit: cover; border-radius: 6px; opacity: .88;
+    transition: opacity .15s;
   }
+  .card-photo-thumb:hover { opacity: 1; }
   .card-more-photos {
-    width: 52px; height: 52px;
-    border-radius: 6px;
-    background: rgba(255,255,255,.08);
-    border: 1px solid rgba(255,255,255,.15);
+    width: 58px; height: 58px; border-radius: 6px;
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.14);
     display: flex; align-items: center; justify-content: center;
-    font-size: .65rem;
-    color: rgba(255,255,255,.5);
+    font-size: .6rem; color: rgba(255,255,255,.45);
     font-family: 'Playfair Display', serif;
   }
-
-  .card-corner-star {
-    position: absolute; bottom: .6rem; right: .7rem;
-    opacity: .2;
-    pointer-events: none;
+  .card-corner-mark {
+    position: absolute; bottom: .55rem; right: .7rem;
+    opacity: .15; pointer-events: none;
+    font-size: .9rem;
   }
 
-  /* ── Lightbox ──────────────────────────────────────────────────────────── */
+  /* ── Lightbox ───────────────────────────────────────────────────────────── */
   #lightbox {
     position: fixed; inset: 0;
-    background: rgba(10,15,28,.92);
+    background: rgba(10,15,28,.93);
     backdrop-filter: blur(6px);
     z-index: 2000;
     display: flex; align-items: center; justify-content: center;
     padding: 1.5rem;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .25s ease;
+    opacity: 0; pointer-events: none;
+    transition: opacity .22s ease;
   }
-  #lightbox.open {
-    opacity: 1;
-    pointer-events: auto;
+  #lightbox.open { opacity: 1; pointer-events: auto; }
+
+  .lb-outer {
+    display: flex; align-items: center; gap: .75rem;
+    width: 100%; max-width: 680px;
   }
+
+  /* Prev / Next nav arrows */
+  .lb-nav {
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.15);
+    color: rgba(255,255,255,.5);
+    width: 40px; height: 40px; flex-shrink: 0;
+    border-radius: 50%; cursor: pointer; font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .18s, color .18s, border-color .18s;
+  }
+  .lb-nav:hover:not(:disabled) { background: var(--teal); color: var(--navy-dk); border-color: var(--teal); }
+  .lb-nav:disabled { opacity: .2; cursor: default; pointer-events: none; }
+  @media (max-width: 520px) { .lb-nav { display: none; } }
+
   .lb-box {
     background: var(--navy);
-    border: 1px solid rgba(43,179,163,.35);
+    border: 1px solid rgba(43,179,163,.3);
     border-radius: 16px;
-    max-width: 600px; width: 100%;
-    max-height: 90vh; overflow-y: auto;
-    padding: 2rem;
-    box-shadow: 0 0 60px rgba(43,179,163,.15), 0 24px 60px rgba(0,0,0,.6);
+    flex: 1; min-width: 0;
+    max-height: 88vh; overflow-y: auto;
+    padding: 1.5rem 1.75rem 1.75rem;
+    box-shadow: 0 0 60px rgba(43,179,163,.12), 0 24px 60px rgba(0,0,0,.6);
     position: relative;
   }
-  .lb-close {
-    position: sticky; top: 0;
-    float: right;
-    background: rgba(255,255,255,.08);
-    border: 1px solid rgba(255,255,255,.15);
-    color: rgba(255,255,255,.6);
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 1rem; line-height: 1;
-    display: flex; align-items: center; justify-content: center;
-    transition: background .2s, color .2s;
-    z-index: 1;
-    flex-shrink: 0;
+
+  .lb-top {
+    display: flex; align-items: flex-start;
+    justify-content: space-between; gap: 1rem;
+    margin-bottom: 1rem;
   }
-  .lb-close:hover { background: var(--coral); color: white; border-color: var(--coral); }
-  .lb-header {
-    display: flex; align-items: flex-start; gap: 1rem;
-    margin-bottom: 1.25rem;
-    padding-right: 2rem;
-  }
-  .lb-starburst { flex-shrink: 0; }
+  .lb-name-wrap { display: flex; flex-direction: column; gap: .2rem; }
   .lb-name {
     font-family: 'Playfair Display', serif;
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--teal-lt);
-    line-height: 1.2;
+    font-size: 1.25rem; font-weight: 700;
+    color: var(--teal-lt); line-height: 1.2;
     text-shadow: 0 0 8px rgba(91,200,194,.3);
   }
+  .lb-pos {
+    font-family: 'Playfair Display', serif;
+    font-size: .68rem; letter-spacing: .1em;
+    color: rgba(250,243,224,.35);
+  }
+  .lb-close {
+    /* Fixed position, not sticky+float — reliable across browsers */
+    flex-shrink: 0;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.15);
+    color: rgba(255,255,255,.55);
+    width: 30px; height: 30px; border-radius: 50%;
+    cursor: pointer; font-size: .95rem; line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .18s, color .18s;
+  }
+  .lb-close:hover { background: var(--coral); color: white; border-color: var(--coral); }
   .lb-divider {
-    width: 40px; height: 2px;
+    width: 36px; height: 2px;
     background: linear-gradient(to right, var(--teal), transparent);
-    margin: .75rem 0;
+    margin-bottom: .9rem;
   }
   .lb-message {
     font-family: 'Merriweather', serif;
-    font-size: .9rem;
-    line-height: 1.8;
-    color: rgba(250,243,224,.85);
-    white-space: pre-wrap;
-    word-break: break-word;
+    font-size: .9rem; line-height: 1.82;
+    color: rgba(250,243,224,.86);
+    white-space: pre-wrap; word-break: break-word;
   }
   .lb-photos {
-    display: flex; flex-wrap: wrap; gap: .5rem;
-    margin-top: 1.25rem;
+    display: flex; flex-direction: column; gap: .75rem; margin-top: 1.25rem;
   }
   .lb-photo {
-    max-width: 100%;
-    max-height: 280px;
-    border-radius: 8px;
-    cursor: zoom-in;
-    transition: opacity .2s;
-    object-fit: cover;
+    width: 100%; max-height: 400px;
+    object-fit: contain; border-radius: 8px;
+    cursor: zoom-in; display: block;
+    background: rgba(0,0,0,.3);
+    transition: opacity .15s;
   }
-  .lb-photo:hover { opacity: .9; }
-  .lb-single-photo { max-width: min(100%, 400px); }
+  .lb-photo:hover { opacity: .92; }
+
+  /* Mobile keyboard nav hint */
+  .lb-keyboard-hint {
+    text-align: center; margin-top: 1rem;
+    font-family: 'Playfair Display', serif;
+    font-size: .6rem; letter-spacing: .1em;
+    color: rgba(255,255,255,.2);
+  }
+  @media (pointer: coarse) { .lb-keyboard-hint { display: none; } }
+
+  /* Full-image zoom */
   .lb-photo-full {
     position: fixed; inset: 0;
-    background: rgba(0,0,0,.95);
+    background: rgba(0,0,0,.96);
     display: flex; align-items: center; justify-content: center;
-    z-index: 3000;
-    cursor: zoom-out;
+    z-index: 3000; cursor: zoom-out;
   }
   .lb-photo-full img { max-width: 95vw; max-height: 95vh; border-radius: 6px; }
   .lb-photo-full.hidden { display: none; }
 
-  /* ── Easter egg: Pour a memory ─────────────────────────────────────────── */
+  /* ── Easter egg ─────────────────────────────────────────────────────────── */
   #pour-btn {
     position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 500;
     background: rgba(21,35,63,.9);
-    border: 1px solid rgba(247,108,94,.5);
-    color: var(--coral);
-    padding: .5rem 1rem;
+    border: 1px solid rgba(247,108,94,.45);
+    color: var(--coral); padding: .5rem 1rem;
     border-radius: 100px;
-    font-size: .72rem; font-weight: 700; letter-spacing: .08em;
-    text-transform: uppercase;
-    cursor: pointer;
+    font-size: .7rem; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; cursor: pointer;
     transition: background .2s, box-shadow .2s;
     backdrop-filter: blur(4px);
     font-family: 'Playfair Display', serif;
   }
-  #pour-btn:hover { background: rgba(247,108,94,.15); box-shadow: 0 0 14px rgba(247,108,94,.3); }
+  #pour-btn:hover { background: rgba(247,108,94,.12); box-shadow: 0 0 14px rgba(247,108,94,.3); }
 
   #pour-overlay {
     position: fixed; inset: 0;
     background: rgba(10,15,28,.88);
-    backdrop-filter: blur(6px);
-    z-index: 2500;
-    display: flex; align-items: center; justify-content: center;
-    padding: 1.5rem;
-    opacity: 0; pointer-events: none;
-    transition: opacity .25s ease;
+    backdrop-filter: blur(6px); z-index: 2500;
+    display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+    opacity: 0; pointer-events: none; transition: opacity .22s ease;
   }
   #pour-overlay.open { opacity: 1; pointer-events: auto; }
-
   .pour-sign {
-    position: relative;
-    max-width: 420px; width: 100%;
-    border: 2px solid var(--coral);
-    background: var(--navy);
-    border-radius: 0 0 20px 20px;
-    padding: 1.75rem;
-    box-shadow: 0 0 30px rgba(247,108,94,.2), 0 0 60px rgba(247,108,94,.1);
+    position: relative; max-width: 440px; width: 100%;
+    border: 2px solid var(--coral); background: var(--navy);
+    border-radius: 0 0 20px 20px; padding: 1.75rem;
+    box-shadow: 0 0 30px rgba(247,108,94,.18);
   }
   .pour-sign::before {
     content: '';
-    position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
-    width: 40px; height: 20px;
-    background: var(--coral);
+    position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
+    width: 36px; height: 18px; background: var(--coral);
     clip-path: polygon(50% 0%, 61% 38%, 98% 38%, 68% 62%, 79% 100%, 50% 76%, 21% 100%, 32% 62%, 2% 38%, 39% 38%);
   }
-  .pour-label {
-    font-family: 'Playfair Display', serif;
-    font-size: .7rem; font-weight: 700; letter-spacing: .2em;
-    text-transform: uppercase;
-    color: var(--coral);
-    text-shadow: 0 0 8px rgba(247,108,94,.5);
-    margin-bottom: .5rem;
-  }
-  .pour-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3rem; font-weight: 700;
-    color: var(--butter);
-    margin-bottom: .75rem;
-  }
-  .pour-msg {
-    font-family: 'Merriweather', serif;
-    font-size: .85rem; line-height: 1.75;
-    color: rgba(250,243,224,.8);
-    white-space: pre-wrap;
-  }
-  .pour-close {
-    display: block;
-    margin: 1.25rem auto 0;
-    padding: .5rem 1.5rem;
-    background: none; border: 1px solid rgba(247,108,94,.5);
-    color: var(--coral); border-radius: 100px;
-    cursor: pointer; font-size: .75rem; letter-spacing: .1em;
-    text-transform: uppercase; font-family: 'Playfair Display', serif;
-    transition: background .2s;
-  }
+  .pour-label { font-family: 'Playfair Display', serif; font-size: .68rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--coral); margin-bottom: .5rem; }
+  .pour-name  { font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700; color: var(--butter); margin-bottom: .75rem; }
+  .pour-msg   { font-family: 'Merriweather', serif; font-size: .85rem; line-height: 1.75; color: rgba(250,243,224,.8); white-space: pre-wrap; max-height: 40vh; overflow-y: auto; }
+  .pour-close { display: block; margin: 1.25rem auto 0; padding: .45rem 1.5rem; background: none; border: 1px solid rgba(247,108,94,.45); color: var(--coral); border-radius: 100px; cursor: pointer; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; font-family: 'Playfair Display', serif; transition: background .2s; }
   .pour-close:hover { background: rgba(247,108,94,.1); }
 
-  /* ── Loading state ─────────────────────────────────────────────────────── */
-  .loading-msg {
-    text-align: center; padding: 4rem 1rem;
-    color: rgba(255,255,255,.3);
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem; letter-spacing: .1em;
-  }
+  /* ── Misc ───────────────────────────────────────────────────────────────── */
+  .loading-msg { text-align: center; padding: 4rem 1rem; color: rgba(255,255,255,.3); font-family: 'Playfair Display', serif; font-size: 1rem; letter-spacing: .1em; }
   </style>
 </head>
 <body>
@@ -634,40 +618,36 @@
 
 <!-- ── App ───────────────────────────────────────────────────────────────── -->
 <div id="app" class="hidden">
-
-  <!-- Top bar -->
   <div class="top-bar">
     <div class="top-title">Omnipresent <span>AJ</span> &nbsp;·&nbsp; 70 Years, Everywhere in Our Lives</div>
-    <div class="top-center">
+    <div class="top-right">
       <div class="count-badge" id="count-badge">— / 70</div>
       <div class="toggle-wrap">
-        <button class="toggle-btn active" id="btn-orbit" onclick="setView('orbit')">✦ Orbit</button>
-        <button class="toggle-btn" id="btn-marquee" onclick="setView('marquee')">◈ Marquee</button>
+        <button class="toggle-btn active" id="btn-marquee" onclick="setView('marquee')">◈ Memories</button>
+        <button class="toggle-btn" id="btn-orbit" onclick="setView('orbit')">✦ Orbit</button>
       </div>
     </div>
   </div>
 
-  <!-- View A: Orbit -->
-  <div id="view-orbit" class="view active">
-    <svg id="orbit-bg" aria-hidden="true"></svg>
-    <div id="orbit-nucleus" aria-hidden="true"></div>
-    <div id="orbit-nodes" role="list" aria-label="Memory contributors orbiting AJ"></div>
-    <div id="orbit-loading" class="loading-msg">Loading memories…</div>
-  </div>
-
-  <!-- View B: Marquee -->
-  <div id="view-marquee" class="view">
+  <!-- View B: Marquee (default) -->
+  <div id="view-marquee" class="view active">
     <div class="pylon-wrap">
-      <svg class="pylon-starburst" viewBox="0 0 120 120" aria-hidden="true">
-        <polygon points="60,4 65,42 98,22 76,50 116,50 84,68 104,98 68,80 60,116 52,80 16,98 36,68 4,50 44,50 22,22 55,42"
-                 fill="var(--butter)" stroke="var(--navy-dk)" stroke-width="1"/>
-        <text x="60" y="68" text-anchor="middle" font-family="Playfair Display, serif"
-              font-size="22" font-weight="700" fill="var(--navy-dk)">AJ</text>
-      </svg>
-      <div class="pylon-body">
-        <div class="pylon-name">JULIE</div>
-        <div class="pylon-num">70</div>
-        <div class="pylon-sub">70 years of memories</div>
+      <div class="pylon-left">
+        <svg class="pylon-starburst" viewBox="0 0 120 120" aria-hidden="true">
+          <polygon points="60,4 65,42 98,22 76,50 116,50 84,68 104,98 68,80 60,116 52,80 16,98 36,68 4,50 44,50 22,22 55,42"
+                   fill="var(--butter)" stroke="var(--navy-dk)" stroke-width="1"/>
+          <text x="60" y="68" text-anchor="middle" font-family="Playfair Display, serif"
+                font-size="22" font-weight="700" fill="var(--navy-dk)">AJ</text>
+        </svg>
+        <div class="pylon-body">
+          <div class="pylon-name">JULIE</div>
+          <div class="pylon-num">70</div>
+          <div class="pylon-sub">70 years of memories</div>
+        </div>
+      </div>
+      <div class="pylon-tagline">
+        Everywhere,<br>in all of our lives.
+        <strong>Happy 70th, Aunt Julie.</strong>
       </div>
     </div>
     <div class="cards-grid" id="cards-grid">
@@ -675,34 +655,42 @@
     </div>
   </div>
 
+  <!-- View A: Orbit -->
+  <div id="view-orbit" class="view">
+    <svg id="orbit-bg" aria-hidden="true"></svg>
+    <div id="orbit-nucleus" aria-hidden="true"></div>
+    <div id="orbit-nodes" role="list" aria-label="Memory contributors orbiting AJ"></div>
+  </div>
 </div>
 
 <!-- ── Lightbox ───────────────────────────────────────────────────────────── -->
 <div id="lightbox" role="dialog" aria-modal="true" aria-label="Memory detail">
-  <div class="lb-box">
-    <button class="lb-close" onclick="closeLightbox()" aria-label="Close">✕</button>
-    <div class="lb-header">
-      <svg class="lb-starburst" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
-        <polygon points="16,1 17.5,12 26,6 19,14 31,16 19,18 26,26 17.5,20 16,31 14.5,20 6,26 13,18 1,16 13,14 6,6 14.5,12"
-                 fill="var(--teal)"/>
-      </svg>
-      <div class="lb-name" id="lb-name"></div>
+  <div class="lb-outer">
+    <button class="lb-nav" id="lb-prev" onclick="lbStep(-1)" aria-label="Previous memory">&#8592;</button>
+    <div class="lb-box">
+      <div class="lb-top">
+        <div class="lb-name-wrap">
+          <div class="lb-name" id="lb-name"></div>
+          <div class="lb-pos" id="lb-pos"></div>
+        </div>
+        <button class="lb-close" onclick="closeLightbox()" aria-label="Close">✕</button>
+      </div>
+      <div class="lb-divider"></div>
+      <div class="lb-message" id="lb-message"></div>
+      <div class="lb-photos" id="lb-photos"></div>
+      <div class="lb-keyboard-hint">← → to browse &nbsp;·&nbsp; Esc to close</div>
     </div>
-    <div class="lb-divider"></div>
-    <div class="lb-message" id="lb-message"></div>
-    <div class="lb-photos" id="lb-photos"></div>
+    <button class="lb-nav" id="lb-next" onclick="lbStep(1)" aria-label="Next memory">&#8594;</button>
   </div>
 </div>
 
-<!-- Full-image zoom within lightbox -->
-<div class="lb-photo-full hidden" id="lb-photo-full" onclick="this.classList.add('hidden')" role="dialog" aria-label="Full image">
+<div class="lb-photo-full hidden" id="lb-photo-full" onclick="this.classList.add('hidden')"
+     role="dialog" aria-label="Full image">
   <img id="lb-photo-full-img" src="" alt="">
 </div>
 
-<!-- Easter egg button -->
+<!-- Easter egg -->
 <button id="pour-btn" onclick="pourMemory()" aria-label="Pour a random memory">🍸 Pour a memory</button>
-
-<!-- Pour overlay -->
 <div id="pour-overlay" role="dialog" aria-modal="true" aria-label="Random memory">
   <div class="pour-sign">
     <div class="pour-label">✦ A memory, just for you</div>
@@ -724,11 +712,12 @@ const CFG = {
 
 // ── State ─────────────────────────────────────────────────────────────────
 let memories      = [];
-let currentView   = 'orbit';
+let contributors  = []; // [{name, indices:[]}] — one entry per unique name
+let currentView   = 'marquee';
 let orbitRAF      = null;
-let orbitNodes    = [];   // { el, ring, angle }
-let orbitRings    = [];   // { rx, ry, tilt, period, nodes[] }
+let orbitNodeObjs = []; // [{el, contribIdx, angle, paused, lastAngle}]
 let orbitInited   = false;
+let lightboxIdx   = -1; // current index in memories[]
 let reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // ── Init ──────────────────────────────────────────────────────────────────
@@ -767,109 +756,156 @@ async function loadMemories() {
     console.warn('Could not load memories:', e.message);
     memories = [];
   }
-  document.getElementById('count-badge').textContent = `${memories.length} / ${CFG.goal}`;
-  document.getElementById('orbit-loading').style.display = 'none';
 
-  initOrbit();
-  if (currentView === 'marquee') renderMarquee();
+  // Build contributor groups (preserve submission order)
+  const seen = new Map();
+  memories.forEach((mem, i) => {
+    const key = (mem.name || '').trim();
+    if (!seen.has(key)) seen.set(key, { name: key, indices: [] });
+    seen.get(key).indices.push(i);
+  });
+  contributors = [...seen.values()];
+
+  document.getElementById('count-badge').textContent = `${memories.length} / ${CFG.goal}`;
+
+  renderMarquee();
 }
 
 // ── View toggle ───────────────────────────────────────────────────────────
 function setView(v) {
   currentView = v;
-  document.getElementById('view-orbit').classList.toggle('active', v === 'orbit');
   document.getElementById('view-marquee').classList.toggle('active', v === 'marquee');
-  document.getElementById('btn-orbit').classList.toggle('active', v === 'orbit');
+  document.getElementById('view-orbit').classList.toggle('active', v === 'orbit');
   document.getElementById('btn-marquee').classList.toggle('active', v === 'marquee');
+  document.getElementById('btn-orbit').classList.toggle('active', v === 'orbit');
 
-  if (v === 'marquee') {
-    if (orbitRAF) { cancelAnimationFrame(orbitRAF); orbitRAF = null; }
-    renderMarquee();
+  if (v === 'orbit') {
+    initOrbit();           // safe: guarded by orbitInited flag
+    startOrbitAnimation();
   } else {
-    if (orbitInited) startOrbitAnimation();
+    if (orbitRAF) { cancelAnimationFrame(orbitRAF); orbitRAF = null; }
   }
 }
 
-// ══════════════════════════════════════════════════════════════════════════
+// Pause animation when tab is hidden; resume when visible again
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    if (orbitRAF) { cancelAnimationFrame(orbitRAF); orbitRAF = null; }
+  } else if (currentView === 'orbit' && orbitInited) {
+    startOrbitAnimation();
+  }
+});
+
+// ════════════════════════════════════════════════════════════════════════
+// MARQUEE VIEW
+// ════════════════════════════════════════════════════════════════════════
+
+// For each name, pre-build a seq map so cards can show "2 of 8"
+function buildSeqMap() {
+  const map = new Map(); // index → { pos, total }
+  contributors.forEach(c => {
+    c.indices.forEach((memIdx, pos) => {
+      map.set(memIdx, { pos: pos + 1, total: c.indices.length });
+    });
+  });
+  return map;
+}
+
+function renderMarquee() {
+  const grid = document.getElementById('cards-grid');
+  if (!memories.length) {
+    grid.innerHTML = '<div class="loading-msg">No memories yet.</div>';
+    return;
+  }
+  grid.innerHTML = '';
+  const seqMap = buildSeqMap();
+  memories.forEach((mem, i) => grid.appendChild(makeCard(mem, i, seqMap.get(i))));
+}
+
+const CORNER_MARKS = ['◆', '✦', '✶', '⬡', '◈', '✺'];
+
+function makeCard(mem, memIdx, seq) {
+  const v = memIdx % 6;
+  const card = document.createElement('div');
+  card.className = `mem-card card-v${v}`;
+  card.setAttribute('tabindex', '0');
+  card.setAttribute('role', 'button');
+  card.setAttribute('aria-label', `Memory from ${mem.name}`);
+
+  const msg     = (mem.message || '').trim();
+  const images  = mem.images || [];
+  // Photo-first: short caption + has photos → lead with image
+  const photoFirst = msg.length < 60 && images.length > 0;
+
+  // How much text to show: no clamp for short messages, gentle clamp for long
+  let msgClass = 'card-msg';
+  if (msg.length > 400) msgClass += ' clamp-long';
+  else if (msg.length > 150) msgClass += ' clamp-short';
+
+  // Sequence label (only if person has multiple entries)
+  const seqLabel = seq && seq.total > 1
+    ? `<span class="card-seq">${seq.pos} of ${seq.total}</span>` : '';
+
+  // Photos section (thumbs) — skip hero photo from thumbs if photoFirst
+  let photosHTML = '';
+  const thumbStart = photoFirst ? 1 : 0;
+  if (images.length > thumbStart) {
+    const shown = images.slice(thumbStart, thumbStart + 4).map((src, pi) =>
+      `<img class="card-photo-thumb" src="${escAttr(src)}" alt="Photo from ${escAttr(mem.name)}" loading="lazy">`
+    ).join('');
+    const extra = images.length > thumbStart + 4
+      ? `<div class="card-more-photos">+${images.length - (thumbStart + 4)}</div>` : '';
+    photosHTML = `<div class="card-photos">${shown}${extra}</div>`;
+  }
+
+  // Hero photo (photo-first layout)
+  const heroHTML = photoFirst
+    ? `<img class="card-photo-hero" src="${escAttr(images[0])}" alt="Photo from ${escAttr(mem.name)}" loading="lazy">`
+    : '';
+
+  card.innerHTML = `
+    <div class="card-name-row">
+      <span class="card-name">${esc(mem.name || 'Anonymous')}</span>
+      ${seqLabel}
+    </div>
+    ${heroHTML}
+    ${msg ? `<div class="${msgClass}">${esc(msg)}</div>` : ''}
+    ${photosHTML}
+    <div class="card-corner-mark" aria-hidden="true">${CORNER_MARKS[v]}</div>
+  `;
+
+  card.addEventListener('click', () => openLightbox(memIdx));
+  card.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(memIdx); }
+  });
+  return card;
+}
+
+// ════════════════════════════════════════════════════════════════════════
 // ORBIT VIEW
-// ══════════════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════════
 
 const RING_DEFS = [
-  { rxF: 0.18, ryF: 0.12, tilt:  15, period: 55000 },
-  { rxF: 0.29, ryF: 0.18, tilt: -20, period: 78000 },
-  { rxF: 0.40, ryF: 0.24, tilt:  30, period: 102000 },
-  { rxF: 0.51, ryF: 0.30, tilt: -10, period: 132000 },
-  { rxF: 0.62, ryF: 0.35, tilt:  22, period: 168000 },
+  { rxF: 0.20, ryF: 0.13, tilt:  15, period: 60000 },
+  { rxF: 0.32, ryF: 0.20, tilt: -22, period: 82000 },
+  { rxF: 0.44, ryF: 0.27, tilt:  32, period: 108000 },
+  { rxF: 0.56, ryF: 0.32, tilt: -12, period: 140000 },
+  { rxF: 0.68, ryF: 0.38, tilt:  24, period: 180000 },
 ];
 
 function initOrbit() {
-  if (!memories.length) return;
+  // Guard: only build once
+  if (orbitInited || !contributors.length) return;
   orbitInited = true;
 
   buildOrbitNodes();
   drawOrbitSVG();
-  startOrbitAnimation();
+  drawNucleus();
 
   window.addEventListener('resize', debounce(() => {
     drawOrbitSVG();
-    positionNucleus();
+    drawNucleus();
   }, 150));
-}
-
-function positionNucleus() {
-  const v = document.getElementById('view-orbit');
-  const cx = v.clientWidth / 2;
-  const cy = v.clientHeight / 2;
-  const nuc = document.getElementById('orbit-nucleus');
-  nuc.style.left = cx + 'px';
-  nuc.style.top  = cy + 'px';
-}
-
-function buildOrbitNodes() {
-  const container = document.getElementById('orbit-nodes');
-  container.innerHTML = '';
-  orbitNodes = [];
-  orbitRings = RING_DEFS.map(d => ({ ...d, nodeList: [] }));
-
-  // Distribute memories across rings proportional to circumference
-  const circumferences = orbitRings.map(r => {
-    const base = getOrbitBase();
-    return 2 * Math.PI * Math.sqrt((r.rxF * r.rxF + r.ryF * r.ryF) / 2) * base;
-  });
-  const totalC = circumferences.reduce((s, c) => s + c, 0);
-  const counts = circumferences.map((c, i) => {
-    const n = Math.round(memories.length * c / totalC);
-    return Math.max(1, n);
-  });
-  // Fix count total
-  let diff = memories.length - counts.reduce((s, c) => s + c, 0);
-  counts[counts.length - 1] += diff;
-
-  let memIdx = 0;
-  orbitRings.forEach((ring, ri) => {
-    const n = counts[ri];
-    for (let ni = 0; ni < n && memIdx < memories.length; ni++, memIdx++) {
-      const mem = memories[memIdx];
-      const startAngle = (2 * Math.PI * ni / n) + (ri * 0.618 * Math.PI); // golden angle offset per ring
-
-      const el = document.createElement('div');
-      el.className = 'orbit-node';
-      el.setAttribute('role', 'listitem');
-      el.setAttribute('tabindex', '0');
-      el.setAttribute('aria-label', `Memory from ${mem.name}`);
-      el.innerHTML = `<div class="node-pill"><span class="node-dot"></span>${shortName(mem.name)}</div>`;
-      el.addEventListener('click', () => openLightbox(mem));
-      el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(mem); } });
-
-      container.appendChild(el);
-      const nodeObj = { el, ring: ri, angle: startAngle };
-      orbitNodes.push(nodeObj);
-      ring.nodeList.push(nodeObj);
-    }
-  });
-
-  positionNucleus();
-  drawNucleus();
 }
 
 function getOrbitBase() {
@@ -877,29 +913,95 @@ function getOrbitBase() {
   return Math.min(v.clientWidth * 0.44, v.clientHeight * 0.44);
 }
 
-function drawNucleus() {
-  const size = clamp(64, window.innerWidth * 0.09, 110);
-  const r = size / 2;
-  const nPoints = 20;
-  const outerR = r;
-  const innerR = r * 0.45;
-  const pts = [];
-  for (let i = 0; i < nPoints * 2; i++) {
-    const rad = i % 2 === 0 ? outerR : innerR;
-    const a = (i * Math.PI / nPoints) - Math.PI / 2;
-    pts.push(`${r + rad * Math.cos(a)},${r + rad * Math.sin(a)}`);
+function buildOrbitNodes() {
+  const container = document.getElementById('orbit-nodes');
+  container.innerHTML = '';
+  orbitNodeObjs = [];
+
+  // Distribute 27 contributors across 5 rings by circumference
+  const circumferences = RING_DEFS.map(d =>
+    2 * Math.PI * Math.sqrt((d.rxF * d.rxF + d.ryF * d.ryF) / 2)
+  );
+  const totalC = circumferences.reduce((s, c) => s + c, 0);
+  const n = contributors.length;
+  const counts = circumferences.map(c => Math.max(0, Math.round(n * c / totalC)));
+  // Correct rounding drift
+  let diff = n - counts.reduce((s, c) => s + c, 0);
+  // Distribute leftover to largest rings first
+  for (let ri = RING_DEFS.length - 1; diff !== 0; ri = (ri - 1 + RING_DEFS.length) % RING_DEFS.length) {
+    if (diff > 0) { counts[ri]++; diff--; }
+    else if (counts[ri] > 0) { counts[ri]--; diff++; }
   }
 
-  document.getElementById('orbit-nucleus').innerHTML = `
+  let ci = 0;
+  RING_DEFS.forEach((rd, ri) => {
+    const ringCount = counts[ri];
+    for (let ni = 0; ni < ringCount && ci < contributors.length; ni++, ci++) {
+      const contrib = contributors[ci];
+      const totalPhotos = contrib.indices.reduce((s, i) => s + (memories[i].images || []).length, 0);
+      const startAngle = (2 * Math.PI * ni / ringCount) + (ri * 0.618 * Math.PI);
+
+      const el = document.createElement('div');
+      el.className = 'orbit-node';
+      el.setAttribute('role', 'listitem');
+      el.setAttribute('tabindex', '0');
+      el.setAttribute('aria-label',
+        `${contrib.name}${contrib.indices.length > 1 ? ` — ${contrib.indices.length} memories` : ''}`);
+
+      const countBadge = contrib.indices.length > 1
+        ? `<span class="node-count">· ${contrib.indices.length}</span>` : '';
+      const camBadge = totalPhotos > 0
+        ? `<span class="node-cam">📷</span>` : '';
+
+      el.innerHTML = `<div class="node-pill"><span class="node-dot"></span>${esc(shortName(contrib.name))}${countBadge}${camBadge}</div>`;
+
+      // Open lightbox at this contributor's first memory
+      const firstIdx = contrib.indices[0];
+      el.addEventListener('click', () => openLightbox(firstIdx));
+      el.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(firstIdx); }
+      });
+
+      // Pause this node's movement while hovered/focused
+      el.addEventListener('mouseenter', () => { nodeObj.paused = true; });
+      el.addEventListener('mouseleave', () => { nodeObj.paused = false; });
+      el.addEventListener('focus',      () => { nodeObj.paused = true; });
+      el.addEventListener('blur',       () => { nodeObj.paused = false; });
+
+      container.appendChild(el);
+      const nodeObj = { el, ringIdx: ri, angle: startAngle, paused: false };
+      orbitNodeObjs.push(nodeObj);
+    }
+  });
+}
+
+function drawNucleus() {
+  const v = document.getElementById('view-orbit');
+  const cx = v.clientWidth / 2;
+  const cy = v.clientHeight / 2;
+  const size = clamp(60, Math.min(v.clientWidth, v.clientHeight) * 0.11, 110);
+  const r = size / 2;
+  const nPoints = 20;
+  const pts = [];
+  for (let i = 0; i < nPoints * 2; i++) {
+    const rad = i % 2 === 0 ? r : r * 0.44;
+    const a = (i * Math.PI / nPoints) - Math.PI / 2;
+    pts.push(`${(r + rad * Math.cos(a)).toFixed(1)},${(r + rad * Math.sin(a)).toFixed(1)}`);
+  }
+  const nuc = document.getElementById('orbit-nucleus');
+  nuc.style.left = cx + 'px';
+  nuc.style.top  = cy + 'px';
+  nuc.innerHTML = `
     <svg class="nucleus-svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" aria-hidden="true">
-      <polygon points="${pts.join(' ')}" fill="var(--teal)" opacity=".18"/>
-      <polygon points="${pts.join(' ')}" fill="none" stroke="var(--teal)" stroke-width="1.5" opacity=".7"/>
-      <text x="${r}" y="${r - 4}" text-anchor="middle" dominant-baseline="middle"
-            font-family="Playfair Display, serif" font-size="${size * 0.27}" font-weight="700"
-            fill="var(--butter)" letter-spacing="1">AJ</text>
-      <text x="${r}" y="${r + size * 0.18}" text-anchor="middle" dominant-baseline="middle"
-            font-family="Playfair Display, serif" font-size="${size * 0.18}" font-weight="400"
-            fill="rgba(250,243,224,.6)" letter-spacing="1">70</text>
+      <polygon points="${pts.join(' ')}" fill="var(--teal)" opacity=".16"/>
+      <polygon points="${pts.join(' ')}" fill="none" stroke="var(--teal)" stroke-width="1.5" opacity=".72"/>
+      <text x="${r}" y="${r - size*0.09}" text-anchor="middle" dominant-baseline="middle"
+            font-family="Playfair Display, serif"
+            font-size="${(size * 0.27).toFixed(1)}" font-weight="700" fill="var(--butter)">AJ</text>
+      <text x="${r}" y="${r + size*0.18}" text-anchor="middle" dominant-baseline="middle"
+            font-family="Playfair Display, serif"
+            font-size="${(size * 0.17).toFixed(1)}" font-weight="400"
+            fill="rgba(250,243,224,.55)">70</text>
     </svg>`;
 }
 
@@ -913,86 +1015,74 @@ function drawOrbitSVG() {
   const base = getOrbitBase();
 
   svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  const rng = mulberry32(42);
   let markup = '';
 
   // Starfield
-  const stars = [];
-  const N = Math.min(200, Math.floor(W * H / 4000));
-  const rng = mulberry32(42);
+  const N = Math.min(180, Math.floor(W * H / 4500));
   for (let i = 0; i < N; i++) {
     const sx = rng() * W;
     const sy = rng() * H;
-    const sr = rng() * 1.2 + 0.3;
-    const op = rng() * 0.5 + 0.15;
-    stars.push(`<circle cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="${sr.toFixed(1)}" fill="white" opacity="${op.toFixed(2)}"/>`);
+    const sr = rng() * 1.1 + 0.3;
+    markup += `<circle cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="${sr.toFixed(1)}" fill="white" opacity="${(rng()*.45+.12).toFixed(2)}"/>`;
   }
-  markup += stars.join('');
 
-  // Orbit rings (ellipses, tilted)
+  // Orbit rings
   RING_DEFS.forEach((d, i) => {
     const rx = d.rxF * base;
     const ry = d.ryF * base;
-    const opacity = 0.12 + (i * 0.02);
     markup += `<ellipse cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}"
                transform="rotate(${d.tilt} ${cx.toFixed(1)} ${cy.toFixed(1)})"
-               fill="none" stroke="var(--teal)" stroke-width="0.8" opacity="${opacity.toFixed(2)}" stroke-dasharray="4 6"/>`;
+               fill="none" stroke="var(--teal)" stroke-width="0.75" opacity="${(0.1 + i*0.025).toFixed(3)}"
+               stroke-dasharray="3 7"/>`;
   });
 
-  // Decorative atomic boomerangs
-  markup += atomicDecor(W, H, rng);
+  // Decorative asterisk marks
+  const spots = [[.1,.15],[.9,.12],[.08,.8],[.92,.82],[.5,.07],[.17,.5],[.83,.5]];
+  spots.forEach(([fx, fy]) => {
+    const x = W * fx; const y = H * fy;
+    const r = 5 + rng() * 4;
+    const pts = [];
+    for (let i = 0; i < 12; i++) {
+      const rr = i % 2 === 0 ? r : r * 0.42;
+      const a = (i * Math.PI / 6) - Math.PI / 2;
+      pts.push(`${(x+rr*Math.cos(a)).toFixed(1)},${(y+rr*Math.sin(a)).toFixed(1)}`);
+    }
+    markup += `<polygon points="${pts.join(' ')}" fill="${rng()>.5?'var(--teal)':'var(--butter)'}" opacity="0.14"/>`;
+  });
 
   svg.innerHTML = markup;
 }
 
-function atomicDecor(W, H, rng) {
-  let out = '';
-  // A few small starburst asterisks scattered in empty areas
-  const positions = [
-    [W * 0.1, H * 0.15], [W * 0.9, H * 0.12], [W * 0.08, H * 0.78],
-    [W * 0.92, H * 0.82], [W * 0.5, H * 0.08], [W * 0.18, H * 0.5],
-    [W * 0.82, H * 0.5],
-  ];
-  positions.forEach(([x, y]) => {
-    const r = 6 + rng() * 4;
-    const pts = [];
-    for (let i = 0; i < 12; i++) {
-      const a = (i * Math.PI / 6) - Math.PI / 2;
-      const rr = i % 2 === 0 ? r : r * 0.45;
-      pts.push(`${(x + rr * Math.cos(a)).toFixed(1)},${(y + rr * Math.sin(a)).toFixed(1)}`);
-    }
-    const color = rng() > 0.5 ? 'var(--teal)' : 'var(--butter)';
-    out += `<polygon points="${pts.join(' ')}" fill="${color}" opacity="0.15"/>`;
-  });
-  return out;
-}
-
-// ── Orbit animation ───────────────────────────────────────────────────────
+// ── Orbit animation (delta-time, per-node pause) ──────────────────────────
 function startOrbitAnimation() {
   if (orbitRAF) cancelAnimationFrame(orbitRAF);
-  const start = performance.now();
+  let lastTime = null;
 
   function frame(now) {
-    const t = now - start;
-    const v = document.getElementById('view-orbit');
-    const cx = v.clientWidth / 2;
-    const cy = v.clientHeight / 2;
+    const delta = lastTime === null ? 0 : Math.min(now - lastTime, 100); // cap at 100ms
+    lastTime = now;
+
+    const v   = document.getElementById('view-orbit');
+    const cx  = v.clientWidth / 2;
+    const cy  = v.clientHeight / 2;
     const base = getOrbitBase();
 
-    orbitNodes.forEach(node => {
-      const rd = RING_DEFS[node.ring];
+    orbitNodeObjs.forEach(node => {
+      // Advance angle unless paused or reduced-motion
+      if (!node.paused && !reducedMotion) {
+        const rd = RING_DEFS[node.ringIdx];
+        node.angle += (2 * Math.PI * delta) / rd.period;
+      }
+
+      const rd = RING_DEFS[node.ringIdx];
       const rx = rd.rxF * base;
       const ry = rd.ryF * base;
       const tiltRad = rd.tilt * Math.PI / 180;
-      let angle = node.angle;
-      if (!reducedMotion) {
-        angle += (2 * Math.PI * t) / rd.period;
-      }
-
-      // Parametric point on tilted ellipse
-      const px = rx * Math.cos(angle);
-      const py = ry * Math.sin(angle);
-      const x = cx + px * Math.cos(tiltRad) - py * Math.sin(tiltRad);
-      const y = cy + px * Math.sin(tiltRad) + py * Math.cos(tiltRad);
+      const px = rx * Math.cos(node.angle);
+      const py = ry * Math.sin(node.angle);
+      const x  = cx + px * Math.cos(tiltRad) - py * Math.sin(tiltRad);
+      const y  = cy + px * Math.sin(tiltRad) + py * Math.cos(tiltRad);
 
       node.el.style.left = x + 'px';
       node.el.style.top  = y + 'px';
@@ -1004,96 +1094,65 @@ function startOrbitAnimation() {
   orbitRAF = requestAnimationFrame(frame);
 }
 
-// ══════════════════════════════════════════════════════════════════════════
-// MARQUEE VIEW
-// ══════════════════════════════════════════════════════════════════════════
-
-function renderMarquee() {
-  const grid = document.getElementById('cards-grid');
-  if (!memories.length) {
-    grid.innerHTML = '<div class="loading-msg">No memories yet.</div>';
-    return;
-  }
-  grid.innerHTML = '';
-
-  // Shuffle a copy for visual variety (stable order based on id)
-  const sorted = [...memories].sort((a, b) => a.id.localeCompare(b.id));
-
-  sorted.forEach((mem, i) => {
-    grid.appendChild(makeCard(mem, i));
-  });
-}
-
-const CORNER_STARS = ['◆', '✦', '✶', '⬡', '◈', '✺'];
-
-function makeCard(mem, idx) {
-  const v = idx % 6;
-  const card = document.createElement('div');
-  card.className = `mem-card card-v${v}`;
-  card.setAttribute('tabindex', '0');
-  card.setAttribute('role', 'button');
-  card.setAttribute('aria-label', `Memory from ${mem.name} — click to read`);
-
-  const maxMsg = 200;
-  const preview = (mem.message || '').slice(0, maxMsg) + (mem.message && mem.message.length > maxMsg ? '…' : '');
-
-  let photosHTML = '';
-  if (mem.images && mem.images.length) {
-    const thumbs = mem.images.slice(0, 3).map((src, pi) =>
-      `<img class="card-photo-thumb" src="${escAttr(src)}" alt="Photo ${pi+1} from ${escAttr(mem.name)}" loading="lazy">`
-    ).join('');
-    const extra = mem.images.length > 3
-      ? `<div class="card-more-photos">+${mem.images.length - 3}</div>` : '';
-    photosHTML = `<div class="card-photos">${thumbs}${extra}</div>`;
-  }
-
-  const cornerStar = CORNER_STARS[v];
-  card.innerHTML = `
-    <div class="card-name">${esc(mem.name)}</div>
-    <div class="card-msg">${esc(preview)}</div>
-    ${photosHTML}
-    <div class="card-corner-star" aria-hidden="true">${cornerStar}</div>
-  `;
-
-  card.addEventListener('click', () => openLightbox(mem));
-  card.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(mem); }
-  });
-  return card;
-}
-
-// ══════════════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════════
 // LIGHTBOX
-// ══════════════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════════
 
-function openLightbox(mem) {
-  document.getElementById('lb-name').textContent = mem.name || 'Anonymous';
-  document.getElementById('lb-message').textContent = mem.message || '';
-
-  const photos = document.getElementById('lb-photos');
-  photos.innerHTML = '';
-  if (mem.images && mem.images.length) {
-    mem.images.forEach((src, i) => {
-      const img = document.createElement('img');
-      img.className = 'lb-photo' + (mem.images.length === 1 ? ' lb-single-photo' : '');
-      img.src = src;
-      img.alt = `Photo ${i + 1} shared by ${mem.name}`;
-      img.loading = 'lazy';
-      img.addEventListener('click', e => {
-        e.stopPropagation();
-        openPhotoFull(src, img.alt);
-      });
-      photos.appendChild(img);
-    });
-  }
-
+function openLightbox(idx) {
+  lightboxIdx = idx;
+  renderLightbox();
   const lb = document.getElementById('lightbox');
   lb.classList.add('open');
-  lb.scrollTop = 0;
+  lb.querySelector('.lb-box').scrollTop = 0;
+  document.getElementById('lb-prev').focus();
+}
 
-  // Trap focus
-  const focusable = lb.querySelectorAll('button, [tabindex]:not([tabindex="-1"]), a');
-  if (focusable.length) focusable[0].focus();
+function renderLightbox() {
+  const mem = memories[lightboxIdx];
+  if (!mem) return;
+
+  document.getElementById('lb-name').textContent = mem.name || 'Anonymous';
+
+  // Position label: show "2 of 8" if person has multiple entries
+  const contrib = contributors.find(c => c.name === (mem.name || '').trim());
+  let posText = `${lightboxIdx + 1} of ${memories.length}`;
+  if (contrib && contrib.indices.length > 1) {
+    const posInGroup = contrib.indices.indexOf(lightboxIdx) + 1;
+    posText += ` · memory ${posInGroup} of ${contrib.indices.length} from ${contrib.name}`;
+  }
+  document.getElementById('lb-pos').textContent = posText;
+
+  document.getElementById('lb-message').textContent = mem.message || '';
+
+  // Photos — full-width stacked for proper viewing
+  const photos = document.getElementById('lb-photos');
+  photos.innerHTML = '';
+  (mem.images || []).forEach((src, i) => {
+    const img = document.createElement('img');
+    img.className = 'lb-photo';
+    img.src = src;
+    img.alt = `Photo ${i + 1} from ${mem.name}`;
+    img.loading = i === 0 ? 'eager' : 'lazy';
+    img.addEventListener('click', e => {
+      e.stopPropagation();
+      document.getElementById('lb-photo-full-img').src = src;
+      document.getElementById('lb-photo-full-img').alt = img.alt;
+      document.getElementById('lb-photo-full').classList.remove('hidden');
+    });
+    photos.appendChild(img);
+  });
+
+  // Update nav button state
+  document.getElementById('lb-prev').disabled = lightboxIdx <= 0;
+  document.getElementById('lb-next').disabled = lightboxIdx >= memories.length - 1;
+}
+
+function lbStep(dir) {
+  const next = lightboxIdx + dir;
+  if (next < 0 || next >= memories.length) return;
+  lightboxIdx = next;
+  renderLightbox();
+  document.getElementById('lightbox').querySelector('.lb-box').scrollTop = 0;
 }
 
 function closeLightbox() {
@@ -1101,46 +1160,38 @@ function closeLightbox() {
   document.getElementById('lb-photo-full').classList.add('hidden');
 }
 
-function openPhotoFull(src, alt) {
-  const full = document.getElementById('lb-photo-full');
-  document.getElementById('lb-photo-full-img').src = src;
-  document.getElementById('lb-photo-full-img').alt = alt;
-  full.classList.remove('hidden');
-}
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    if (!document.getElementById('lb-photo-full').classList.contains('hidden')) {
-      document.getElementById('lb-photo-full').classList.add('hidden');
-    } else if (document.getElementById('lightbox').classList.contains('open')) {
-      closeLightbox();
-    } else if (document.getElementById('pour-overlay').classList.contains('open')) {
-      closePour();
-    }
-  }
-});
-
-// Close lightbox on backdrop click
 document.getElementById('lightbox').addEventListener('click', e => {
   if (e.target === document.getElementById('lightbox')) closeLightbox();
 });
 
-// ══════════════════════════════════════════════════════════════════════════
+document.addEventListener('keydown', e => {
+  const lbOpen = document.getElementById('lightbox').classList.contains('open');
+  const fullOpen = !document.getElementById('lb-photo-full').classList.contains('hidden');
+  const pourOpen = document.getElementById('pour-overlay').classList.contains('open');
+
+  if (e.key === 'Escape') {
+    if (fullOpen) { document.getElementById('lb-photo-full').classList.add('hidden'); return; }
+    if (lbOpen)   { closeLightbox(); return; }
+    if (pourOpen) { closePour(); return; }
+  }
+  if (lbOpen && !fullOpen) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); lbStep(1); }
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   { e.preventDefault(); lbStep(-1); }
+  }
+});
+
+// ════════════════════════════════════════════════════════════════════════
 // EASTER EGG — Pour a memory
-// ══════════════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════════
 
 function pourMemory() {
   if (!memories.length) return;
   const mem = memories[Math.floor(Math.random() * memories.length)];
   document.getElementById('pour-name').textContent = mem.name || 'Anonymous';
-  document.getElementById('pour-msg').textContent = mem.message || '';
+  document.getElementById('pour-msg').textContent  = mem.message || '';
   document.getElementById('pour-overlay').classList.add('open');
 }
-
-function closePour() {
-  document.getElementById('pour-overlay').classList.remove('open');
-}
-
+function closePour() { document.getElementById('pour-overlay').classList.remove('open'); }
 document.getElementById('pour-overlay').addEventListener('click', e => {
   if (e.target === document.getElementById('pour-overlay')) closePour();
 });
@@ -1149,18 +1200,21 @@ document.getElementById('pour-overlay').addEventListener('click', e => {
 
 function shortName(name) {
   if (!name) return '—';
-  const parts = name.trim().split(/\s+/);
-  if (parts[0].length <= 12) return parts[0];
-  return parts[0].slice(0, 10) + '…';
+  const s = name.trim();
+  if (s.length <= 14) return s;
+  // Find a clean break (prefer space boundary, avoid trailing comma)
+  const trunc = s.slice(0, 13);
+  const lastSpace = trunc.lastIndexOf(' ');
+  const cut = lastSpace > 5 ? trunc.slice(0, lastSpace) : trunc;
+  return cut.replace(/[,\s]+$/, '') + '…';
 }
 
 function esc(s) {
   return String(s || '')
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;');
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 function escAttr(s) { return String(s || '').replace(/"/g, '&quot;'); }
-
 function clamp(min, val, max) { return Math.max(min, Math.min(max, val)); }
 
 function debounce(fn, ms) {
@@ -1168,7 +1222,6 @@ function debounce(fn, ms) {
   return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
 }
 
-// Seeded PRNG (Mulberry32) — for reproducible starfield
 function mulberry32(seed) {
   return function() {
     let t = seed += 0x6D2B79F5;
