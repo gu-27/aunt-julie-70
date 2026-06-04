@@ -368,78 +368,120 @@
     max-width: 1300px; margin: 0 auto;
   }
 
-  /* Card base */
+  /* Card base — perspective container for 3D flip */
   .mem-card {
-    position: relative; border-radius: 12px;
-    padding: 1.25rem 1.2rem;
+    position: relative;
+    height: 240px;
     cursor: pointer;
-    transition: transform .22s ease, box-shadow .22s ease;
-    overflow: hidden;
+    perspective: 900px;
+    transition: transform .22s ease;
   }
-  .mem-card:hover { transform: translateY(-4px); }
+  .mem-card:hover { transform: translateY(-5px); }
   .mem-card:focus { outline: none; }
   .mem-card:focus-visible { outline: 2px solid var(--butter); outline-offset: 3px; }
+  .mem-card.flipped { z-index: 2; }
 
-  /* 6 card variants — no clip-path (kills box-shadow) */
+  /* 3D flip mechanism */
+  .card-inner {
+    position: absolute; inset: 0;
+    transform-style: preserve-3d;
+    transition: transform .58s cubic-bezier(.4,0,.2,1);
+  }
+  .mem-card:hover .card-inner,
+  .mem-card.flipped .card-inner { transform: rotateY(180deg); }
+
+  /* Shared face rules */
+  .card-front, .card-back {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    overflow: hidden;
+  }
+  .card-front {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: .3rem;
+  }
+  .card-back {
+    transform: rotateY(180deg);
+    padding: 1.25rem 1.2rem;
+    display: flex; flex-direction: column;
+  }
+
+  /* Front-face object */
+  .card-obj-svg { width: 86px; height: 86px; }
+  .card-front-hint {
+    font-family: 'Playfair Display', serif;
+    font-size: .46rem; letter-spacing: .22em; text-transform: uppercase;
+    color: rgba(250,243,224,.22);
+  }
+
+  /* ── Card variants (class applied to both .card-front and .card-back) ── */
   .card-v0 {
     background: rgba(21,35,63,.95);
     border: 1.5px solid rgba(43,179,163,.45);
     border-radius: 40px 10px 40px 10px;
   }
-  .card-v0:hover { box-shadow: 0 8px 32px rgba(43,179,163,.22); }
+  .mem-card:hover .card-back.card-v0,
+  .mem-card.flipped .card-back.card-v0 { box-shadow: 0 8px 32px rgba(43,179,163,.22); }
 
   .card-v1 {
     background: rgba(247,108,94,.07);
     border: 1.5px solid rgba(247,108,94,.45);
     border-radius: 10px 36px 10px 36px;
   }
-  .card-v1:hover { box-shadow: 0 8px 32px rgba(247,108,94,.18); }
+  .mem-card:hover .card-back.card-v1,
+  .mem-card.flipped .card-back.card-v1 { box-shadow: 0 8px 32px rgba(247,108,94,.18); }
 
   .card-v2 {
     background: rgba(43,179,163,.07);
     border: 1.5px solid rgba(43,179,163,.4);
     border-radius: 6px 32px 6px 32px;
   }
-  .card-v2:hover { box-shadow: 0 8px 32px rgba(43,179,163,.18); }
+  .mem-card:hover .card-back.card-v2,
+  .mem-card.flipped .card-back.card-v2 { box-shadow: 0 8px 32px rgba(43,179,163,.18); }
 
   .card-v3 {
     background: rgba(244,211,94,.06);
     border: 1.5px solid rgba(244,211,94,.38);
     border-radius: 10px;
-    /* Corner-notch via outline offset trick instead of clip-path */
   }
-  .card-v3::after {
+  .card-front.card-v3::after,
+  .card-back.card-v3::after {
     content: '';
     position: absolute; top: -1px; right: -1px;
     width: 18px; height: 18px;
     background: var(--navy-dk);
     clip-path: polygon(0 0, 100% 0, 100% 100%);
   }
-  .card-v3:hover { box-shadow: 0 8px 32px rgba(244,211,94,.12); }
+  .mem-card:hover .card-back.card-v3,
+  .mem-card.flipped .card-back.card-v3 { box-shadow: 0 8px 32px rgba(244,211,94,.12); }
 
   .card-v4 {
     background: rgba(15,26,48,.98);
     border: 1.5px solid rgba(247,108,94,.4);
     border-radius: 0 0 36px 36px;
-    padding-top: 1.5rem;
   }
-  .card-v4::before {
+  .card-back.card-v4 { padding-top: 1.5rem; }
+  .card-front.card-v4::before,
+  .card-back.card-v4::before {
     content: '';
     position: absolute; top: 0; left: 0; right: 0;
     height: 3px;
     background: linear-gradient(to right, transparent, var(--coral), transparent);
   }
-  .card-v4:hover { box-shadow: 0 8px 32px rgba(247,108,94,.18); }
+  .mem-card:hover .card-back.card-v4,
+  .mem-card.flipped .card-back.card-v4 { box-shadow: 0 8px 32px rgba(247,108,94,.18); }
 
   .card-v5 {
     background: rgba(250,243,224,.04);
     border: 1.5px solid rgba(250,243,224,.2);
     border-radius: 999px;
-    padding: 1.5rem 1.6rem;
   }
-  .card-v5:hover { box-shadow: 0 8px 32px rgba(250,243,224,.07); }
+  .card-back.card-v5 { padding: 1.5rem 1.6rem; }
+  .mem-card:hover .card-back.card-v5,
+  .mem-card.flipped .card-back.card-v5 { box-shadow: 0 8px 32px rgba(250,243,224,.07); }
 
-  /* Card content */
+  /* Card content (inside .card-back) */
   .card-name-row {
     display: flex; align-items: baseline; justify-content: space-between;
     gap: .5rem; margin-bottom: .55rem;
@@ -466,7 +508,7 @@
   .card-photo-hero {
     width: calc(100% + 2.4rem);
     margin: -.55rem -1.2rem .9rem;
-    height: 160px; object-fit: cover;
+    height: 150px; object-fit: cover;
     display: block;
   }
   .card-v0 .card-photo-hero { border-radius: 38px 8px 0 0; }
@@ -483,7 +525,7 @@
   }
   .card-msg.clamp-long {
     display: -webkit-box;
-    -webkit-line-clamp: 8;
+    -webkit-line-clamp: 6;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
@@ -495,16 +537,16 @@
   }
 
   .card-photos {
-    display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .75rem;
+    display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .6rem;
   }
   .card-photo-thumb {
-    width: 58px; height: 58px;
+    width: 52px; height: 52px;
     object-fit: cover; border-radius: 6px; opacity: .88;
     transition: opacity .15s;
   }
   .card-photo-thumb:hover { opacity: 1; }
   .card-more-photos {
-    width: 58px; height: 58px; border-radius: 6px;
+    width: 52px; height: 52px; border-radius: 6px;
     background: rgba(255,255,255,.07);
     border: 1px solid rgba(255,255,255,.14);
     display: flex; align-items: center; justify-content: center;
@@ -899,57 +941,145 @@ function renderMarquee() {
 
 const CORNER_MARKS = ['◆', '✦', '✶', '⬡', '◈', '✺'];
 
+// ── Googie/Atomic front-face objects ─────────────────────────────────────
+function getCardObject(v) {
+  switch(v) {
+    case 0: // Atomic orbits (teal)
+      return `<svg viewBox="0 0 100 100" class="card-obj-svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="7" fill="var(--teal)" opacity=".9"/>
+        <ellipse cx="50" cy="50" rx="36" ry="13" fill="none" stroke="var(--teal)" stroke-width="1.5" opacity=".6"/>
+        <ellipse cx="50" cy="50" rx="36" ry="13" fill="none" stroke="var(--teal)" stroke-width="1.5" opacity=".5" transform="rotate(60 50 50)"/>
+        <ellipse cx="50" cy="50" rx="36" ry="13" fill="none" stroke="var(--teal)" stroke-width="1.5" opacity=".5" transform="rotate(120 50 50)"/>
+        <circle cx="86" cy="50" r="3.5" fill="var(--teal)" opacity=".8"/>
+        <circle cx="31" cy="24" r="3.5" fill="var(--teal)" opacity=".8"/>
+        <circle cx="31" cy="76" r="3.5" fill="var(--teal)" opacity=".8"/>
+      </svg>`;
+    case 1: // Martini glass (coral)
+      return `<svg viewBox="0 0 100 100" class="card-obj-svg" aria-hidden="true">
+        <polygon points="18,16 82,16 50,60" fill="var(--coral)" opacity=".12" stroke="var(--coral)" stroke-width="1.5" stroke-linejoin="round"/>
+        <line x1="50" y1="60" x2="50" y2="80" stroke="var(--coral)" stroke-width="1.5"/>
+        <line x1="32" y1="80" x2="68" y2="80" stroke="var(--coral)" stroke-width="2"/>
+        <line x1="38" y1="16" x2="62" y2="38" stroke="var(--coral)" stroke-width="1" opacity=".6"/>
+        <circle cx="63" cy="39" r="5" fill="var(--coral)" opacity=".55"/>
+        <circle cx="63" cy="39" r="2" fill="rgba(0,0,0,.4)"/>
+        <line x1="27" y1="26" x2="73" y2="26" stroke="var(--coral)" stroke-width=".8" opacity=".25" stroke-dasharray="3 4"/>
+      </svg>`;
+    case 2: // Retro rocket (teal + coral fins)
+      return `<svg viewBox="0 0 100 100" class="card-obj-svg" aria-hidden="true">
+        <ellipse cx="50" cy="44" rx="11" ry="26" fill="var(--teal)" opacity=".12" stroke="var(--teal)" stroke-width="1.5"/>
+        <path d="M39,38 Q50,6 61,38" fill="var(--teal)" opacity=".22" stroke="none"/>
+        <polygon points="39,62 28,76 39,70" fill="var(--coral)" opacity=".55"/>
+        <polygon points="61,62 72,76 61,70" fill="var(--coral)" opacity=".55"/>
+        <circle cx="50" cy="46" r="5" fill="none" stroke="var(--teal)" stroke-width="1.5" opacity=".8"/>
+        <ellipse cx="50" cy="80" rx="6" ry="8" fill="var(--butter)" opacity=".3"/>
+        <ellipse cx="50" cy="82" rx="3.5" ry="5" fill="var(--coral)" opacity=".5"/>
+      </svg>`;
+    case 3: // 45 RPM vinyl record (butter)
+      return `<svg viewBox="0 0 100 100" class="card-obj-svg" aria-hidden="true">
+        <circle cx="50" cy="50" r="40" fill="rgba(15,20,35,.7)" stroke="var(--butter)" stroke-width="1.2" opacity=".7"/>
+        <circle cx="50" cy="50" r="32" fill="none" stroke="var(--butter)" stroke-width=".6" opacity=".2"/>
+        <circle cx="50" cy="50" r="24" fill="none" stroke="var(--butter)" stroke-width=".6" opacity=".2"/>
+        <circle cx="50" cy="50" r="17" fill="var(--butter)" opacity=".12" stroke="var(--butter)" stroke-width=".8" opacity=".4"/>
+        <circle cx="50" cy="50" r="5" fill="rgba(0,0,0,.6)" stroke="var(--butter)" stroke-width=".8" opacity=".5"/>
+      </svg>`;
+    case 4: // Flying saucer (coral + accent dots)
+      return `<svg viewBox="0 0 100 100" class="card-obj-svg" aria-hidden="true">
+        <ellipse cx="50" cy="58" rx="38" ry="11" fill="var(--coral)" opacity=".12" stroke="var(--coral)" stroke-width="1.5"/>
+        <ellipse cx="50" cy="50" rx="24" ry="14" fill="var(--coral)" opacity=".08" stroke="var(--coral)" stroke-width="1"/>
+        <ellipse cx="50" cy="42" rx="14" ry="9" fill="var(--cream)" opacity=".07" stroke="var(--cream)" stroke-width=".8"/>
+        <circle cx="26" cy="59" r="2.5" fill="var(--butter)" opacity=".65"/>
+        <circle cx="38" cy="63" r="2.5" fill="var(--teal)" opacity=".65"/>
+        <circle cx="50" cy="65" r="2.5" fill="var(--butter)" opacity=".65"/>
+        <circle cx="62" cy="63" r="2.5" fill="var(--teal)" opacity=".65"/>
+        <circle cx="74" cy="59" r="2.5" fill="var(--butter)" opacity=".65"/>
+        <line x1="34" y1="69" x2="28" y2="82" stroke="var(--butter)" stroke-width=".8" opacity=".2"/>
+        <line x1="50" y1="69" x2="50" y2="84" stroke="var(--butter)" stroke-width=".8" opacity=".25"/>
+        <line x1="66" y1="69" x2="72" y2="82" stroke="var(--butter)" stroke-width=".8" opacity=".2"/>
+      </svg>`;
+    case 5: { // Sputnik starburst lamp (cream)
+      const spikes = Array.from({length: 16}, (_, i) => {
+        const a = (i * 22.5 - 90) * Math.PI / 180;
+        const isLong = i % 2 === 0;
+        const r2 = isLong ? 40 : 27;
+        const x1 = (50 + 11 * Math.cos(a)).toFixed(1);
+        const y1 = (50 + 11 * Math.sin(a)).toFixed(1);
+        const x2 = (50 + r2 * Math.cos(a)).toFixed(1);
+        const y2 = (50 + r2 * Math.sin(a)).toFixed(1);
+        const ox = (50 + (r2 + 4.5) * Math.cos(a)).toFixed(1);
+        const oy = (50 + (r2 + 4.5) * Math.sin(a)).toFixed(1);
+        return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--cream)" stroke-width="${isLong ? 1.2 : .8}" opacity="${isLong ? .6 : .35}"/>${isLong ? `<circle cx="${ox}" cy="${oy}" r="3" fill="var(--cream)" opacity=".5"/>` : ''}`;
+      }).join('');
+      return `<svg viewBox="0 0 100 100" class="card-obj-svg" aria-hidden="true">
+        ${spikes}
+        <circle cx="50" cy="50" r="9" fill="var(--cream)" opacity=".15" stroke="var(--cream)" stroke-width="1.5"/>
+        <circle cx="50" cy="50" r="4" fill="var(--cream)" opacity=".65"/>
+      </svg>`;
+    }
+    default: return getCardObject(0);
+  }
+}
+
 function makeCard(mem, memIdx, seq) {
   const v = memIdx % 6;
   const card = document.createElement('div');
-  card.className = `mem-card card-v${v}`;
+  card.className = 'mem-card';
   card.setAttribute('tabindex', '0');
   card.setAttribute('role', 'button');
-  card.setAttribute('aria-label', `Memory from ${mem.name}`);
+  card.setAttribute('aria-label', `Memory from ${mem.name || 'Anonymous'}`);
 
   const msg     = (mem.message || '').trim();
   const images  = mem.images || [];
-  // Photo-first: short caption + has photos → lead with image
   const photoFirst = msg.length < 60 && images.length > 0;
 
-  // How much text to show: no clamp for short messages, gentle clamp for long
   let msgClass = 'card-msg';
   if (msg.length > 400) msgClass += ' clamp-long';
   else if (msg.length > 150) msgClass += ' clamp-short';
 
-  // Sequence label (only if person has multiple entries)
   const seqLabel = seq && seq.total > 1
     ? `<span class="card-seq">${seq.pos} of ${seq.total}</span>` : '';
 
-  // Photos section (thumbs) — skip hero photo from thumbs if photoFirst
   let photosHTML = '';
   const thumbStart = photoFirst ? 1 : 0;
   if (images.length > thumbStart) {
-    const shown = images.slice(thumbStart, thumbStart + 4).map((src, pi) =>
+    const shown = images.slice(thumbStart, thumbStart + 3).map(src =>
       `<img class="card-photo-thumb" src="${escAttr(src)}" alt="Photo from ${escAttr(mem.name)}" loading="lazy">`
     ).join('');
-    const extra = images.length > thumbStart + 4
-      ? `<div class="card-more-photos">+${images.length - (thumbStart + 4)}</div>` : '';
+    const extra = images.length > thumbStart + 3
+      ? `<div class="card-more-photos">+${images.length - (thumbStart + 3)}</div>` : '';
     photosHTML = `<div class="card-photos">${shown}${extra}</div>`;
   }
 
-  // Hero photo (photo-first layout)
   const heroHTML = photoFirst
     ? `<img class="card-photo-hero" src="${escAttr(images[0])}" alt="Photo from ${escAttr(mem.name)}" loading="lazy">`
     : '';
 
   card.innerHTML = `
-    <div class="card-name-row">
-      <span class="card-name">${esc(mem.name || 'Anonymous')}</span>
-      ${seqLabel}
-    </div>
-    ${heroHTML}
-    ${msg ? `<div class="${msgClass}">${esc(msg)}</div>` : ''}
-    ${photosHTML}
-    <div class="card-corner-mark" aria-hidden="true">${CORNER_MARKS[v]}</div>
-  `;
+    <div class="card-inner">
+      <div class="card-front card-v${v}">
+        ${getCardObject(v)}
+        <span class="card-front-hint">hover to remember</span>
+        <div class="card-corner-mark" aria-hidden="true">${CORNER_MARKS[v]}</div>
+      </div>
+      <div class="card-back card-v${v}">
+        <div class="card-name-row">
+          <span class="card-name">${esc(mem.name || 'Anonymous')}</span>
+          ${seqLabel}
+        </div>
+        ${heroHTML}
+        ${msg ? `<div class="${msgClass}">${esc(msg)}</div>` : ''}
+        ${photosHTML}
+        <div class="card-corner-mark" aria-hidden="true">${CORNER_MARKS[v]}</div>
+      </div>
+    </div>`;
 
-  card.addEventListener('click', () => openLightbox(memIdx));
+  // Mobile: tap to flip, second tap opens lightbox
+  card.addEventListener('click', () => {
+    if (!card.classList.contains('flipped') && window.matchMedia('(hover: none)').matches) {
+      card.classList.add('flipped');
+    } else {
+      openLightbox(memIdx);
+    }
+  });
   card.addEventListener('keydown', e => {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(memIdx); }
   });
