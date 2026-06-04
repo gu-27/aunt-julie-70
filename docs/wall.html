@@ -906,6 +906,7 @@ async function loadMemories() {
   document.getElementById('count-badge').textContent = `${memories.length} / ${CFG.goal}`;
 
   renderMarquee();
+  if (location.hash === '#orbit') setView('orbit');
 }
 
 // ── View toggle ───────────────────────────────────────────────────────────
