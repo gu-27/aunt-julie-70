@@ -153,48 +153,122 @@
     50%       { filter: drop-shadow(0 0 14px rgba(43,179,163,.9)) drop-shadow(0 0 40px rgba(43,179,163,.5)); }
   }
 
+  /* Canvas layer for connecting lines (between SVG and nodes) */
+  #orbit-lines {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; z-index: 2;
+  }
+
+  /* Nucleus — centered HTML text over starburst */
+  #orbit-nucleus {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 5; pointer-events: none;
+    text-align: center;
+  }
+  .nucleus-bg {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    animation: nucleus-pulse 3.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @media (prefers-reduced-motion: reduce) { .nucleus-bg { animation: none; } }
+  .nucleus-content {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column;
+    align-items: center; gap: .1rem;
+  }
+  .nucleus-omni {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(.5rem, 1.2vw, .68rem);
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--teal-lt);
+    opacity: .85;
+  }
+  .nucleus-aj {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 5vw, 3.2rem);
+    font-weight: 700;
+    color: var(--butter);
+    line-height: .95;
+    text-shadow: 0 0 20px rgba(244,211,94,.55), 0 0 40px rgba(244,211,94,.2);
+  }
+  .nucleus-sub {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(.42rem, .95vw, .58rem);
+    font-style: italic;
+    color: rgba(250,243,224,.45);
+    letter-spacing: .04em;
+    line-height: 1.5;
+    max-width: 150px;
+    margin-top: .15rem;
+  }
+
+  /* Memory orbit nodes — glowing dots, no names */
   .orbit-node {
     position: absolute;
     transform: translate(-50%, -50%);
     z-index: 10; cursor: pointer;
   }
   .orbit-node:focus { outline: none; }
-  .orbit-node:focus .node-pill { outline: 2px solid var(--butter); outline-offset: 2px; }
-  .node-pill {
-    display: flex; align-items: center; gap: .3rem;
-    padding: .28rem .65rem;
-    background: rgba(21,35,63,.88);
-    border: 1px solid rgba(43,179,163,.45);
-    border-radius: 100px;
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(.52rem, 1.1vw, .7rem);
-    color: var(--teal-lt);
-    white-space: nowrap;
-    backdrop-filter: blur(4px);
-    transition: background .18s, color .18s, box-shadow .18s, transform .18s;
-    user-select: none;
-    will-change: transform;
-  }
-  /* Pause visual transform when node is hovered/focused */
-  .orbit-node:hover .node-pill,
-  .orbit-node:focus .node-pill {
+  .node-orb {
+    width: 11px; height: 11px;
+    border-radius: 50%;
     background: var(--teal);
-    color: var(--navy-dk);
-    box-shadow: 0 0 14px rgba(43,179,163,.7), 0 0 28px rgba(43,179,163,.3);
-    transform: scale(1.12);
+    box-shadow: 0 0 6px var(--teal), 0 0 14px rgba(43,179,163,.4);
+    transition: transform .18s, box-shadow .18s;
   }
-  .node-dot {
-    width: 5px; height: 5px;
-    background: var(--teal); border-radius: 50%;
-    flex-shrink: 0; box-shadow: 0 0 4px var(--teal);
+  .orbit-node.has-photo .node-orb {
+    background: var(--butter);
+    box-shadow: 0 0 6px var(--butter), 0 0 14px rgba(244,211,94,.4);
   }
-  .node-count {
-    font-size: .56rem; opacity: .65;
-    letter-spacing: 0;
+  .orbit-node:hover .node-orb,
+  .orbit-node:focus .node-orb {
+    transform: scale(1.7);
+    box-shadow: 0 0 12px var(--teal), 0 0 26px rgba(43,179,163,.65);
   }
-  .node-cam {
-    font-size: .58rem; opacity: .7;
-    letter-spacing: 0;
+  .orbit-node.has-photo:hover .node-orb,
+  .orbit-node.has-photo:focus .node-orb {
+    box-shadow: 0 0 12px var(--butter), 0 0 26px rgba(244,211,94,.65);
+  }
+  .orbit-node:focus-visible .node-orb {
+    outline: 2px solid var(--butter); outline-offset: 3px;
+  }
+  /* Tooltip: hidden by default, shows on hover/focus */
+  .node-tooltip {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%; transform: translateX(-50%);
+    background: rgba(12,22,44,.96);
+    border: 1px solid rgba(43,179,163,.35);
+    border-radius: 8px;
+    padding: .5rem .7rem;
+    width: 170px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .18s;
+    z-index: 20;
+  }
+  .orbit-node:hover .node-tooltip,
+  .orbit-node:focus .node-tooltip { opacity: 1; }
+  .tooltip-msg {
+    font-family: 'Merriweather', serif;
+    font-size: .6rem; font-style: italic;
+    color: rgba(250,243,224,.8);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: .3rem;
+  }
+  .tooltip-name {
+    font-family: 'Playfair Display', serif;
+    font-size: .58rem; font-weight: 700;
+    color: var(--teal-lt); letter-spacing: .06em;
+    text-align: right;
   }
 
   /* ════════════════════════════════════════════════════════════════════════
@@ -658,8 +732,9 @@
   <!-- View A: Orbit -->
   <div id="view-orbit" class="view">
     <svg id="orbit-bg" aria-hidden="true"></svg>
+    <canvas id="orbit-lines" aria-hidden="true"></canvas>
     <div id="orbit-nucleus" aria-hidden="true"></div>
-    <div id="orbit-nodes" role="list" aria-label="Memory contributors orbiting AJ"></div>
+    <div id="orbit-nodes" role="list" aria-label="Memories orbiting AJ"></div>
   </div>
 </div>
 
@@ -894,18 +969,26 @@ const RING_DEFS = [
 ];
 
 function initOrbit() {
-  // Guard: only build once
-  if (orbitInited || !contributors.length) return;
+  if (orbitInited || !memories.length) return;
   orbitInited = true;
 
   buildOrbitNodes();
   drawOrbitSVG();
   drawNucleus();
+  resizeOrbitCanvas();
 
   window.addEventListener('resize', debounce(() => {
     drawOrbitSVG();
     drawNucleus();
+    resizeOrbitCanvas();
   }, 150));
+}
+
+function resizeOrbitCanvas() {
+  const v = document.getElementById('view-orbit');
+  const canvas = document.getElementById('orbit-lines');
+  canvas.width  = v.clientWidth;
+  canvas.height = v.clientHeight;
 }
 
 function getOrbitBase() {
@@ -918,59 +1001,59 @@ function buildOrbitNodes() {
   container.innerHTML = '';
   orbitNodeObjs = [];
 
-  // Distribute 27 contributors across 5 rings by circumference
+  const n = memories.length;
+
+  // Distribute n memories across 5 rings by circumference
   const circumferences = RING_DEFS.map(d =>
     2 * Math.PI * Math.sqrt((d.rxF * d.rxF + d.ryF * d.ryF) / 2)
   );
   const totalC = circumferences.reduce((s, c) => s + c, 0);
-  const n = contributors.length;
   const counts = circumferences.map(c => Math.max(0, Math.round(n * c / totalC)));
-  // Correct rounding drift
   let diff = n - counts.reduce((s, c) => s + c, 0);
-  // Distribute leftover to largest rings first
   for (let ri = RING_DEFS.length - 1; diff !== 0; ri = (ri - 1 + RING_DEFS.length) % RING_DEFS.length) {
     if (diff > 0) { counts[ri]++; diff--; }
     else if (counts[ri] > 0) { counts[ri]--; diff++; }
   }
 
-  let ci = 0;
+  let memIdx = 0;
   RING_DEFS.forEach((rd, ri) => {
     const ringCount = counts[ri];
-    for (let ni = 0; ni < ringCount && ci < contributors.length; ni++, ci++) {
-      const contrib = contributors[ci];
-      const totalPhotos = contrib.indices.reduce((s, i) => s + (memories[i].images || []).length, 0);
+    for (let ni = 0; ni < ringCount && memIdx < memories.length; ni++) {
+      const idx = memIdx; // capture for closure
+      const mem = memories[idx];
+      const hasPhoto = (mem.images || []).length > 0;
       const startAngle = (2 * Math.PI * ni / ringCount) + (ri * 0.618 * Math.PI);
+      const rawMsg = (mem.message || '').trim();
+      const snippet = rawMsg.slice(0, 80);
+      const ellipsis = rawMsg.length > 80 ? '…' : '';
 
       const el = document.createElement('div');
-      el.className = 'orbit-node';
+      el.className = 'orbit-node' + (hasPhoto ? ' has-photo' : '');
       el.setAttribute('role', 'listitem');
       el.setAttribute('tabindex', '0');
-      el.setAttribute('aria-label',
-        `${contrib.name}${contrib.indices.length > 1 ? ` — ${contrib.indices.length} memories` : ''}`);
+      el.setAttribute('aria-label', `Memory from ${mem.name || 'Anonymous'}`);
 
-      const countBadge = contrib.indices.length > 1
-        ? `<span class="node-count">· ${contrib.indices.length}</span>` : '';
-      const camBadge = totalPhotos > 0
-        ? `<span class="node-cam">📷</span>` : '';
+      el.innerHTML = `
+        <div class="node-orb"></div>
+        <div class="node-tooltip">
+          ${snippet ? `<div class="tooltip-msg">${esc(snippet)}${ellipsis}</div>` : ''}
+          <div class="tooltip-name">— ${esc(mem.name || 'Anonymous')}</div>
+        </div>`;
 
-      el.innerHTML = `<div class="node-pill"><span class="node-dot"></span>${esc(shortName(contrib.name))}${countBadge}${camBadge}</div>`;
-
-      // Open lightbox at this contributor's first memory
-      const firstIdx = contrib.indices[0];
-      el.addEventListener('click', () => openLightbox(firstIdx));
+      el.addEventListener('click', () => openLightbox(idx));
       el.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(firstIdx); }
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(idx); }
       });
 
-      // Pause this node's movement while hovered/focused
       el.addEventListener('mouseenter', () => { nodeObj.paused = true; });
       el.addEventListener('mouseleave', () => { nodeObj.paused = false; });
       el.addEventListener('focus',      () => { nodeObj.paused = true; });
       el.addEventListener('blur',       () => { nodeObj.paused = false; });
 
       container.appendChild(el);
-      const nodeObj = { el, ringIdx: ri, angle: startAngle, paused: false };
+      const nodeObj = { el, ringIdx: ri, angle: startAngle, paused: false, x: 0, y: 0 };
       orbitNodeObjs.push(nodeObj);
+      memIdx++;
     }
   });
 }
@@ -992,17 +1075,17 @@ function drawNucleus() {
   nuc.style.left = cx + 'px';
   nuc.style.top  = cy + 'px';
   nuc.innerHTML = `
-    <svg class="nucleus-svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" aria-hidden="true">
-      <polygon points="${pts.join(' ')}" fill="var(--teal)" opacity=".16"/>
-      <polygon points="${pts.join(' ')}" fill="none" stroke="var(--teal)" stroke-width="1.5" opacity=".72"/>
-      <text x="${r}" y="${r - size*0.09}" text-anchor="middle" dominant-baseline="middle"
-            font-family="Playfair Display, serif"
-            font-size="${(size * 0.27).toFixed(1)}" font-weight="700" fill="var(--butter)">AJ</text>
-      <text x="${r}" y="${r + size*0.18}" text-anchor="middle" dominant-baseline="middle"
-            font-family="Playfair Display, serif"
-            font-size="${(size * 0.17).toFixed(1)}" font-weight="400"
-            fill="rgba(250,243,224,.55)">70</text>
-    </svg>`;
+    <div class="nucleus-bg">
+      <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" aria-hidden="true">
+        <polygon points="${pts.join(' ')}" fill="var(--teal)" opacity=".16"/>
+        <polygon points="${pts.join(' ')}" fill="none" stroke="var(--teal)" stroke-width="1.5" opacity=".72"/>
+      </svg>
+    </div>
+    <div class="nucleus-content">
+      <span class="nucleus-omni">Omnipresent</span>
+      <span class="nucleus-aj">AJ</span>
+      <span class="nucleus-sub">She's everywhere and means everything to us.</span>
+    </div>`;
 }
 
 function drawOrbitSVG() {
@@ -1054,6 +1137,55 @@ function drawOrbitSVG() {
   svg.innerHTML = markup;
 }
 
+// ── Orbit connecting lines (canvas, drawn each frame) ────────────────────
+function drawOrbitLines(cx, cy) {
+  const canvas = document.getElementById('orbit-lines');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const dotR   = 8;   // stop line this many px before the dot center
+  const arrLen = 5;   // arrowhead arm length
+
+  orbitNodeObjs.forEach(node => {
+    const dx   = node.x - cx;
+    const dy   = node.y - cy;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 1) return;
+    const ux = dx / dist;
+    const uy = dy / dist;
+
+    // Line tip: just before the dot
+    const tx = node.x - ux * dotR;
+    const ty = node.y - uy * dotR;
+
+    // Line from center outward
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(tx, ty);
+    ctx.strokeStyle = 'rgba(43,179,163,0.16)';
+    ctx.lineWidth = 0.75;
+    ctx.stroke();
+
+    // Arrowhead
+    const angle = Math.atan2(uy, ux);
+    ctx.beginPath();
+    ctx.moveTo(tx, ty);
+    ctx.lineTo(
+      tx - arrLen * Math.cos(angle - Math.PI / 6),
+      ty - arrLen * Math.sin(angle - Math.PI / 6)
+    );
+    ctx.moveTo(tx, ty);
+    ctx.lineTo(
+      tx - arrLen * Math.cos(angle + Math.PI / 6),
+      ty - arrLen * Math.sin(angle + Math.PI / 6)
+    );
+    ctx.strokeStyle = 'rgba(43,179,163,0.30)';
+    ctx.lineWidth = 0.75;
+    ctx.stroke();
+  });
+}
+
 // ── Orbit animation (delta-time, per-node pause) ──────────────────────────
 function startOrbitAnimation() {
   if (orbitRAF) cancelAnimationFrame(orbitRAF);
@@ -1084,10 +1216,13 @@ function startOrbitAnimation() {
       const x  = cx + px * Math.cos(tiltRad) - py * Math.sin(tiltRad);
       const y  = cy + px * Math.sin(tiltRad) + py * Math.cos(tiltRad);
 
+      node.x = x;
+      node.y = y;
       node.el.style.left = x + 'px';
       node.el.style.top  = y + 'px';
     });
 
+    drawOrbitLines(cx, cy);
     orbitRAF = requestAnimationFrame(frame);
   }
 
