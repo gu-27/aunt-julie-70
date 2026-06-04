@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Omnipresent AJ — 70 Years, Everywhere in Our Lives</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Merriweather:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal:     #2BB3A3;
+    --teal-lt:  #5BC8C2;
+    --navy:     #15233F;
+    --navy-dk:  #0F1A30;
+    --butter:   #F4D35E;
+    --coral:    #F76C5E;
+    --cream:    #FAF3E0;
+    --charcoal: #2B2B2B;
+  }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: 'Merriweather', Georgia, serif;
+    background: var(--navy-dk);
+    color: var(--cream);
+    overflow-x: hidden;
+  }
+
+  /* ── Password Gate ─────────────────────────────────────────────────────── */
+  #gate {
+    position: fixed; inset: 0;
+    background: var(--navy-dk);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+  }
+  #gate.hidden { display: none; }
+  .gate-box {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(43,179,163,.4);
+    border-radius: 20px;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    max-width: 380px; width: 90%;
+    box-shadow: 0 0 40px rgba(43,179,163,.15), 0 8px 40px rgba(0,0,0,.5);
+  }
+  .gate-star {
+    font-size: 2.8rem;
+    margin-bottom: .75rem;
+    display: block;
+  }
+  .gate-box h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--butter);
+    margin-bottom: .25rem;
+  }
+  .gate-box p { color: rgba(255,255,255,.5); margin-bottom: 1.5rem; font-size: .9rem; font-family: 'Merriweather', serif; }
+  .gate-box input {
+    width: 100%; padding: .75rem 1rem;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(43,179,163,.4);
+    border-radius: 8px;
+    font-size: 1.1rem; text-align: center; letter-spacing: .2em;
+    color: white; outline: none;
+    margin-bottom: .75rem;
+    transition: border-color .2s, box-shadow .2s;
+    font-family: 'Merriweather', serif;
+  }
+  .gate-box input:focus {
+    border-color: var(--teal);
+    box-shadow: 0 0 12px rgba(43,179,163,.3);
+  }
+  .gate-box button {
+    width: 100%; padding: .8rem;
+    background: var(--teal); color: var(--navy-dk);
+    border: none; border-radius: 8px;
+    font-size: 1rem; font-weight: 700; letter-spacing: .08em;
+    cursor: pointer; font-family: 'Playfair Display', serif;
+    transition: background .2s, box-shadow .2s;
+  }
+  .gate-box button:hover {
+    background: var(--teal-lt);
+    box-shadow: 0 0 18px rgba(91,200,194,.4);
+  }
+  .gate-error { color: var(--coral); font-size: .82rem; margin-top: .5rem; font-family: 'Merriweather', serif; }
+
+  /* ── App shell ─────────────────────────────────────────────────────────── */
+  #app.hidden { display: none; }
+
+  /* ── Top bar ───────────────────────────────────────────────────────────── */
+  .top-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(15,26,48,.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(43,179,163,.2);
+    padding: .75rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .75rem;
+  }
+  .top-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(.9rem, 2.2vw, 1.1rem);
+    color: var(--butter);
+    letter-spacing: .04em;
+  }
+  .top-title span { color: var(--teal); }
+  .top-center { display: flex; align-items: center; gap: 1rem; }
+  .count-badge {
+    font-size: .72rem; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--butter);
+    background: rgba(244,211,94,.1);
+    border: 1px solid rgba(244,211,94,.3);
+    padding: .3rem .8rem; border-radius: 100px;
+    white-space: nowrap;
+    font-family: 'Playfair Display', serif;
+  }
+  .toggle-wrap { display: flex; gap: .4rem; }
+  .toggle-btn {
+    font-size: .7rem; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: .4rem .9rem; border-radius: 100px;
+    border: 1px solid rgba(43,179,163,.4);
+    background: transparent; color: rgba(255,255,255,.5);
+    cursor: pointer;
+    transition: background .2s, color .2s, border-color .2s, box-shadow .2s;
+    font-family: 'Playfair Display', serif;
+  }
+  .toggle-btn.active {
+    background: var(--teal); color: var(--navy-dk);
+    border-color: var(--teal);
+    box-shadow: 0 0 12px rgba(43,179,163,.4);
+  }
+  .toggle-btn:not(.active):hover { border-color: var(--teal); color: var(--teal-lt); }
+
+  /* ── View containers ───────────────────────────────────────────────────── */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     VIEW A — ORBIT
+  ══════════════════════════════════════════════════════════════════════════ */
+  #view-orbit {
+    position: relative;
+    width: 100%;
+    height: calc(100svh - 52px);
+    overflow: hidden;
+    background: var(--navy-dk);
+  }
+
+  /* SVG background (starfield + rings) */
+  #orbit-bg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+  }
+
+  /* Nucleus */
+  #orbit-nucleus {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    pointer-events: none;
+    z-index: 5;
+  }
+  .nucleus-svg {
+    animation: nucleus-pulse 3s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nucleus-svg { animation: none; }
+  }
+  @keyframes nucleus-pulse {
+    0%, 100% { filter: drop-shadow(0 0 8px rgba(43,179,163,.6)) drop-shadow(0 0 20px rgba(43,179,163,.3)); }
+    50%       { filter: drop-shadow(0 0 14px rgba(43,179,163,.9)) drop-shadow(0 0 40px rgba(43,179,163,.5)); }
+  }
+
+  /* Memory nodes */
+  .orbit-node {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    cursor: pointer;
+    transition: filter .2s;
+  }
+  .orbit-node:hover .node-pill, .orbit-node:focus .node-pill {
+    background: var(--teal);
+    color: var(--navy-dk);
+    box-shadow: 0 0 12px rgba(43,179,163,.7), 0 0 24px rgba(43,179,163,.3);
+    transform: scale(1.1);
+  }
+  .orbit-node:focus { outline: none; }
+  .orbit-node:focus .node-pill {
+    outline: 2px solid var(--butter);
+    outline-offset: 2px;
+  }
+  .node-pill {
+    display: flex; align-items: center; gap: .35rem;
+    padding: .25rem .6rem;
+    background: rgba(21,35,63,.85);
+    border: 1px solid rgba(43,179,163,.5);
+    border-radius: 100px;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(.52rem, 1.1vw, .68rem);
+    color: var(--teal-lt);
+    white-space: nowrap;
+    backdrop-filter: blur(4px);
+    transition: background .2s, color .2s, box-shadow .2s, transform .2s;
+    user-select: none;
+  }
+  .node-dot {
+    width: 5px; height: 5px;
+    background: var(--teal);
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 4px var(--teal);
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     VIEW B — MARQUEE
+  ══════════════════════════════════════════════════════════════════════════ */
+  #view-marquee {
+    background: var(--navy-dk);
+    min-height: calc(100svh - 52px);
+    padding-bottom: 4rem;
+  }
+
+  /* Pylon sign */
+  .pylon-wrap {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 3rem 1rem 2rem;
+    position: relative;
+  }
+  .pylon-starburst {
+    width: clamp(80px, 14vw, 120px);
+    height: clamp(80px, 14vw, 120px);
+    margin-bottom: -.5rem;
+    filter: drop-shadow(0 0 8px rgba(244,211,94,.6)) drop-shadow(0 0 20px rgba(244,211,94,.3));
+    animation: pylon-glow 4s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) { .pylon-starburst { animation: none; } }
+  @keyframes pylon-glow {
+    0%, 100% { filter: drop-shadow(0 0 8px rgba(244,211,94,.6)) drop-shadow(0 0 20px rgba(244,211,94,.3)); }
+    50%       { filter: drop-shadow(0 0 14px rgba(244,211,94,.9)) drop-shadow(0 0 35px rgba(244,211,94,.5)); }
+  }
+
+  .pylon-body {
+    display: flex; flex-direction: column; align-items: stretch;
+    width: clamp(220px, 40vw, 400px);
+    position: relative;
+  }
+  .pylon-body::after {
+    content: '';
+    display: block;
+    width: 14px; height: clamp(40px, 6vw, 80px);
+    background: linear-gradient(to bottom, rgba(43,179,163,.6), rgba(43,179,163,.2));
+    margin: 0 auto;
+  }
+  .pylon-panel {
+    border: 2px solid var(--teal);
+    padding: .75rem 1.5rem;
+    text-align: center;
+    position: relative;
+    margin-bottom: -2px;
+  }
+  .pylon-panel + .pylon-panel { border-top-color: transparent; }
+  .pylon-name {
+    background: var(--navy);
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 7vw, 4rem);
+    font-weight: 700;
+    letter-spacing: .35em;
+    color: var(--teal-lt);
+    text-shadow: 0 0 8px rgba(91,200,194,.8), 0 0 20px rgba(91,200,194,.4), 0 0 40px rgba(43,179,163,.3);
+    padding: .75rem 1.5rem;
+    border: 2px solid var(--teal);
+  }
+  .pylon-num {
+    background: var(--navy-dk);
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 11vw, 7rem);
+    font-weight: 700;
+    color: var(--butter);
+    line-height: 1;
+    padding: .5rem 1.5rem .75rem;
+    letter-spacing: .08em;
+    text-shadow: 0 0 10px rgba(244,211,94,.7), 0 0 24px rgba(244,211,94,.3);
+    border: 2px solid var(--teal);
+    border-top-color: transparent;
+  }
+  .pylon-sub {
+    background: var(--teal);
+    color: var(--navy-dk);
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(.7rem, 2vw, 1rem);
+    font-weight: 700;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    padding: .6rem 1.5rem;
+    border: 2px solid var(--teal);
+    border-top-color: var(--navy-dk);
+  }
+
+  /* Memory card grid */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.25rem;
+    padding: 1rem 1.5rem 2rem;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  /* Card base */
+  .mem-card {
+    position: relative;
+    border-radius: 12px;
+    padding: 1.4rem 1.25rem;
+    cursor: pointer;
+    transition: transform .25s ease, box-shadow .25s ease;
+    overflow: hidden;
+  }
+  .mem-card:hover, .mem-card:focus {
+    transform: translateY(-4px);
+    outline: none;
+  }
+  .mem-card:focus-visible { outline: 2px solid var(--butter); outline-offset: 3px; }
+
+  /* 6 card variants */
+  .card-v0 {
+    background: rgba(21,35,63,.95);
+    border: 1.5px solid rgba(43,179,163,.5);
+    border-radius: 50px 12px 50px 12px;
+    box-shadow: 0 0 0 0 transparent;
+  }
+  .card-v0:hover { box-shadow: 0 8px 30px rgba(43,179,163,.25); }
+
+  .card-v1 {
+    background: rgba(247,108,94,.08);
+    border: 1.5px solid rgba(247,108,94,.5);
+    border-radius: 12px 40px 12px 40px;
+    box-shadow: 0 0 0 0 transparent;
+  }
+  .card-v1:hover { box-shadow: 0 8px 30px rgba(247,108,94,.2); }
+
+  .card-v2 {
+    background: rgba(43,179,163,.07);
+    border: 1.5px solid rgba(43,179,163,.45);
+    border-radius: 4px 40px 4px 40px;
+    box-shadow: 0 0 0 0 transparent;
+  }
+  .card-v2:hover { box-shadow: 0 8px 30px rgba(43,179,163,.2); }
+
+  .card-v3 {
+    background: rgba(244,211,94,.06);
+    border: 1.5px solid rgba(244,211,94,.4);
+    border-radius: 12px;
+    clip-path: polygon(0 0, 96% 0, 100% 4%, 100% 100%, 4% 100%, 0 96%);
+    box-shadow: 0 0 0 0 transparent;
+  }
+  .card-v3:hover { box-shadow: 0 8px 30px rgba(244,211,94,.15); }
+
+  .card-v4 {
+    background: rgba(15,26,48,.98);
+    border: 1.5px solid rgba(247,108,94,.45);
+    border-radius: 0 0 40px 40px;
+    padding-top: 1.8rem;
+    box-shadow: 0 0 0 0 transparent;
+  }
+  .card-v4::before {
+    content: '';
+    position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+    width: 18px; height: 18px;
+    background: var(--coral);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    box-shadow: 0 0 8px var(--coral);
+  }
+  .card-v4:hover { box-shadow: 0 8px 30px rgba(247,108,94,.2); }
+
+  .card-v5 {
+    background: rgba(250,243,224,.05);
+    border: 1.5px solid rgba(250,243,224,.25);
+    border-radius: 999px;
+    padding: 1.5rem 1.75rem;
+    box-shadow: 0 0 0 0 transparent;
+  }
+  .card-v5:hover { box-shadow: 0 8px 30px rgba(250,243,224,.08); }
+
+  /* Card content */
+  .card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: .9rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    margin-bottom: .6rem;
+    text-transform: uppercase;
+  }
+  .card-v0 .card-name { color: var(--teal-lt); text-shadow: 0 0 8px rgba(91,200,194,.4); }
+  .card-v1 .card-name { color: var(--coral);    text-shadow: 0 0 8px rgba(247,108,94,.4); }
+  .card-v2 .card-name { color: var(--teal-lt);  text-shadow: 0 0 8px rgba(91,200,194,.4); }
+  .card-v3 .card-name { color: var(--butter);   text-shadow: 0 0 8px rgba(244,211,94,.4); }
+  .card-v4 .card-name { color: var(--coral);    text-shadow: 0 0 8px rgba(247,108,94,.4); }
+  .card-v5 .card-name { color: var(--cream);    opacity: .85; }
+
+  .card-msg {
+    font-family: 'Merriweather', serif;
+    font-size: .78rem;
+    line-height: 1.7;
+    color: rgba(250,243,224,.75);
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-photos {
+    display: flex; flex-wrap: wrap; gap: .35rem;
+    margin-top: .75rem;
+  }
+  .card-photo-thumb {
+    width: 52px; height: 52px;
+    object-fit: cover;
+    border-radius: 6px;
+    opacity: .85;
+  }
+  .card-more-photos {
+    width: 52px; height: 52px;
+    border-radius: 6px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: .65rem;
+    color: rgba(255,255,255,.5);
+    font-family: 'Playfair Display', serif;
+  }
+
+  .card-corner-star {
+    position: absolute; bottom: .6rem; right: .7rem;
+    opacity: .2;
+    pointer-events: none;
+  }
+
+  /* ── Lightbox ──────────────────────────────────────────────────────────── */
+  #lightbox {
+    position: fixed; inset: 0;
+    background: rgba(10,15,28,.92);
+    backdrop-filter: blur(6px);
+    z-index: 2000;
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s ease;
+  }
+  #lightbox.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .lb-box {
+    background: var(--navy);
+    border: 1px solid rgba(43,179,163,.35);
+    border-radius: 16px;
+    max-width: 600px; width: 100%;
+    max-height: 90vh; overflow-y: auto;
+    padding: 2rem;
+    box-shadow: 0 0 60px rgba(43,179,163,.15), 0 24px 60px rgba(0,0,0,.6);
+    position: relative;
+  }
+  .lb-close {
+    position: sticky; top: 0;
+    float: right;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.15);
+    color: rgba(255,255,255,.6);
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem; line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .2s, color .2s;
+    z-index: 1;
+    flex-shrink: 0;
+  }
+  .lb-close:hover { background: var(--coral); color: white; border-color: var(--coral); }
+  .lb-header {
+    display: flex; align-items: flex-start; gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding-right: 2rem;
+  }
+  .lb-starburst { flex-shrink: 0; }
+  .lb-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--teal-lt);
+    line-height: 1.2;
+    text-shadow: 0 0 8px rgba(91,200,194,.3);
+  }
+  .lb-divider {
+    width: 40px; height: 2px;
+    background: linear-gradient(to right, var(--teal), transparent);
+    margin: .75rem 0;
+  }
+  .lb-message {
+    font-family: 'Merriweather', serif;
+    font-size: .9rem;
+    line-height: 1.8;
+    color: rgba(250,243,224,.85);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .lb-photos {
+    display: flex; flex-wrap: wrap; gap: .5rem;
+    margin-top: 1.25rem;
+  }
+  .lb-photo {
+    max-width: 100%;
+    max-height: 280px;
+    border-radius: 8px;
+    cursor: zoom-in;
+    transition: opacity .2s;
+    object-fit: cover;
+  }
+  .lb-photo:hover { opacity: .9; }
+  .lb-single-photo { max-width: min(100%, 400px); }
+  .lb-photo-full {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.95);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 3000;
+    cursor: zoom-out;
+  }
+  .lb-photo-full img { max-width: 95vw; max-height: 95vh; border-radius: 6px; }
+  .lb-photo-full.hidden { display: none; }
+
+  /* ── Easter egg: Pour a memory ─────────────────────────────────────────── */
+  #pour-btn {
+    position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 500;
+    background: rgba(21,35,63,.9);
+    border: 1px solid rgba(247,108,94,.5);
+    color: var(--coral);
+    padding: .5rem 1rem;
+    border-radius: 100px;
+    font-size: .72rem; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background .2s, box-shadow .2s;
+    backdrop-filter: blur(4px);
+    font-family: 'Playfair Display', serif;
+  }
+  #pour-btn:hover { background: rgba(247,108,94,.15); box-shadow: 0 0 14px rgba(247,108,94,.3); }
+
+  #pour-overlay {
+    position: fixed; inset: 0;
+    background: rgba(10,15,28,.88);
+    backdrop-filter: blur(6px);
+    z-index: 2500;
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.5rem;
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s ease;
+  }
+  #pour-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .pour-sign {
+    position: relative;
+    max-width: 420px; width: 100%;
+    border: 2px solid var(--coral);
+    background: var(--navy);
+    border-radius: 0 0 20px 20px;
+    padding: 1.75rem;
+    box-shadow: 0 0 30px rgba(247,108,94,.2), 0 0 60px rgba(247,108,94,.1);
+  }
+  .pour-sign::before {
+    content: '';
+    position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+    width: 40px; height: 20px;
+    background: var(--coral);
+    clip-path: polygon(50% 0%, 61% 38%, 98% 38%, 68% 62%, 79% 100%, 50% 76%, 21% 100%, 32% 62%, 2% 38%, 39% 38%);
+  }
+  .pour-label {
+    font-family: 'Playfair Display', serif;
+    font-size: .7rem; font-weight: 700; letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--coral);
+    text-shadow: 0 0 8px rgba(247,108,94,.5);
+    margin-bottom: .5rem;
+  }
+  .pour-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; font-weight: 700;
+    color: var(--butter);
+    margin-bottom: .75rem;
+  }
+  .pour-msg {
+    font-family: 'Merriweather', serif;
+    font-size: .85rem; line-height: 1.75;
+    color: rgba(250,243,224,.8);
+    white-space: pre-wrap;
+  }
+  .pour-close {
+    display: block;
+    margin: 1.25rem auto 0;
+    padding: .5rem 1.5rem;
+    background: none; border: 1px solid rgba(247,108,94,.5);
+    color: var(--coral); border-radius: 100px;
+    cursor: pointer; font-size: .75rem; letter-spacing: .1em;
+    text-transform: uppercase; font-family: 'Playfair Display', serif;
+    transition: background .2s;
+  }
+  .pour-close:hover { background: rgba(247,108,94,.1); }
+
+  /* ── Loading state ─────────────────────────────────────────────────────── */
+  .loading-msg {
+    text-align: center; padding: 4rem 1rem;
+    color: rgba(255,255,255,.3);
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; letter-spacing: .1em;
+  }
+  </style>
+</head>
+<body>
+
+<!-- ── Password Gate ──────────────────────────────────────────────────────── -->
+<div id="gate">
+  <div class="gate-box">
+    <span class="gate-star">✦</span>
+    <h1>Omnipresent AJ</h1>
+    <p>Enter the password to celebrate 70 years of memories.</p>
+    <input type="password" id="gate-input" placeholder="Password" autocomplete="off">
+    <button onclick="checkPassword()">Enter</button>
+    <p class="gate-error" id="gate-error"></p>
+  </div>
+</div>
+
+<!-- ── App ───────────────────────────────────────────────────────────────── -->
+<div id="app" class="hidden">
+
+  <!-- Top bar -->
+  <div class="top-bar">
+    <div class="top-title">Omnipresent <span>AJ</span> &nbsp;·&nbsp; 70 Years, Everywhere in Our Lives</div>
+    <div class="top-center">
+      <div class="count-badge" id="count-badge">— / 70</div>
+      <div class="toggle-wrap">
+        <button class="toggle-btn active" id="btn-orbit" onclick="setView('orbit')">✦ Orbit</button>
+        <button class="toggle-btn" id="btn-marquee" onclick="setView('marquee')">◈ Marquee</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- View A: Orbit -->
+  <div id="view-orbit" class="view active">
+    <svg id="orbit-bg" aria-hidden="true"></svg>
+    <div id="orbit-nucleus" aria-hidden="true"></div>
+    <div id="orbit-nodes" role="list" aria-label="Memory contributors orbiting AJ"></div>
+    <div id="orbit-loading" class="loading-msg">Loading memories…</div>
+  </div>
+
+  <!-- View B: Marquee -->
+  <div id="view-marquee" class="view">
+    <div class="pylon-wrap">
+      <svg class="pylon-starburst" viewBox="0 0 120 120" aria-hidden="true">
+        <polygon points="60,4 65,42 98,22 76,50 116,50 84,68 104,98 68,80 60,116 52,80 16,98 36,68 4,50 44,50 22,22 55,42"
+                 fill="var(--butter)" stroke="var(--navy-dk)" stroke-width="1"/>
+        <text x="60" y="68" text-anchor="middle" font-family="Playfair Display, serif"
+              font-size="22" font-weight="700" fill="var(--navy-dk)">AJ</text>
+      </svg>
+      <div class="pylon-body">
+        <div class="pylon-name">JULIE</div>
+        <div class="pylon-num">70</div>
+        <div class="pylon-sub">70 years of memories</div>
+      </div>
+    </div>
+    <div class="cards-grid" id="cards-grid">
+      <div class="loading-msg">Loading memories…</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Lightbox ───────────────────────────────────────────────────────────── -->
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Memory detail">
+  <div class="lb-box">
+    <button class="lb-close" onclick="closeLightbox()" aria-label="Close">✕</button>
+    <div class="lb-header">
+      <svg class="lb-starburst" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
+        <polygon points="16,1 17.5,12 26,6 19,14 31,16 19,18 26,26 17.5,20 16,31 14.5,20 6,26 13,18 1,16 13,14 6,6 14.5,12"
+                 fill="var(--teal)"/>
+      </svg>
+      <div class="lb-name" id="lb-name"></div>
+    </div>
+    <div class="lb-divider"></div>
+    <div class="lb-message" id="lb-message"></div>
+    <div class="lb-photos" id="lb-photos"></div>
+  </div>
+</div>
+
+<!-- Full-image zoom within lightbox -->
+<div class="lb-photo-full hidden" id="lb-photo-full" onclick="this.classList.add('hidden')" role="dialog" aria-label="Full image">
+  <img id="lb-photo-full-img" src="" alt="">
+</div>
+
+<!-- Easter egg button -->
+<button id="pour-btn" onclick="pourMemory()" aria-label="Pour a random memory">🍸 Pour a memory</button>
+
+<!-- Pour overlay -->
+<div id="pour-overlay" role="dialog" aria-modal="true" aria-label="Random memory">
+  <div class="pour-sign">
+    <div class="pour-label">✦ A memory, just for you</div>
+    <div class="pour-name" id="pour-name"></div>
+    <div class="pour-msg" id="pour-msg"></div>
+    <button class="pour-close" onclick="closePour()">Close</button>
+  </div>
+</div>
+
+<script>
+// ── Config ────────────────────────────────────────────────────────────────
+const CFG = {
+  owner:    'gu-27',
+  repo:     'aunt-julie-70',
+  dataPath: 'docs/memories.json',
+  password: 'AJ2026',
+  goal:     70,
+};
+
+// ── State ─────────────────────────────────────────────────────────────────
+let memories      = [];
+let currentView   = 'orbit';
+let orbitRAF      = null;
+let orbitNodes    = [];   // { el, ring, angle }
+let orbitRings    = [];   // { rx, ry, tilt, period, nodes[] }
+let orbitInited   = false;
+let reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ── Init ──────────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('gate-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkPassword();
+  });
+  if (localStorage.getItem('aj_auth') === '1') unlockApp();
+});
+
+// ── Password ──────────────────────────────────────────────────────────────
+function checkPassword() {
+  const val = document.getElementById('gate-input').value.trim();
+  if (val === CFG.password) {
+    localStorage.setItem('aj_auth', '1');
+    unlockApp();
+  } else {
+    document.getElementById('gate-error').textContent = 'Incorrect password. Try again.';
+  }
+}
+
+function unlockApp() {
+  document.getElementById('gate').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  loadMemories();
+}
+
+// ── Data ──────────────────────────────────────────────────────────────────
+async function loadMemories() {
+  try {
+    const url = `https://raw.githubusercontent.com/${CFG.owner}/${CFG.repo}/main/${CFG.dataPath}?t=${Date.now()}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(res.status);
+    memories = await res.json();
+  } catch (e) {
+    console.warn('Could not load memories:', e.message);
+    memories = [];
+  }
+  document.getElementById('count-badge').textContent = `${memories.length} / ${CFG.goal}`;
+  document.getElementById('orbit-loading').style.display = 'none';
+
+  initOrbit();
+  if (currentView === 'marquee') renderMarquee();
+}
+
+// ── View toggle ───────────────────────────────────────────────────────────
+function setView(v) {
+  currentView = v;
+  document.getElementById('view-orbit').classList.toggle('active', v === 'orbit');
+  document.getElementById('view-marquee').classList.toggle('active', v === 'marquee');
+  document.getElementById('btn-orbit').classList.toggle('active', v === 'orbit');
+  document.getElementById('btn-marquee').classList.toggle('active', v === 'marquee');
+
+  if (v === 'marquee') {
+    if (orbitRAF) { cancelAnimationFrame(orbitRAF); orbitRAF = null; }
+    renderMarquee();
+  } else {
+    if (orbitInited) startOrbitAnimation();
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// ORBIT VIEW
+// ══════════════════════════════════════════════════════════════════════════
+
+const RING_DEFS = [
+  { rxF: 0.18, ryF: 0.12, tilt:  15, period: 55000 },
+  { rxF: 0.29, ryF: 0.18, tilt: -20, period: 78000 },
+  { rxF: 0.40, ryF: 0.24, tilt:  30, period: 102000 },
+  { rxF: 0.51, ryF: 0.30, tilt: -10, period: 132000 },
+  { rxF: 0.62, ryF: 0.35, tilt:  22, period: 168000 },
+];
+
+function initOrbit() {
+  if (!memories.length) return;
+  orbitInited = true;
+
+  buildOrbitNodes();
+  drawOrbitSVG();
+  startOrbitAnimation();
+
+  window.addEventListener('resize', debounce(() => {
+    drawOrbitSVG();
+    positionNucleus();
+  }, 150));
+}
+
+function positionNucleus() {
+  const v = document.getElementById('view-orbit');
+  const cx = v.clientWidth / 2;
+  const cy = v.clientHeight / 2;
+  const nuc = document.getElementById('orbit-nucleus');
+  nuc.style.left = cx + 'px';
+  nuc.style.top  = cy + 'px';
+}
+
+function buildOrbitNodes() {
+  const container = document.getElementById('orbit-nodes');
+  container.innerHTML = '';
+  orbitNodes = [];
+  orbitRings = RING_DEFS.map(d => ({ ...d, nodeList: [] }));
+
+  // Distribute memories across rings proportional to circumference
+  const circumferences = orbitRings.map(r => {
+    const base = getOrbitBase();
+    return 2 * Math.PI * Math.sqrt((r.rxF * r.rxF + r.ryF * r.ryF) / 2) * base;
+  });
+  const totalC = circumferences.reduce((s, c) => s + c, 0);
+  const counts = circumferences.map((c, i) => {
+    const n = Math.round(memories.length * c / totalC);
+    return Math.max(1, n);
+  });
+  // Fix count total
+  let diff = memories.length - counts.reduce((s, c) => s + c, 0);
+  counts[counts.length - 1] += diff;
+
+  let memIdx = 0;
+  orbitRings.forEach((ring, ri) => {
+    const n = counts[ri];
+    for (let ni = 0; ni < n && memIdx < memories.length; ni++, memIdx++) {
+      const mem = memories[memIdx];
+      const startAngle = (2 * Math.PI * ni / n) + (ri * 0.618 * Math.PI); // golden angle offset per ring
+
+      const el = document.createElement('div');
+      el.className = 'orbit-node';
+      el.setAttribute('role', 'listitem');
+      el.setAttribute('tabindex', '0');
+      el.setAttribute('aria-label', `Memory from ${mem.name}`);
+      el.innerHTML = `<div class="node-pill"><span class="node-dot"></span>${shortName(mem.name)}</div>`;
+      el.addEventListener('click', () => openLightbox(mem));
+      el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(mem); } });
+
+      container.appendChild(el);
+      const nodeObj = { el, ring: ri, angle: startAngle };
+      orbitNodes.push(nodeObj);
+      ring.nodeList.push(nodeObj);
+    }
+  });
+
+  positionNucleus();
+  drawNucleus();
+}
+
+function getOrbitBase() {
+  const v = document.getElementById('view-orbit');
+  return Math.min(v.clientWidth * 0.44, v.clientHeight * 0.44);
+}
+
+function drawNucleus() {
+  const size = clamp(64, window.innerWidth * 0.09, 110);
+  const r = size / 2;
+  const nPoints = 20;
+  const outerR = r;
+  const innerR = r * 0.45;
+  const pts = [];
+  for (let i = 0; i < nPoints * 2; i++) {
+    const rad = i % 2 === 0 ? outerR : innerR;
+    const a = (i * Math.PI / nPoints) - Math.PI / 2;
+    pts.push(`${r + rad * Math.cos(a)},${r + rad * Math.sin(a)}`);
+  }
+
+  document.getElementById('orbit-nucleus').innerHTML = `
+    <svg class="nucleus-svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" aria-hidden="true">
+      <polygon points="${pts.join(' ')}" fill="var(--teal)" opacity=".18"/>
+      <polygon points="${pts.join(' ')}" fill="none" stroke="var(--teal)" stroke-width="1.5" opacity=".7"/>
+      <text x="${r}" y="${r - 4}" text-anchor="middle" dominant-baseline="middle"
+            font-family="Playfair Display, serif" font-size="${size * 0.27}" font-weight="700"
+            fill="var(--butter)" letter-spacing="1">AJ</text>
+      <text x="${r}" y="${r + size * 0.18}" text-anchor="middle" dominant-baseline="middle"
+            font-family="Playfair Display, serif" font-size="${size * 0.18}" font-weight="400"
+            fill="rgba(250,243,224,.6)" letter-spacing="1">70</text>
+    </svg>`;
+}
+
+function drawOrbitSVG() {
+  const v   = document.getElementById('view-orbit');
+  const svg = document.getElementById('orbit-bg');
+  const W   = v.clientWidth;
+  const H   = v.clientHeight;
+  const cx  = W / 2;
+  const cy  = H / 2;
+  const base = getOrbitBase();
+
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  let markup = '';
+
+  // Starfield
+  const stars = [];
+  const N = Math.min(200, Math.floor(W * H / 4000));
+  const rng = mulberry32(42);
+  for (let i = 0; i < N; i++) {
+    const sx = rng() * W;
+    const sy = rng() * H;
+    const sr = rng() * 1.2 + 0.3;
+    const op = rng() * 0.5 + 0.15;
+    stars.push(`<circle cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="${sr.toFixed(1)}" fill="white" opacity="${op.toFixed(2)}"/>`);
+  }
+  markup += stars.join('');
+
+  // Orbit rings (ellipses, tilted)
+  RING_DEFS.forEach((d, i) => {
+    const rx = d.rxF * base;
+    const ry = d.ryF * base;
+    const opacity = 0.12 + (i * 0.02);
+    markup += `<ellipse cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}"
+               transform="rotate(${d.tilt} ${cx.toFixed(1)} ${cy.toFixed(1)})"
+               fill="none" stroke="var(--teal)" stroke-width="0.8" opacity="${opacity.toFixed(2)}" stroke-dasharray="4 6"/>`;
+  });
+
+  // Decorative atomic boomerangs
+  markup += atomicDecor(W, H, rng);
+
+  svg.innerHTML = markup;
+}
+
+function atomicDecor(W, H, rng) {
+  let out = '';
+  // A few small starburst asterisks scattered in empty areas
+  const positions = [
+    [W * 0.1, H * 0.15], [W * 0.9, H * 0.12], [W * 0.08, H * 0.78],
+    [W * 0.92, H * 0.82], [W * 0.5, H * 0.08], [W * 0.18, H * 0.5],
+    [W * 0.82, H * 0.5],
+  ];
+  positions.forEach(([x, y]) => {
+    const r = 6 + rng() * 4;
+    const pts = [];
+    for (let i = 0; i < 12; i++) {
+      const a = (i * Math.PI / 6) - Math.PI / 2;
+      const rr = i % 2 === 0 ? r : r * 0.45;
+      pts.push(`${(x + rr * Math.cos(a)).toFixed(1)},${(y + rr * Math.sin(a)).toFixed(1)}`);
+    }
+    const color = rng() > 0.5 ? 'var(--teal)' : 'var(--butter)';
+    out += `<polygon points="${pts.join(' ')}" fill="${color}" opacity="0.15"/>`;
+  });
+  return out;
+}
+
+// ── Orbit animation ───────────────────────────────────────────────────────
+function startOrbitAnimation() {
+  if (orbitRAF) cancelAnimationFrame(orbitRAF);
+  const start = performance.now();
+
+  function frame(now) {
+    const t = now - start;
+    const v = document.getElementById('view-orbit');
+    const cx = v.clientWidth / 2;
+    const cy = v.clientHeight / 2;
+    const base = getOrbitBase();
+
+    orbitNodes.forEach(node => {
+      const rd = RING_DEFS[node.ring];
+      const rx = rd.rxF * base;
+      const ry = rd.ryF * base;
+      const tiltRad = rd.tilt * Math.PI / 180;
+      let angle = node.angle;
+      if (!reducedMotion) {
+        angle += (2 * Math.PI * t) / rd.period;
+      }
+
+      // Parametric point on tilted ellipse
+      const px = rx * Math.cos(angle);
+      const py = ry * Math.sin(angle);
+      const x = cx + px * Math.cos(tiltRad) - py * Math.sin(tiltRad);
+      const y = cy + px * Math.sin(tiltRad) + py * Math.cos(tiltRad);
+
+      node.el.style.left = x + 'px';
+      node.el.style.top  = y + 'px';
+    });
+
+    orbitRAF = requestAnimationFrame(frame);
+  }
+
+  orbitRAF = requestAnimationFrame(frame);
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// MARQUEE VIEW
+// ══════════════════════════════════════════════════════════════════════════
+
+function renderMarquee() {
+  const grid = document.getElementById('cards-grid');
+  if (!memories.length) {
+    grid.innerHTML = '<div class="loading-msg">No memories yet.</div>';
+    return;
+  }
+  grid.innerHTML = '';
+
+  // Shuffle a copy for visual variety (stable order based on id)
+  const sorted = [...memories].sort((a, b) => a.id.localeCompare(b.id));
+
+  sorted.forEach((mem, i) => {
+    grid.appendChild(makeCard(mem, i));
+  });
+}
+
+const CORNER_STARS = ['◆', '✦', '✶', '⬡', '◈', '✺'];
+
+function makeCard(mem, idx) {
+  const v = idx % 6;
+  const card = document.createElement('div');
+  card.className = `mem-card card-v${v}`;
+  card.setAttribute('tabindex', '0');
+  card.setAttribute('role', 'button');
+  card.setAttribute('aria-label', `Memory from ${mem.name} — click to read`);
+
+  const maxMsg = 200;
+  const preview = (mem.message || '').slice(0, maxMsg) + (mem.message && mem.message.length > maxMsg ? '…' : '');
+
+  let photosHTML = '';
+  if (mem.images && mem.images.length) {
+    const thumbs = mem.images.slice(0, 3).map((src, pi) =>
+      `<img class="card-photo-thumb" src="${escAttr(src)}" alt="Photo ${pi+1} from ${escAttr(mem.name)}" loading="lazy">`
+    ).join('');
+    const extra = mem.images.length > 3
+      ? `<div class="card-more-photos">+${mem.images.length - 3}</div>` : '';
+    photosHTML = `<div class="card-photos">${thumbs}${extra}</div>`;
+  }
+
+  const cornerStar = CORNER_STARS[v];
+  card.innerHTML = `
+    <div class="card-name">${esc(mem.name)}</div>
+    <div class="card-msg">${esc(preview)}</div>
+    ${photosHTML}
+    <div class="card-corner-star" aria-hidden="true">${cornerStar}</div>
+  `;
+
+  card.addEventListener('click', () => openLightbox(mem));
+  card.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(mem); }
+  });
+  return card;
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// LIGHTBOX
+// ══════════════════════════════════════════════════════════════════════════
+
+function openLightbox(mem) {
+  document.getElementById('lb-name').textContent = mem.name || 'Anonymous';
+  document.getElementById('lb-message').textContent = mem.message || '';
+
+  const photos = document.getElementById('lb-photos');
+  photos.innerHTML = '';
+  if (mem.images && mem.images.length) {
+    mem.images.forEach((src, i) => {
+      const img = document.createElement('img');
+      img.className = 'lb-photo' + (mem.images.length === 1 ? ' lb-single-photo' : '');
+      img.src = src;
+      img.alt = `Photo ${i + 1} shared by ${mem.name}`;
+      img.loading = 'lazy';
+      img.addEventListener('click', e => {
+        e.stopPropagation();
+        openPhotoFull(src, img.alt);
+      });
+      photos.appendChild(img);
+    });
+  }
+
+  const lb = document.getElementById('lightbox');
+  lb.classList.add('open');
+  lb.scrollTop = 0;
+
+  // Trap focus
+  const focusable = lb.querySelectorAll('button, [tabindex]:not([tabindex="-1"]), a');
+  if (focusable.length) focusable[0].focus();
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.getElementById('lb-photo-full').classList.add('hidden');
+}
+
+function openPhotoFull(src, alt) {
+  const full = document.getElementById('lb-photo-full');
+  document.getElementById('lb-photo-full-img').src = src;
+  document.getElementById('lb-photo-full-img').alt = alt;
+  full.classList.remove('hidden');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (!document.getElementById('lb-photo-full').classList.contains('hidden')) {
+      document.getElementById('lb-photo-full').classList.add('hidden');
+    } else if (document.getElementById('lightbox').classList.contains('open')) {
+      closeLightbox();
+    } else if (document.getElementById('pour-overlay').classList.contains('open')) {
+      closePour();
+    }
+  }
+});
+
+// Close lightbox on backdrop click
+document.getElementById('lightbox').addEventListener('click', e => {
+  if (e.target === document.getElementById('lightbox')) closeLightbox();
+});
+
+// ══════════════════════════════════════════════════════════════════════════
+// EASTER EGG — Pour a memory
+// ══════════════════════════════════════════════════════════════════════════
+
+function pourMemory() {
+  if (!memories.length) return;
+  const mem = memories[Math.floor(Math.random() * memories.length)];
+  document.getElementById('pour-name').textContent = mem.name || 'Anonymous';
+  document.getElementById('pour-msg').textContent = mem.message || '';
+  document.getElementById('pour-overlay').classList.add('open');
+}
+
+function closePour() {
+  document.getElementById('pour-overlay').classList.remove('open');
+}
+
+document.getElementById('pour-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('pour-overlay')) closePour();
+});
+
+// ── Utilities ─────────────────────────────────────────────────────────────
+
+function shortName(name) {
+  if (!name) return '—';
+  const parts = name.trim().split(/\s+/);
+  if (parts[0].length <= 12) return parts[0];
+  return parts[0].slice(0, 10) + '…';
+}
+
+function esc(s) {
+  return String(s || '')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+function escAttr(s) { return String(s || '').replace(/"/g, '&quot;'); }
+
+function clamp(min, val, max) { return Math.max(min, Math.min(max, val)); }
+
+function debounce(fn, ms) {
+  let t;
+  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+}
+
+// Seeded PRNG (Mulberry32) — for reproducible starfield
+function mulberry32(seed) {
+  return function() {
+    let t = seed += 0x6D2B79F5;
+    t = Math.imul(t ^ t >>> 15, t | 1);
+    t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+</script>
+</body>
+</html>
