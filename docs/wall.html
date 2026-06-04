@@ -714,79 +714,6 @@
   .pour-close { display: block; margin: 1.25rem auto 0; padding: .45rem 1.5rem; background: none; border: 1px solid rgba(247,108,94,.45); color: var(--coral); border-radius: 100px; cursor: pointer; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; font-family: 'Playfair Display', serif; transition: background .2s; }
   .pour-close:hover { background: rgba(247,108,94,.1); }
 
-  /* ── Memory Navigator ──────────────────────────────────────────────────── */
-  .mnav-wrap {
-    display: flex; flex-direction: column; align-items: center;
-    padding: 2.5rem 1.5rem 3rem;
-    gap: 1.2rem;
-    min-height: calc(100svh - 52px);
-  }
-  .mnav-header { text-align: center; max-width: 620px; }
-  .mnav-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.7rem, 5vw, 3.2rem);
-    font-weight: 700; color: var(--butter);
-    text-shadow: 0 0 24px rgba(244,211,94,.3);
-    line-height: 1.1;
-  }
-  .mnav-sub {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(.95rem, 2.6vw, 1.5rem);
-    color: rgba(250,243,224,.5); margin: .3rem 0;
-  }
-  .mnav-sub em { font-style: italic; }
-  .mnav-sub span { color: var(--teal-lt); font-style: normal; }
-  .mnav-tagline {
-    font-family: 'Merriweather', serif;
-    font-size: clamp(.72rem, 1.6vw, .88rem);
-    color: rgba(250,243,224,.32); line-height: 1.8; margin-top: .5rem;
-  }
-  .mnav-counter {
-    font-family: 'Playfair Display', serif;
-    font-size: .68rem; letter-spacing: .22em; text-transform: uppercase;
-    color: var(--teal-lt); opacity: .65;
-  }
-  .mnav-stage {
-    display: flex; align-items: center; gap: 1rem;
-    width: 100%; max-width: 600px;
-  }
-  .mnav-btn {
-    flex-shrink: 0; width: 48px; height: 48px;
-    background: rgba(255,255,255,.06);
-    border: 1px solid rgba(43,179,163,.35);
-    color: rgba(255,255,255,.5); border-radius: 50%;
-    font-size: 1.2rem; cursor: pointer;
-    transition: background .18s, color .18s, border-color .18s;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .mnav-btn:hover:not(:disabled) { background: var(--teal); color: var(--navy-dk); border-color: var(--teal); }
-  .mnav-btn:disabled { opacity: .18; cursor: default; pointer-events: none; }
-  .mnav-card-slot { flex: 1; min-width: 0; transition: opacity .16s ease; }
-  .mnav-hint {
-    font-family: 'Playfair Display', serif;
-    font-size: .58rem; letter-spacing: .12em; text-transform: uppercase;
-    color: rgba(255,255,255,.18);
-  }
-  @media (pointer: coarse) { .mnav-hint { display: none; } }
-
-  /* Navigator card: show memory directly — no 3D flip */
-  .mnav-card-slot .mem-card {
-    height: auto; min-height: 180px;
-    perspective: none; cursor: pointer;
-  }
-  .mnav-card-slot .mem-card:hover { transform: none; }
-  .mnav-card-slot .card-inner {
-    position: relative;
-    transform: none !important; transform-style: flat; transition: none;
-  }
-  .mnav-card-slot .card-front { display: none; }
-  .mnav-card-slot .card-back {
-    position: relative;
-    transform: none !important;
-    backface-visibility: visible; -webkit-backface-visibility: visible;
-    overflow: hidden;
-  }
-
   /* ── Misc ───────────────────────────────────────────────────────────────── */
   .loading-msg { text-align: center; padding: 4rem 1rem; color: rgba(255,255,255,.3); font-family: 'Playfair Display', serif; font-size: 1rem; letter-spacing: .1em; }
   </style>
@@ -818,23 +745,29 @@
     </div>
   </div>
 
-  <!-- View B: Memories navigator (default) -->
+  <!-- View B: Marquee (default) -->
   <div id="view-marquee" class="view active">
-    <div class="mnav-wrap">
-      <div class="mnav-header">
-        <div class="mnav-title">Happy 70th Birthday</div>
-        <div class="mnav-sub">to our <em>Omnipresent</em> <span>AJ</span></div>
-        <div class="mnav-tagline">She's everywhere and means everything to us.<br>Here are 70 memories and more to come.</div>
-      </div>
-      <div class="mnav-counter" id="mnav-counter">— / 70</div>
-      <div class="mnav-stage">
-        <button class="mnav-btn" id="mnav-prev" onclick="navStep(-1)" aria-label="Previous memory">&#8592;</button>
-        <div class="mnav-card-slot" id="mnav-card-slot">
-          <div class="loading-msg">Loading memories…</div>
+    <div class="pylon-wrap">
+      <div class="pylon-left">
+        <svg class="pylon-starburst" viewBox="0 0 120 120" aria-hidden="true">
+          <polygon points="60,4 65,42 98,22 76,50 116,50 84,68 104,98 68,80 60,116 52,80 16,98 36,68 4,50 44,50 22,22 55,42"
+                   fill="var(--butter)" stroke="var(--navy-dk)" stroke-width="1"/>
+          <text x="60" y="68" text-anchor="middle" font-family="Playfair Display, serif"
+                font-size="22" font-weight="700" fill="var(--navy-dk)">AJ</text>
+        </svg>
+        <div class="pylon-body">
+          <div class="pylon-name">JULIE</div>
+          <div class="pylon-num">70</div>
+          <div class="pylon-sub">70 years of memories</div>
         </div>
-        <button class="mnav-btn" id="mnav-next" onclick="navStep(1)" aria-label="Next memory">&#8594;</button>
       </div>
-      <div class="mnav-hint">← → to browse &nbsp;·&nbsp; click card to open full memory</div>
+      <div class="pylon-tagline">
+        Everywhere,<br>in all of our lives.
+        <strong>Happy 70th, Aunt Julie.</strong>
+      </div>
+    </div>
+    <div class="cards-grid" id="cards-grid">
+      <div class="loading-msg">Loading memories…</div>
     </div>
   </div>
 
@@ -898,7 +831,6 @@ const CFG = {
 let memories      = [];
 let contributors  = [];
 let currentView   = 'marquee';
-let navIdx        = 0;   // current memory in the navigator
 let orbitRAF      = null;
 let orbitNodeObjs = [];
 let orbitInited   = false;
@@ -953,7 +885,7 @@ async function loadMemories() {
 
   document.getElementById('count-badge').textContent = `${memories.length} / ${CFG.goal}`;
 
-  renderNavigator();
+  renderMarquee();
 }
 
 // ── View toggle ───────────────────────────────────────────────────────────
@@ -982,7 +914,7 @@ document.addEventListener('visibilitychange', () => {
 });
 
 // ════════════════════════════════════════════════════════════════════════
-// MEMORIES NAVIGATOR
+// MARQUEE VIEW
 // ════════════════════════════════════════════════════════════════════════
 
 function buildSeqMap() {
@@ -995,27 +927,15 @@ function buildSeqMap() {
   return map;
 }
 
-function renderNavigator() {
-  const slot = document.getElementById('mnav-card-slot');
-  if (!slot || !memories.length) return;
-  navIdx = Math.max(0, Math.min(navIdx, memories.length - 1));
+function renderMarquee() {
+  const grid = document.getElementById('cards-grid');
+  if (!memories.length) {
+    grid.innerHTML = '<div class="loading-msg">No memories yet.</div>';
+    return;
+  }
+  grid.innerHTML = '';
   const seqMap = buildSeqMap();
-
-  slot.style.opacity = '0';
-  setTimeout(() => {
-    slot.innerHTML = '';
-    slot.appendChild(makeCard(memories[navIdx], navIdx, seqMap.get(navIdx)));
-    slot.style.opacity = '1';
-    document.getElementById('mnav-counter').textContent =
-      `Memory ${navIdx + 1} of ${memories.length}`;
-    document.getElementById('mnav-prev').disabled = navIdx <= 0;
-    document.getElementById('mnav-next').disabled = navIdx >= memories.length - 1;
-  }, 140);
-}
-
-function navStep(dir) {
-  navIdx = Math.max(0, Math.min(navIdx + dir, memories.length - 1));
-  renderNavigator();
+  memories.forEach((mem, i) => grid.appendChild(makeCard(mem, i, seqMap.get(i))));
 }
 
 const CORNER_MARKS = ['◆', '✦', '✶', '⬡', '◈', '✺'];
@@ -1521,10 +1441,6 @@ document.addEventListener('keydown', e => {
   if (lbOpen && !fullOpen) {
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); lbStep(1); }
     if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   { e.preventDefault(); lbStep(-1); }
-  }
-  if (!lbOpen && !pourOpen && currentView === 'marquee') {
-    if (e.key === 'ArrowRight') { e.preventDefault(); navStep(1); }
-    if (e.key === 'ArrowLeft')  { e.preventDefault(); navStep(-1); }
   }
 });
 
