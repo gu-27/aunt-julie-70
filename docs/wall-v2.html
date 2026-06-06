@@ -521,22 +521,24 @@ function shuffleFY(arr) {
   }
 }
 
-// Sort memories by message length: long = specific = easier to guess; short = vague = harder.
-// Interleave them so the game alternates rather than clustering all vague ones together.
+// Sort by message length: long = specific = easier; short = vague = harder.
+// First third serves as an easy warmup, then the remaining two thirds interleave.
 function buildInterleavedDeck() {
   const indexed = memories.map((m, i) => ({ i, len: (m.message || '').length }));
   indexed.sort((a, b) => b.len - a.len);
-  const half   = Math.ceil(indexed.length / 2);
-  const easier = indexed.slice(0, half).map(x => x.i);
-  const harder = indexed.slice(half).map(x => x.i);
+  const third  = Math.ceil(indexed.length / 3);
+  const warmup = indexed.slice(0, third).map(x => x.i);
+  const easier = indexed.slice(third, third * 2).map(x => x.i);
+  const harder = indexed.slice(third * 2).map(x => x.i);
+  shuffleFY(warmup);
   shuffleFY(easier);
   shuffleFY(harder);
-  const result = [];
+  const mixed = [];
   for (let k = 0; k < Math.max(easier.length, harder.length); k++) {
-    if (k < easier.length) result.push(easier[k]);
-    if (k < harder.length) result.push(harder[k]);
+    if (k < easier.length) mixed.push(easier[k]);
+    if (k < harder.length) mixed.push(harder[k]);
   }
-  return result;
+  return [...warmup, ...mixed];
 }
 
 function startGame() {
